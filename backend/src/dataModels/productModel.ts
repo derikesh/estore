@@ -7,6 +7,7 @@ interface PRODUCT_INTERFACE {
     category: string;
     description?: string;
     imageUrl?: string;
+    varient:string;
 }
 
 // Product schema
@@ -15,7 +16,8 @@ const PRODUCT_SCHEMA = new mongoose.Schema({
     price: { type: Number, required: true },
     category: { type: String, required: true },
     description: { type: String },
-    imageUrl: { type: String }
+    imageUrl: { type: String },
+    varient: { type:String , required:true}
 });
 
 export default mongoose.model<PRODUCT_INTERFACE>('PRODUCT', PRODUCT_SCHEMA);
