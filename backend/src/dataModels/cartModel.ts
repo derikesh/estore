@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { Schema } from "mongoose";
 
 // Cart item interface
-interface CART_ITEM_INTERFACE {
+interface CART_ITEM_INTERFACE extends Document {
     product: mongoose.Schema.Types.ObjectId; // Reference to the product model
     quantity: number;
 }
