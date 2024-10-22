@@ -1,12 +1,12 @@
 import mongoose , {Document} from "mongoose";
 
 // Product interface
-interface PRODUCT_INTERFACE extends Document {
+export interface PRODUCT_INTERFACE extends Document {
     name: string;
     price: number;
     category: string;
     description?: string;
-    imageUrl?: string[];
+    images?: string[];
     size?:string[];
     color?:string[];
 }
@@ -17,7 +17,7 @@ const PRODUCT_SCHEMA = new mongoose.Schema({
     price: { type: Number, required: true },
     category: { type: String, required: true },
     description: { type: String },
-    imageUrl: { type: [String], required:true },
+    images: { type: [String], required:true },
     size: { type:[String] , required:false},
     color: { type:[String] , required:false}
 
