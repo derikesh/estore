@@ -9,11 +9,6 @@ import Product from '../dataModels/productModel';
 import { PRODUCT_INTERFACE } from "../dataModels/productModel";
 
 
-
-
-
-
-
 // Adding product into data
 export const addProducts = async (req: Request, res: Response) => {
 
