@@ -8,7 +8,7 @@ import { sendServerError } from "../utility/error";
 import Product from '../dataModels/productModel';
 import { PRODUCT_INTERFACE } from "../dataModels/productModel";
 
-
+// css
 // Adding product into data
 export const addProducts = async (req: Request, res: Response) => {
 
