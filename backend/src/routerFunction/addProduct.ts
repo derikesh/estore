@@ -7,6 +7,7 @@ import { sendServerError } from "../utility/error";
 // data model 
 import Product from '../dataModels/productModel';
 import { PRODUCT_INTERFACE } from "../dataModels/productModel";
+import { messaging } from "firebase-admin";
 
 
 // css
@@ -54,7 +55,6 @@ export const getProduct = async (req: Request, res: Response) => {
         sendServerError(res,err);
     }
 }
-
 
 
 
