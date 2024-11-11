@@ -5,7 +5,7 @@ export default function Home() {
   return (
    
     <div className="bg-cyan-500" >
-      this is a single page
+      main landing page
     </div>
 
   );

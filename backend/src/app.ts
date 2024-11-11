@@ -14,7 +14,7 @@ connectMB();
 app.use( '' , router);
 
 // server listening
-app.listen( 3000 , ()=>{
+app.listen( 3001 , ()=>{
     console.log("server is working on port 30000");
 } ) ;
 
