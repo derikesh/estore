@@ -9,6 +9,12 @@ import { createNewUser , readAllUsers } from "../routerFunction/usersFunction";
 // import all login functions 
 import { loginFunction } from "../routerFunction/loginFunction";
 
+// import middlewares
+import authMiddleware from "../utility/authentication";
+
+// import admin funcitons
+import { handleAdminGet } from "../routerFunction/adminFunction";
+
 const router = Router();
 
 
@@ -40,8 +46,12 @@ router.get( '/users', readAllUsers );
 
 // login router
 
-// 
-router.get( '/login' , loginFunction )
+router.get( '/login' , loginFunction );
+
+
+
+// protected route
+router.get('/admin',authMiddleware,handleAdminGet)
 
 
 

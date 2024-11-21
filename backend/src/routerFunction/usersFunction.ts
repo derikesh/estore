@@ -12,7 +12,7 @@ import USERS from "../dataModels/userModel";
 
 
 dotenv.config();
-const JWTKEY = process.env.JWT_KEY;
+export const JWTKEY = process.env.JWT_KEY;
 
 
 // creating a new user and sending a token into the header information of response 
