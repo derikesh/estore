@@ -12,7 +12,7 @@ const JWT_KEY = process.env.JWT_KEY;
 
 
 export interface userAuth extends Request {
-    user:String | object;
+    user?:String | object;
 }
 
 const authMiddleware =  (req: userAuth, res: Response, next: NextFunction):void => {

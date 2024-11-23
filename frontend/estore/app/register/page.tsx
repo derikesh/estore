@@ -8,7 +8,6 @@ import { FormEvent, useState } from "react";
 import { toast } from "react-toastify";
 
 // axios call
-import axiosApi from "@/src/config/axiosInstance";
 
 const LoginPage = ()=>{
 
@@ -26,9 +25,7 @@ const LoginPage = ()=>{
     
         try{  
             if( data ){
-            let res = axiosApi.post( '/users/newUser' , data ); 
             toast.success("user added sucessfully");
-            console.log( res);
              }
         }catch(err:any){
           console.log( err.message );
@@ -40,11 +37,10 @@ const LoginPage = ()=>{
   
     const { name , value } = e.target;
 
-    setFormData( ( prevData )=>({
-        ...prevData,
-        [name] : value
+    setFormData( (prev)=>({
+      ...prev,
+      [name]:value
     }) )
-    
   }
 
 

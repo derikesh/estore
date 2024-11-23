@@ -51,7 +51,7 @@ router.get( '/login' , loginFunction );
 
 
 // protected route
-router.get('/admin',authMiddleware,handleAdminGet)
+router.get('/admin',authMiddleware,handleAdminGet);
 
 
 
