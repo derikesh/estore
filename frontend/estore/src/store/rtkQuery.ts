@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CreateApi,  } from "@reduxjs/toolkit/query";
 import { baseUrl } from "../config/baseUrl";
 
 
@@ -19,22 +18,23 @@ const baseUrlSetup = fetchBaseQuery({
     }
 })
 
-const api = createApi({
+export const api = createApi({
     reducerPath:'api',  
     baseQuery:baseUrlSetup,
     tagTypes:['postUser'],
     endpoints:( builder )=>({
 
         // posting user
-       someendpoint: builder.mutation({
+       postUser: builder.mutation({
             query: (body)=>({
                 method:'post',
-                url:'/user/new',
+                url:'/users/newUser',
                 body
             }),
             invalidatesTags:['postUser']
        }),
 
+    //    just a random query string 
        someReadUrl: builder.query({
         query: ( query )=>({
             method:'get',
@@ -43,4 +43,7 @@ const api = createApi({
        })
 
     })
-})
+});
+
+
+export const { useSomeReadUrlQuery , usePostUserMutation } = api;

@@ -3,6 +3,8 @@
 import { baseUrl } from "@/src/config/baseUrl";
 import InputField from "@/src/component/form";
 import { FormEvent, useState } from "react";
+import { usePostUserMutation } from "@/src/store/rtkQuery";
+import ReduxProvider from "@/src/component/ClientComponet";
 
 // tostify import
 import { toast } from "react-toastify";
@@ -11,21 +13,21 @@ import { toast } from "react-toastify";
 
 const LoginPage = ()=>{
 
-
-  console.log("base url",baseUrl);
-
   const [ formData , setFormData ] = useState({
     name:"",
     email:"",
     password:""
   });
 
-  // handling form submit data 
+
+  const [ postUser, { isLoading , isSuccess   }  ] =usePostUserMutation();
+
+  // handling form submit data mx 
   const handleSubmit = async ({data}:any)=>{
     
         try{  
             if( data ){
-            toast.success("user added sucessfully");
+               toast.success("user added sucessfully");
              }
         }catch(err:any){
           console.log( err.message );
@@ -46,6 +48,7 @@ const LoginPage = ()=>{
 
 
     return (
+      <ReduxProvider>
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Register User</h2>
@@ -85,6 +88,7 @@ const LoginPage = ()=>{
         </form>
       </div>
     </div>
+    </ReduxProvider>
     )
 
 }
