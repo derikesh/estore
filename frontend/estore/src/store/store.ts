@@ -8,7 +8,7 @@ const store = configureStore({
         slider
     },
     middleware: ( getDefaultMiddleware )=>
-        getDefaultMiddleware().concat(api.middleware    )
+        getDefaultMiddleware().concat(api.middleware)
     
 });
 
