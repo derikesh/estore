@@ -1,10 +1,9 @@
-import Image from "next/image";
 
 export default function Home() {
   return (
    
-    <div>
-      this is a single page
+    <div className="bg-cyan-500" >
+        this is client side home pafge
     </div>
 
   );
