@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 
 const LoginPage = () => {
 
+  console.log("base re,",baseUrl);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",

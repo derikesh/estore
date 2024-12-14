@@ -13,7 +13,7 @@ interface InputFieldProps {
 
 const InputField: React.FC<InputFieldProps> = ({ label, type, value, id, name, onChange }:InputFieldProps) => {
     return (
-        <div className="py-2 px-8">
+        <div className="py-2 px-8  text-black">
             <Label>
                 {label}
             </Label>
