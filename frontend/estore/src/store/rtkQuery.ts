@@ -4,24 +4,24 @@ import { baseUrl } from "../config/baseUrl";
 
 const baseUrlSetup = fetchBaseQuery({
     baseUrl:baseUrl,
-    prepareHeaders: ( header:any )=>{
+    prepareHeaders: ( header:Headers )=>{
         let token = '';
         if( typeof window !== 'undefined' ){
-            token = localStorage.getItem( 'headerToken' ) || "";
+            token = localStorage.getItem( 'estoreToken' ) || "";
         }
 
         if(token){
-            header.set('authorization',`Bearer : ${token}`);
+            header.set('Authorization',`Bearer ${token}`);
         }
 
         return header;
     }
-})
+});
 
 export const api = createApi({
     reducerPath:'api',  
     baseQuery:baseUrlSetup,
-    tagTypes:['postUser'],
+    tagTypes:['postUser', 'login'],
     endpoints:( builder )=>({
 
         // posting user
@@ -34,16 +34,21 @@ export const api = createApi({
             invalidatesTags:['postUser']
        }),
 
-    //    just a random query string 
-       someReadUrl: builder.query({
-        query: ( query )=>({
-            method:'get',
-            url:'/users'
-        })
+       login: builder.mutation({
+        query:( body )=>({
+            method:'post',
+            url:'/login',
+            body
+        }),
+        invalidatesTags:['login']
        })
+
+   
 
     })
 });
 
 
-export const { useSomeReadUrlQuery , usePostUserMutation } = api;
+export const {  usePostUserMutation , useLoginMutation} = api;
+
+

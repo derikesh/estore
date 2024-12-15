@@ -46,7 +46,7 @@ router.get( '/users', readAllUsers );
 
 // login router
 
-router.get( '/login' , loginFunction );
+router.post( '/login' , loginFunction );
 
 
 

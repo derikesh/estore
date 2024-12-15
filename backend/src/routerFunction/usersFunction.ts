@@ -14,6 +14,7 @@ import USERS from "../dataModels/userModel";
 dotenv.config();
 export const JWTKEY = process.env.JWT_KEY;
 
+console.log( "this is JWTKEY",JWTKEY )
 
 // creating a new user and sending a token into the header information of response 
 export const createNewUser = async ( req : Request , res : Response )=>{
@@ -47,7 +48,7 @@ export const createNewUser = async ( req : Request , res : Response )=>{
 
     }catch(err:any){
         console.log(err.message);
-        sendServerError( res , err.message );
+        sendServerError( res ,`Error creating user: ${err.message}` );
     }
 
 } 

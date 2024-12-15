@@ -11,7 +11,7 @@ interface InputFieldProps {
     onChange?: ( e:React.ChangeEvent<HTMLInputElement> )=>void ;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ label, type, value, id, name, onChange }:InputFieldProps) => {
+const InputField: React.FC<InputFieldProps> = ({ label, type, value, id, name }:InputFieldProps) => {
     return (
         <div className="py-2 px-8  text-black">
             <Label>
@@ -19,7 +19,6 @@ const InputField: React.FC<InputFieldProps> = ({ label, type, value, id, name, o
             </Label>
 
             <Input
-                onChange={onChange}
                 id={id}
                 name={name}
                 value={value}

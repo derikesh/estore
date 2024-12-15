@@ -1,9 +1,9 @@
-import LoginPage from '@/src/component/ClientSideComponent/LoginContainer'
 import React from 'react'
 
 export default function page() {
   return (
       <div>
+        this is admin page.tsx
       </div>
   )
 }
