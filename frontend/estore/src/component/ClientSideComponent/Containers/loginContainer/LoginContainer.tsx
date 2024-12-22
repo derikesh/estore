@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useLoginMutation } from '@/src/store/rtkQuery';
@@ -14,7 +16,7 @@ export default function LoginContainer() {
         password: ''
     };
 
-    const [postLogin, { isSuccess,  isError , error:loginError }] = useLoginMutation();
+    const [postLogin, { isSuccess,  data,isError , error:loginError }] = useLoginMutation();
 
     const handleSubmit = async (values: typeof initialValues) => {
         try {
@@ -28,12 +30,21 @@ export default function LoginContainer() {
     };
 
 
+    // check before hand if token exists
+    useEffect( ()=>{
+
+        if( typeof window !== 'undefined' && isSuccess ){
+            localStorage.setItem("estoretoken", data?.tokens);
+        }
+
+    } ,[data,isSuccess])
+
     // for sucess message
     useEffect( ()=>{
 
         if( isSuccess ){
             toast.success('user logged in sucessfully');
-            // router.push('/register');
+            router.push('/admin/dashboard');
         }
 
         if(isError){

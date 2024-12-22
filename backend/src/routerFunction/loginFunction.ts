@@ -14,8 +14,9 @@ export const loginFunction = async ( req:Request ,res:Response )=>{
         try {
 
             const tokenId = process.env.JWT_KEY;
+            const acessTokenId = process.env.JWT_ACESS;
 
-            if(!tokenId){
+            if(!tokenId || !acessTokenId){
                 return sendResponse(res,400,'some error occured please try again later');
             }
 
@@ -32,9 +33,14 @@ export const loginFunction = async ( req:Request ,res:Response )=>{
             }
 
             // generat token 
-            const token = jwt.sign( {userId:userExists?._id} , tokenId , { expiresIn: '1d' } );
+            const acessToken = jwt.sign( {userId:userExists?._id} , tokenId , { expiresIn: '15m' } );
+            const refreshToken = jwt.sign( {userId:userExists?._id} ,acessTokenId , {expiresIn:'7d'}  );
 
-            return sendResponse( res,200,'user loged in sucessfully',token )
+
+            res.cookie('acessToken',acessToken , {maxAge: 15 * 60 * 1000 })
+            res.cookie( 'refreshToken', refreshToken , { maxAge:7*24*60*60*1000 ,httpOnly:true , sameSite:'strict' , secure:true } )
+
+            return sendResponse( res,200,'user loged in sucessfully',acessToken )
 
         }catch(err){
             console.log(err);

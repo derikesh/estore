@@ -34,6 +34,7 @@ export const api = createApi({
             invalidatesTags:['postUser']
        }),
 
+       //login
        login: builder.mutation({
         query:( body )=>({
             method:'post',
@@ -43,6 +44,7 @@ export const api = createApi({
         invalidatesTags:['login']
        })
 
+       
    
 
     })

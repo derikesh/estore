@@ -41,10 +41,10 @@ export const createNewUser = async ( req : Request , res : Response )=>{
         await newUser.save();
 
         // after the user is created with the hashed password we can generate the token and provide them the token 
-        const token = jwt.sign( { userId:newUser._id } , JWTKEY , { expiresIn:'1d' }  )
+        // const token = jwt.sign( { userId:newUser._id } , JWTKEY , { expiresIn:'30s' }  )
 
 
-        return  sendResponse(res, 200 , "new user has been added ", { token , user:name} );
+        return  sendResponse(res, 200 , "new user has been added ", { user:name} );
 
     }catch(err:any){
         console.log(err.message);

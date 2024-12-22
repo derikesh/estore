@@ -1,9 +1,12 @@
 'use client'
 
-import LoginContainer from '@/src/component/ClientSideComponent/Containers/loginContainer/LoginContainer'
+import dynamic from 'next/dynamic'
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from '@/src/store/store'
+
+const LoginContainer = dynamic( ()=> import('../../src/component/ClientSideComponent/Containers/loginContainer/LoginContainer') , {ssr:false});
+
 
 export default function page() {
   return (
