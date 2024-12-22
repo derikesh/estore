@@ -34,7 +34,7 @@ export const loginFunction = async ( req:Request ,res:Response )=>{
             // generat token 
             const token = jwt.sign( {userId:userExists?._id} , tokenId , { expiresIn: '1d' } );
 
-            return sendResponse( res,200,'user loged in sucessfully',{ token } )
+            return sendResponse( res,200,'user loged in sucessfully',token )
 
         }catch(err){
             console.log(err);

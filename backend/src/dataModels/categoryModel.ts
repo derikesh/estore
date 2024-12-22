@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 import { Document, Schema } from "mongoose";
 
-interface CATEGORY_INTERFACE extends Document {
+export interface CATEGORY_INTERFACE extends Document {
         name : string,
         parent: mongoose.Types.ObjectId,  //self refrencing for hiearchy
         slug:string,
@@ -13,9 +13,19 @@ interface CATEGORY_INTERFACE extends Document {
 const categoryModel = new mongoose.Schema({
     name : { type:String, require:true , unique:true  },
     slug:{ type:String },
-    parent:{ type:mongoose.Types.ObjectId , ref:'CATEGORY',default:null },
+    parent:{ type:mongoose.Types.ObjectId , ref:'category',default:null },
     description:{ type:String }
 })
 
 
-export default mongoose.model<CATEGORY_INTERFACE>( 'CATEGORY',categoryModel );
+// pre save hook 
+categoryModel.pre( 'save' , function(next){
+    
+    if(this.slug){
+        this.slug = this.slug.toLowerCase();
+    }
+    next();
+
+} )
+
+export default mongoose.model<CATEGORY_INTERFACE>( 'Category',categoryModel );

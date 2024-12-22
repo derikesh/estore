@@ -25,7 +25,6 @@ const authMiddleware =  (req: userAuth, res: Response, next: NextFunction):void 
     // verify jwt
         if(!JWT_KEY){
             throw new Error("")
-            return;
         }
         const payload = jwt.verify( token ,JWT_KEY  ); 
         req.user = payload;
@@ -37,3 +36,4 @@ const authMiddleware =  (req: userAuth, res: Response, next: NextFunction):void 
 }
 
 export default authMiddleware;
+
