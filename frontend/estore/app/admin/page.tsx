@@ -1,3 +1,5 @@
+'use client'
+
 import LoginContainer from '@/src/component/ClientSideComponent/Containers/loginContainer/LoginContainer'
 import React from 'react'
 import { Provider } from 'react-redux'

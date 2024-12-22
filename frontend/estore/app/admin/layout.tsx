@@ -7,8 +7,11 @@ export default function AdminLayout({ children }:{ children:ReactNode }) {
   return (
     <ReduxProvider>
       <div className="admin-panel">
+        admin layout
         <main className="admin-content">{children}</main>
       </div>
     </ReduxProvider>
   );
 }
+
+

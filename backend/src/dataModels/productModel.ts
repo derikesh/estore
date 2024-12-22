@@ -1,5 +1,6 @@
 import mongoose , {Document} from "mongoose";
 
+
 // Product interface
 export interface PRODUCT_INTERFACE extends Document {
     name: string;
@@ -18,7 +19,7 @@ const PRODUCT_SCHEMA = new mongoose.Schema({
     category: { type: String, required: true },
     description: { type: String },
     images: { type: [String], required:true },
-    size: { type:[String] , required:false},
+    size: { type:[String], required:false},
     color: { type:[String] , required:false}
 
 });
