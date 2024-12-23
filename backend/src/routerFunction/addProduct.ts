@@ -7,7 +7,6 @@ import { sendServerError } from "../utility/error";
 // data model 
 import Product from '../dataModels/productModel';
 import { PRODUCT_INTERFACE } from "../dataModels/productModel";
-import { messaging } from "firebase-admin";
 
 
 // css
@@ -34,12 +33,6 @@ export const addProducts = async (req: Request, res: Response) => {
 }
 
 
-
-
-
-
-
-
 // Fetching all the products
 export const getProduct = async (req: Request, res: Response) => {
     try {
@@ -55,10 +48,6 @@ export const getProduct = async (req: Request, res: Response) => {
         sendServerError(res,err);
     }
 }
-
-
-
-
 
 
 // Fetching a single product by ID
@@ -79,12 +68,6 @@ export const getProductSingle = async (req: Request, res: Response) => {
         sendServerError(res,err);
     }
 }
-
-
-
-
-
-
 
 
 // Updating a product by ID
@@ -113,11 +96,6 @@ export const updateProduct = async (req: Request, res: Response) => {
         sendServerError(res,err);
     }
 }
-
-
-
-
-
 
 
 // Deleting a product by ID

@@ -20,31 +20,21 @@ export default function LoginContainer() {
 
     const handleSubmit = async (values: typeof initialValues) => {
         try {
-           const response =await  postLogin(values).unwrap();
-           const token =  response?.data?.token;
-           localStorage.setItem( 'estoreToken' , token );
+           const response = await postLogin(values).unwrap();
+           console.log("this is just from respoinse",response);
         } catch (err:any) {
-            console.log( 'error catch', err );
-            toast.error(`error: ${err?.data?.message}`);
+            console.log( 'error catch', err.error );
+            toast.error(`error: ${err?.error}`);
         }   
     };
 
-
-    // check before hand if token exists
-    useEffect( ()=>{
-
-        if( typeof window !== 'undefined' && isSuccess ){
-            localStorage.setItem("estoretoken", data?.tokens);
-        }
-
-    } ,[data,isSuccess])
 
     // for sucess message
     useEffect( ()=>{
 
         if( isSuccess ){
             toast.success('user logged in sucessfully');
-            router.push('/admin/dashboard');
+            // router.push('/admin/dashboard');
         }
 
         if(isError){

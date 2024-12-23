@@ -10,7 +10,12 @@ const app:Application = express();
 app.use(cookieParser())
 
 // to handle cross origin sites
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Specify your frontend URL here
+    credentials: true,  // Allow credentials (cookies) to be sent with requests
+}));
+
+
 
 // using express middleware for data conversion of json to js  
 app.use( express.json() );

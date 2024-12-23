@@ -1,11 +1,9 @@
 import { Express, Request, Response } from "express";
-import { CATEGORY_INTERFACE } from "../dataModels/categoryModel";
 import Category from "../dataModels/categoryModel";
 
 
 import { sendServerError } from "../utility/error";
 import { sendResponse } from "../utility/response";
-import mongoose from "mongoose";
 
 export const addCategory = async (req: Request, res: Response) => {
 
