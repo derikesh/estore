@@ -1,50 +1,44 @@
-'use client'
-
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useLoginMutation } from '@/src/store/rtkQuery';
+import { useLoginMutation, useRefreshTokenMutation } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
-
+import { tokenValidity } from '@/src/utils/AuthUtils/AuthUtil';
 import { useRouter } from 'next/navigation';
 
 export default function LoginContainer() {
-
     const router = useRouter();
+    const initialValues = { email: '', password: '' };
 
-    const initialValues = {
-        email: '',
-        password: ''
-    };
+    const [refreshToken] = useRefreshTokenMutation();
+    const [postLogin, { isSuccess, data, isError, error: loginError }] = useLoginMutation();
 
-    const [postLogin, { isSuccess,  data,isError , error:loginError }] = useLoginMutation();
+    // Check token validity on initial render
+    useEffect(() => {
+        const checkTokenValidity = async () => {
+            await tokenValidity(refreshToken);
+        };
+        checkTokenValidity();
+    }, [refreshToken]);
 
     const handleSubmit = async (values: typeof initialValues) => {
         try {
-           const response = await postLogin(values).unwrap();
-           console.log("this is just from respoinse",response);
-        } catch (err:any) {
-            console.log( 'error catch', err.error );
-            toast.error(`error: ${err?.error}`);
-        }   
+            const response = await postLogin(values).unwrap();
+            console.log("Login Response:", response);
+        } catch (err: any) {
+            console.log('Login Error:', err.error);
+            toast.error(`Error: ${err?.error || err?.message || "Unknown error"}`);
+        }
     };
 
-
-    // for sucess message
-    useEffect( ()=>{
-
-        if( isSuccess ){
-            toast.success('user logged in sucessfully');
-            // router.push('/admin/dashboard');
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success('User logged in successfully');
+            router.push('/admin/dashboard');
         }
-
-        if(isError){
-            toast.error(`error from hook: ${JSON.stringify(loginError)}`);
+        if (isError) {
+            toast.error(`Error from hook: ${JSON.stringify(loginError)}`);
         }
-
-    },[isSuccess,isError,loginError] );
-
-
-    // for error
+    }, [isSuccess, isError, loginError]);
 
     return (
         <div>
@@ -55,7 +49,7 @@ export default function LoginContainer() {
                         initialValues={initialValues}
                         onSubmit={(values) => handleSubmit(values)}
                     >
-                        {({ isSubmitting }) => (
+                        {({ isSubmitting, resetForm }) => (
                             <Form>
                                 <div className="mb-4">
                                     <label htmlFor="email" className="block text-gray-700">Email</label>

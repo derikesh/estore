@@ -49,10 +49,10 @@ export const api = createApi({
 
     //refreshtoke
     refreshToken:builder.mutation( {
-        query:( body )=>({
-            method:'post',
+        query:()=>({
             url:'/refreshToken',
-            body
+            method:'POST',
+            credentials:"include"
         }),
         invalidatesTags:['refreshToken']
     } )   
