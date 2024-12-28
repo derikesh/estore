@@ -34,7 +34,7 @@ export const loginFunction = async (req: Request, res: Response) => {
         }
 
         // generat token 
-        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '15m' });
+        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '20m' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
 

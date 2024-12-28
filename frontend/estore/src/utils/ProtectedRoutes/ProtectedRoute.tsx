@@ -4,45 +4,32 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { tokenValidity } from '../AuthUtils/AuthUtil';
+import { useRefreshTokenMutation } from '@/src/store/rtkQuery';
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const [isValid, setIsValid] = useState<boolean | null>(null);
     const router = useRouter();
 
-    const {} = tokenValidity;
+    const [refreshToken] = useRefreshTokenMutation();
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const cookie = document.cookie;
-            const token = cookie
-                .split('; ')
-                .find((item) => item.startsWith('acessToken='))
-                ?.split('=')[1];
-
-            if (!token) {
-                console.log('No token found, redirecting to /admin');
+    // Check token validity on initial render
+    useEffect( ()=>{
+        const callRefresh = async ()=>{            
+            try{
+                await tokenValidity(refreshToken, router);
+                setIsValid(true);
+            }catch(err:any){
+                setIsValid(false);
                 router.push('/admin');
-                return;
+                console.log("Error invoking function:",err.message)
             }
+        };
 
-            try {
-                const decodedToken = JSON.parse(atob(token.split('.')[1]));
-                const nowDate = Math.floor(Date.now() / 1000); // Current time in seconds
+        callRefresh();
 
-                if (decodedToken.exp > nowDate) {
-                    setIsValid(true); // Token is valid
-                } else {
-                    console.log('Token expired, redirecting to /admin');
-                    router.push('/admin'); // Token expired
-                }
-            } catch (error) {
-                console.error('Error decoding token:', error);
-                router.push('/admin'); // Invalid token format
-            }
-        }
-    }, [router]);
-
-    if (isValid === null) {
+    } ,[refreshToken])
+ 
+    if (isValid === null || isValid === false) {
         return <div>Redirecting...</div>;
     }
 

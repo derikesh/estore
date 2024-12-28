@@ -5,7 +5,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import store from '@/src/store/store'
 
-const LoginContainer = dynamic( ()=> import('../../src/component/ClientSideComponent/Containers/loginContainer/LoginContainer') , {ssr:false});
+const LoginContainer = dynamic( ()=> import('../../src/container/loginContainer/LoginContainer') , {ssr:false});
 
 
 export default function page() {

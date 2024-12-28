@@ -1,7 +1,11 @@
 import { toast } from "react-toastify";
 
+
 // Function to check token validity
-export const tokenValidity = async (refreshToken: Function) => {
+export const tokenValidity = async (refreshToken: Function, router:any) => {
+
+
+
     const cookie = document.cookie;
     const token = cookie
         .split("; ")
@@ -18,12 +22,13 @@ export const tokenValidity = async (refreshToken: Function) => {
         const decodedToken = JSON.parse(atob(token.split(".")[1]));
         const tokenExpiry = decodedToken.exp; 
 
-        if (nowDate > tokenExpiry) {
+        if (nowDate > tokenExpiry - 60) {
             // Token is expired, refresh it
             const response = await refreshToken({}).unwrap();
 
             if (response.success) {
                 toast.success("Access token refreshed successfully!");
+                router.push('/admin/dashboard')
             } else {
                 throw new Error("Failed to refresh the access token.");
             }

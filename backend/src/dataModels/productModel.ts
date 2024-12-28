@@ -14,11 +14,11 @@ export interface PRODUCT_INTERFACE extends Document {
 
 // Product schema
 const PRODUCT_SCHEMA = new mongoose.Schema({
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
-    category: { type: String, required: true },
+    name: { type: String, required: false },
+    price: { type: Number, required: false },
+    category: { type: String, required: false },
     description: { type: String },
-    images: { type: [String], required:true },
+    images: { type: [String], required:false },
     size: { type:[String], required:false},
     color: { type:[String] , required:false}
 

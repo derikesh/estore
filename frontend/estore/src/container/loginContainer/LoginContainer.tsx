@@ -15,7 +15,7 @@ export default function LoginContainer() {
     // Check token validity on initial render
     useEffect(() => {
         const checkTokenValidity = async () => {
-            await tokenValidity(refreshToken);
+            await tokenValidity(refreshToken,router);
         };
         checkTokenValidity();
     }, [refreshToken]);
