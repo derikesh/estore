@@ -10,8 +10,10 @@ const LoginContainer = dynamic( ()=> import('../../src/container/loginContainer/
 
 export default function page() {
   return (
-    <Provider store={store} >
-    <LoginContainer/>
-    </Provider>
+    // <Provider store={store} >
+    <div className='admin_contaier_wrap'>
+      <LoginContainer/>
+    </div>
+    // </Provider>
   )
 }
