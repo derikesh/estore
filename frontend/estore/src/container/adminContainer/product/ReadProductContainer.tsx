@@ -45,8 +45,8 @@ export default function ReadProductContainer() {
                 <div>
                     <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Product List</h2>
                     <ul>
-                        {data?.data?.map((product: any) => (
-                            <li key={product.id} className="mb-4 p-4 border rounded-lg shadow-sm">
+                        {data?.data?.map((product: any,index) => (
+                            <li key={index} className="mb-4 p-4 border rounded-lg shadow-sm">
                                 <h3 className="text-xl font-bold">{product.name}</h3>
                                 <p>Price: {product.price}</p>
                                 <p>Category: {product.category}</p>

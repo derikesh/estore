@@ -34,12 +34,12 @@ export const loginFunction = async (req: Request, res: Response) => {
         }
 
         // generat token 
-        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '20m' });
+        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '10s' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
 
-        res.cookie('acessToken', acessToken, { maxAge: 15 * 60 * 1000 })
-        res.cookie('refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true })
+        res.cookie('e_accessToken', acessToken, { maxAge: 15 * 60 * 1000 })
+        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true })
 
         return sendResponse(res, 200, 'user loged in sucessfully')
 

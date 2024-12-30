@@ -4,6 +4,10 @@ import router from './router/allRoutes';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const app:Application = express();
 
 // to handle cookie on each request 
@@ -11,7 +15,7 @@ app.use(cookieParser())
 
 // to handle cross origin sites
 app.use(cors({
-    origin: 'http://localhost:3000', // Specify your frontend URL here
+    origin:process.env.FRONTEND_URL, // Specify your frontend URL here
     credentials: true,  // Allow credentials (cookies) to be sent with requests
 }));
 

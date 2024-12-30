@@ -10,7 +10,7 @@ const baseUrlSetup = fetchBaseQuery( {
     prepareHeaders:( header:Headers )=>{
 
         const cookies = document.cookie
-        const token = cookies.split("; ").find( (item)=>item.startsWith('accessToken='))?.split("=")[1];
+        const token = cookies.split("; ").find( (item)=>item.startsWith('e_accessToken='))?.split("=")[1];
 
         if(token){
            header.set('Authorization',`Bearer ${token}`)

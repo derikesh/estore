@@ -14,10 +14,10 @@ export const JWT_KEY = process.env.JWT_KEY
 // middeware function cookie
 export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunction )=>{
 
-    const getToken = req.cookies.acessToken;
+    const getToken = req.cookies.e_accessToken;
 
     if(!getToken || !JWT_KEY){  
-        return sendResponse(res,401,'some error occured during json string');
+        return sendResponse(res,401,'authentication failed');
     }   
 
     const validaUser = jwt.verify( getToken , JWT_KEY  );
@@ -29,7 +29,7 @@ export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunctio
 // function to generate new access token 
 export const refreshTokenHandlerr = ( req:AUTH_REQ, res:Response , next:NextFunction )=>{
 
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.cookies.e_refreshToken;
 
     if (!refreshToken) {
         return sendResponse(res, 401, 'Authorization failed, no refresh token provided');
@@ -49,7 +49,7 @@ export const refreshTokenHandlerr = ( req:AUTH_REQ, res:Response , next:NextFunc
             return sendResponse(res,401,'authoization failed , invalide token')
         }
         const accessToken = jwt.sign( { userId:(isValideToken as any).id } ,JWT_KEY,{expiresIn:'15m'}  )
-        res.cookie('accessToken',accessToken,{maxAge:15*60*1000});
+        res.cookie('e_accessToken',accessToken,{maxAge:15*60*1000});
         next();
 
     }catch(err){
