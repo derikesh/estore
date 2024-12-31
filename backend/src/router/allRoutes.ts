@@ -16,6 +16,11 @@ import { cookieAuth, refreshTokenHandlerr } from "../utility/cookieAuth";
 import { handleAdminGet } from "../routerFunction/adminFunction";
 import { addCategory, readCategory, readSingleCategory, updateCategory } from "../routerFunction/category";
 
+// upload image 
+import {  uploadImage } from "../routerFunction/uploadImage";
+import { uploadMulter } from "../utility/multer";
+import { deleteImage } from "../routerFunction/uploadImage";
+
 export const router = Router();
 
 
@@ -59,5 +64,10 @@ router.get('categories',readCategory)
 router.get('category/:id',readSingleCategory)
 router.patch( 'category/:id',cookieAuth,updateCategory );
 
+
+
+// upload an image 
+router.post('/uploadImage',uploadMulter.single('file'),uploadImage);
+router.post('/deleteImage',deleteImage as any );
 
 export default router;

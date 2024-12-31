@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useAddProductMutation } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
+import DropBox from '../imageDrop/DropBox';
 
 export default function FormProduct() {
     const [addProduct, { isSuccess, isError, error }] = useAddProductMutation();
@@ -18,8 +19,8 @@ export default function FormProduct() {
 
     const handleSubmit = async (values: typeof initialValues) => {
         try {
-            await addProduct(values).unwrap();
-          
+            // await addProduct(values).unwrap();
+            console.log( "from the add product",values );
         } catch (err: any) {
             console.error('Error adding product:', err);
             toast.error(`error: ${err.data.message}`)
@@ -42,7 +43,7 @@ export default function FormProduct() {
                     initialValues={initialValues}
                     onSubmit={ (values)=>handleSubmit(values) }
                 >
-                    {({ isSubmitting }) => (
+                    {({ setFieldValue,isSubmitting }) => (
                         <Form>
                             <div className="mb-4">
                                 <label htmlFor="name" className="block text-gray-700">Product Name</label>
@@ -86,12 +87,7 @@ export default function FormProduct() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="images" className="block text-gray-700">Images</label>
-                                <Field
-                                    id="images"
-                                    name="images"
-                                    type="text"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                                />
+                                <DropBox name="images" setFieldValue={setFieldValue}  />
                                 <ErrorMessage name="images" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">

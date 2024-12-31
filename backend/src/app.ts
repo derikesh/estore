@@ -11,7 +11,10 @@ dotenv.config();
 const app:Application = express();
 
 // to handle cookie on each request 
-app.use(cookieParser())
+app.use(cookieParser());
+
+// using express middleware for data conversion of json to js  
+app.use( express.json() );
 
 // to handle cross origin sites
 app.use(cors({
@@ -19,10 +22,6 @@ app.use(cors({
     credentials: true,  // Allow credentials (cookies) to be sent with requests
 }));
 
-
-
-// using express middleware for data conversion of json to js  
-app.use( express.json() );
 
 // connecting mongodb
 connectMB();

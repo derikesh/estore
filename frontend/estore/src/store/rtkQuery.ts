@@ -24,7 +24,7 @@ const baseUrlSetup = fetchBaseQuery( {
 export const api = createApi({
     reducerPath:'api',  
     baseQuery:baseUrlSetup,
-    tagTypes:['postUser', 'login','refreshToken','addProduct','readProduct'],
+    tagTypes:['postUser', 'login','refreshToken','addProduct','readProduct','uploadImage','deleteImage'],
     endpoints:( builder )=>({
 
         // posting user
@@ -72,12 +72,30 @@ export const api = createApi({
             url:'/product'
         }),
         providesTags:['readProduct']
+    }),
+
+    uploadImage : builder.mutation({
+        query:( body )=>({
+            method:'POST',
+            url:'/uploadImage',
+            body,
+        }),
+        invalidatesTags:['uploadImage']
+    }),
+
+    deleteIMage : builder.mutation({
+        query:(body)=>({
+            method:'POST',
+            url:'/deleteImage',
+            body
+        }),
+        invalidatesTags:['deleteImage']
     })
 
     })
 });
 
 
-export const {  usePostUserMutation , useLoginMutation , useRefreshTokenMutation , useAddProductMutation , useReadallProductQuery} = api;
+export const {  usePostUserMutation , useLoginMutation , useRefreshTokenMutation , useDeleteIMageMutation , useAddProductMutation , useReadallProductQuery , useUploadImageMutation } = api;
 
 
