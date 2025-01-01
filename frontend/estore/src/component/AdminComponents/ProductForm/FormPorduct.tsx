@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import { useAddProductMutation } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
 import DropBox from '../imageDrop/DropBox';
+import TagComponent from '../tagComponent/TagComponent';
 
 export default function FormProduct() {
     const [addProduct, { isSuccess, isError, error }] = useAddProductMutation();
@@ -13,14 +14,14 @@ export default function FormProduct() {
         category: '',
         description: '',
         images: '',
-        size: '',
+        size: ["walla"],
         color: ''
     };
 
     const handleSubmit = async (values: typeof initialValues) => {
         try {
             // await addProduct(values).unwrap();
-            console.log( "from the add product",values );
+            console.log("from the add product", values);
         } catch (err: any) {
             console.error('Error adding product:', err);
             toast.error(`error: ${err.data.message}`)
@@ -28,12 +29,12 @@ export default function FormProduct() {
     };
 
 
-    useEffect( ()=>{
-      if (isSuccess) {
-        console.log('Product added successfully');
-        toast.success("product has been added")
-    }
-    },[isSuccess,addProduct] )
+    useEffect(() => {
+        if (isSuccess) {
+            console.log('Product added successfully');
+            toast.success("product has been added")
+        }
+    }, [isSuccess, addProduct])
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -41,9 +42,9 @@ export default function FormProduct() {
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Add Product</h2>
                 <Formik
                     initialValues={initialValues}
-                    onSubmit={ (values)=>handleSubmit(values) }
+                    onSubmit={(values) => handleSubmit(values)}
                 >
-                    {({ setFieldValue,isSubmitting }) => (
+                    {({ setFieldValue, isSubmitting, values }) => (
                         <Form>
                             <div className="mb-4">
                                 <label htmlFor="name" className="block text-gray-700">Product Name</label>
@@ -87,18 +88,45 @@ export default function FormProduct() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="images" className="block text-gray-700">Images</label>
-                                <DropBox name="images" setFieldValue={setFieldValue}  />
+                                <DropBox name="images" setFieldValue={setFieldValue} />
                                 <ErrorMessage name="images" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="size" className="block text-gray-700">Size</label>
-                                <Field
-                                    id="size"
-                                    name="size"
-                                    type="text"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                                />
-                                <ErrorMessage name="size" component="div" className="text-red-500 text-sm" />
+
+                                {/* <FieldArray name='size' >
+                                    {({ push, remove }) => (
+                                        <>
+                                            {values?.size?.map((item, index) => (
+                                                <div key={index} >
+                                                    <Field
+                                                        id="size"
+                                                        name={`size[${index}]`}
+                                                        type="text"
+                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                                    />
+                                                    <ErrorMessage name="size" component="div" className="text-red-500 text-sm" />
+
+                                                    <button onClick={() => remove(index)} className='remove_size' >
+                                                        Remove
+                                                    </button>
+
+                                                </div>
+                                            ))}
+
+                                            <button type="button" onClick={() => push('')}>
+                                                Add Size
+                                            </button>
+
+                                        </>
+                                    )}
+                                </FieldArray> */}
+
+
+
+                                <TagComponent name='size' values={values} />
+
+
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="color" className="block text-gray-700">Color</label>

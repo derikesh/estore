@@ -20,7 +20,7 @@ interface ImageObject {
 
 const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
 
-    const [preview, setPreview] = useState<ImageObject | null>(null);
+    const [preview, setPreview] = useState<any | null>(null);
     const [uploadImage , {isSuccess,error,isError,data,isLoading}] = useUploadImageMutation();
     const [deleteImage,{ isSuccess:deleteSuccess,error:deleteERror,isError:isDeleteError,isLoading:loadingDelete }] = useDeleteIMageMutation();
 
@@ -31,38 +31,31 @@ const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
         const formUpload = new FormData();
         formUpload.append( "file",file );
         uploadImage(formUpload);
+        setPreview(URL.createObjectURL(file));
         setFieldValue(name, formUpload);
     };
 
 
     const handleDelete = ()=>{
+        setPreview(null);
         deleteImage(data);
+        if(deleteSuccess){
+            toast.info("image deleted",{autoClose:1000})
+        }
     }
 
     useEffect( ()=>{
-
-        if(deleteSuccess){
-            toast.success("Image deleted");
-            setPreview(null);
-        }else if(loadingDelete){
-            toast.info("deleting File")
-        }else if(isDeleteError){
+        
+        if(isDeleteError){
             toast.error(`error : ${JSON.stringify(deleteERror)}`);
             console.log("error :",deleteERror);
+            setPreview(data);
         }
 
     } ,[deleteSuccess,isDeleteError]);
 
     useEffect( ()=>{
-
-        if(isSuccess){
-            toast.success("Image Uploaded Sucessfully");
-            console.log( "uploaded image",data );
-            setPreview(data);
-
-        }else if(isLoading){
-            toast.info("Uploading File")
-        }else if(isError){
+    if(isError){
             toast.error(`error : ${JSON.stringify(error)}`);
             console.log("Error :",error);
         }
@@ -93,10 +86,10 @@ const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
                 {preview && (
                     <div className="mt-4 relative">
                         { isLoading && <h1>uploading image...</h1> }
-                        <button className='bg-red-200 absolute top-0 right-0 hover:cursor-pointer' onClick={handleDelete} >x</button>
+                        {  isSuccess && <button className='bg-red-200 absolute top-0 right-0 hover:cursor-pointer' onClick={handleDelete} >x</button> }
                         {/* { isLoading && ( <p>uploading file to server...</p> ) } */}
                         <img
-                            src={preview?.imageUrl}
+                            src={preview}
                             alt="Preview"
                             style={{ width: "200px", height: "auto" }}
                         />
