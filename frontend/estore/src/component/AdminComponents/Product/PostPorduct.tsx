@@ -59,7 +59,7 @@ export default function FormProduct() {
                                     id="name"
                                     name="name"
                                     type="text"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
                             </div>
@@ -69,13 +69,13 @@ export default function FormProduct() {
                                     id="price"
                                     name="price"
                                     type="text"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="price" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="category" className="block text-gray-700">Category</label>
-                                <ReactSelect values={values} setFieldValue={setFieldValue} name='category' />
+                                <ReactSelect dataValue={[]} setFieldValue={setFieldValue} name='category' />
                                 <ErrorMessage name="category" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
@@ -84,7 +84,7 @@ export default function FormProduct() {
                                     id="description"
                                     name="description"
                                     as="textarea"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
                             </div>

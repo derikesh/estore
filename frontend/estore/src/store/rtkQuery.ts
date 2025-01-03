@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'refreshToken', 'addProduct', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'addCategory', 'updateCategory'],
+    tagTypes: ['postUser', 'login', 'refreshToken', 'addProduct', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'addCategory', 'updateCategory','readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -104,6 +104,14 @@ export const api = createApi({
             providesTags: ['readCategories'],
         }),
 
+        readSingleCategories: builder.query({
+            query: (id) => ({
+                method: 'GET',
+                url: `/category/${id}`,
+            }),
+            providesTags: ['readSingleCategories'],
+        }),
+
         updateCategory: builder.mutation({
             query: ({ id, updatedCategory }) => ({
                 url: `/category/${id}`,
@@ -126,4 +134,5 @@ export const {
     useReadCategoriesQuery,
     useUpdateCategoryMutation,
     useAddCategoryMutation,
+    useReadSingleCategoriesQuery
 } = api;

@@ -1,12 +1,12 @@
 'use client'
 
 import React from 'react'
-import CategoryContainer from '@/src/container/admin/category/ReadCategoryContainer'
+import ReadCategory from '@/src/component/AdminComponents/Category/ReadCategory'
 
 export default function page() {
   return (
     <div>
-      <CategoryContainer/>
+      <ReadCategory/>
     </div>
   )
 }

@@ -6,7 +6,7 @@ export default function page() {
   
     return (
          <div className='admin_category_add' >
-             <PostCategory/>
+             <PostCategory type='edit' key={'edit'} />
           </div>    
   )
 }

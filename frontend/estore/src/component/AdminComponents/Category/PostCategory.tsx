@@ -1,29 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useAddCategoryMutation } from '@/src/store/rtkQuery';
+import { useAddCategoryMutation, useReadCategoriesQuery, useUpdateCategoryMutation, useReadSingleCategoriesQuery } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
 import ReactSelect from '../SelectDropdown/ReactSelect';
+import * as Yup from 'yup';
+import { useParams } from 'next/navigation';
 
-interface CATEGORY_INTERFACE {
+export interface CATEGORY_INTERFACE {
     name: string;
     slug: string;
     parent: number | string | any;
     description?: string;
 }
 
-export default function PostCategory() {
+export default function PostCategory({ type = "add" }) {
+
+
+    const { id } = useParams();
+
     const [AddCategory, { isSuccess, isError, error }] = useAddCategoryMutation();
 
-    const initialValues: CATEGORY_INTERFACE = {
-        name: '',
-        slug: '',
-        parent: '',
-        description: '',
-    };
+    const { data: readSingle, isSuccess: singleSuccess, isError: singleIsError, error: singleError } = useReadSingleCategoriesQuery(id, {
+        skip: !id
+    });
 
+    const { data: categories, isSuccess: categorySuccess, isLoading: categoryLoading, isError: iscategoryError, error: categoryError } = useReadCategoriesQuery({});
+
+    const [updateCategory] = useUpdateCategoryMutation();
+
+    const [slug, setSlug] = useState<String | "">("");
+
+    const [categoryData, setcategoryData] = useState<CATEGORY_INTERFACE | null>(null);
+
+    const [singleValue, setSingleValue] = useState<any>({})
+
+    // Handling the submit
     const handleSubmit = async (values: CATEGORY_INTERFACE) => {
         try {
-            await AddCategory(values).unwrap();
+            if (type === 'edit') {
+                await updateCategory(values).unwrap(); // Ensure `unwrap` is called
+                toast.success('Category updated successfully');
+            } else {
+                await AddCategory(values).unwrap();
+                toast.success('Category added successfully');
+            }
             console.log("Category added:", values);
         } catch (err: any) {
             console.error('Error adding category:', err);
@@ -31,30 +51,101 @@ export default function PostCategory() {
         }
     };
 
+
+
+
+    // To fetch category data
+    useEffect(() => {
+        if (categorySuccess) {
+            setcategoryData(categories.data);
+        } else if (iscategoryError) {
+            toast.info(`error : ${JSON.stringify(categoryError)}`);
+        }
+    }, [categorySuccess, iscategoryError, categoryError]);
+
+
+    // To notify category addition
+    useEffect(() => {
+        if (singleSuccess) {
+            setSingleValue(readSingle);
+        } else if (singleIsError) {
+            toast.error(`error : ${JSON.stringify(singleError)}`)
+        }
+    }, [isSuccess, singleIsError, singleError]);
+
+
+
+
+
+    // To notify category addition
     useEffect(() => {
         if (isSuccess) {
             console.log('Category added successfully');
             toast.success("Category has been added");
+        } else if (isError) {
+            toast.error(`error : ${JSON.stringify(error)}`)
         }
     }, [isSuccess]);
 
+    // To generate a slug
+    const handleSlugValue = (e: any, setFieldValue: any) => {
+        const value = e.target.value;
+        setFieldValue('name', value);
+        setFieldValue('slug', value);
+        setSlug(value.toLowerCase().replace(/\s+/g, '-'));
+    };
+
+
+
+    const dataValue = {
+        name: singleValue?.name,
+        slug: singleValue?.slug,
+        parent: singleValue?.parent,
+        description: singleValue?.description,
+    }
+
+
+
+    const initialValues: CATEGORY_INTERFACE = {
+        name: '',
+        slug: '',
+        parent: null,
+        description: '',
+    };
+
+    // Validation schema
+    const validationSchema = Yup.object({
+        name: Yup.string().required('Category name is required'),
+        slug: Yup.string().required('Slug is required'),
+        parent: Yup.string().required('Parent category is required'),
+        description: Yup.string().optional(),
+    });
+
+    console.log("detail", {
+        id: id,
+        type: type,
+        data: singleValue
+    })
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 w-full">
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Add Category</h2>
                 <Formik
-                    initialValues={initialValues}
+                    initialValues={type === 'edit' ? dataValue : initialValues}
+                    validationSchema={validationSchema}
                     onSubmit={(values) => handleSubmit(values)}
                 >
-                    {({ setFieldValue, isSubmitting, values }) => (
+                    {({ setFieldValue, isSubmitting }) => (
                         <Form>
                             <div className="mb-4">
                                 <label htmlFor="name" className="block text-gray-700">Category Name</label>
                                 <Field
+                                    onChange={(e: any) => handleSlugValue(e, setFieldValue)}
                                     id="name"
                                     name="name"
                                     type="text"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
                             </div>
@@ -64,13 +155,15 @@ export default function PostCategory() {
                                     id="slug"
                                     name="slug"
                                     type="text"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                    value={slug}
+                                    disabled
+                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="slug" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="parent" className="block text-gray-700">Parent Category</label>
-                                <ReactSelect values={values} setFieldValue={setFieldValue} name='parent' />
+                                <ReactSelect dataValue={categoryData} setFieldValue={setFieldValue} name='parent' />
                                 <ErrorMessage name="parent" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
@@ -79,7 +172,7 @@ export default function PostCategory() {
                                     id="description"
                                     name="description"
                                     as="textarea"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
                             </div>

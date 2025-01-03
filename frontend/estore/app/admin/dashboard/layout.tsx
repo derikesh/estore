@@ -26,9 +26,11 @@ export default function AdminLayout({ children }:{ children:ReactNode }) {
 
   return (
     <div className="admin-panel flex">
+      <div className='w-[12%]' >
       <AdminSidebar />
+      </div>
       <Provider store={store}>
-        <main className="admin-content p-4">{children}</main>
+        <main className="admin-content p-4 w-[87%] max-h-screen  overflow-scroll ">{children}</main>
       </Provider>
     </div>
   );

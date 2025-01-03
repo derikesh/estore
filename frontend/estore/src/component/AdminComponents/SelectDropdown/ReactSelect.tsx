@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Select from 'react-select';
 
 interface Option {
@@ -9,27 +9,31 @@ interface Option {
 interface ReactSelectProps {
     name: string;
     setFieldValue: ( value:any,name:string )=>void;
-    values:any
+    dataValue:any
 }
 
 
-const ReactSelect: React.FC<ReactSelectProps> = ({  name ,setFieldValue = ()=> {} ,values}) => {
+const ReactSelect: React.FC<ReactSelectProps> = ({  name ,setFieldValue = ()=> {} ,dataValue =[]}) => {
 
 
     const handleChange = ( option:any )=>{
         setFieldValue( name , option.value )
     }
 
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
-      ]
+    let newOPtion = [];
+
+   if(dataValue?.length>1){
+     newOPtion =  dataValue?.map( (item:any)=>({
+        value:item?._id,
+        label:item?.name
+    }) );
+   }
+
 
     return (
         <Select
             name={name}
-            options={options}
+            options={newOPtion}
             onChange={ handleChange }
             placeholder={'Select an option'}
             className="w-full"

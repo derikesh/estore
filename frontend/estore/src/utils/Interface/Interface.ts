@@ -1,5 +1,5 @@
 // response from server 
-interface SINGLE_DATA{
+export interface SINGLE_DATA{
     message:string | null | object ,
     data:any
 }
