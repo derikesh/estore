@@ -12,8 +12,9 @@ const ProtectedRoute = dynamic( ()=>import('../../../src/utils/ProtectedRoutes/P
 export default function Dashboard() {
   return (
     <ProtectedRoute>
-    <AddProductContainer/>
-    <ReadProductContainer/>
+    {/* <AddProductContainer/> */}
+    {/* <ReadProductContainer/> */}
+    this is home dashboard with some graphs
     </ProtectedRoute>
   )
 }

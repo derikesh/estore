@@ -33,5 +33,5 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
         return <div>Redirecting...</div>;
     }
 
-    return <>{isValid == true ? "there is some token" : "no token"}{children}</>;
+    return <>{children}</>;
 }
