@@ -19,3 +19,8 @@
   background: red;
   width: fit-content !important;
 }
+
+.custome_tag button svg{
+  display: flex !important;
+  background: yellow;
+}

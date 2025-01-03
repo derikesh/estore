@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , memo} from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
 
 import { useUploadImageMutation } from '@/src/store/rtkQuery';
@@ -10,7 +10,8 @@ import { useDeleteIMageMutation } from '@/src/store/rtkQuery';
 
 interface DropBoxInterface {
     setFieldValue: (field: string, value: any) => void,
-    name: string
+    name: string;
+    values:any
 }
 
 interface ImageObject {
@@ -18,7 +19,7 @@ interface ImageObject {
     publicKey:any
 }
 
-const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
+const DropBox = memo(({ setFieldValue = () => { }, name ,values}: DropBoxInterface) => {
 
     const [preview, setPreview] = useState<any | null>(null);
     const [uploadImage , {isSuccess,error,isError,data,isLoading}] = useUploadImageMutation();
@@ -32,17 +33,19 @@ const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
         formUpload.append( "file",file );
         uploadImage(formUpload);
         setPreview(URL.createObjectURL(file));
-        setFieldValue(name, formUpload);
+       
     };
 
 
-    const handleDelete = ()=>{
+    
+
+    const handleDelete = () => {
         setPreview(null);
-        deleteImage(data);
-        if(deleteSuccess){
-            toast.info("image deleted",{autoClose:1000})
+        deleteImage(data?.publicKey); // Pass only publicKey to delete
+        if (deleteSuccess) {
+            toast.info("Image deleted", { autoClose: 1000 });
         }
-    }
+    };
 
     useEffect( ()=>{
         
@@ -50,17 +53,29 @@ const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
             toast.error(`error : ${JSON.stringify(deleteERror)}`);
             console.log("error :",deleteERror);
             setPreview(data);
+        } 
+
+        if(isSuccess && data){
+                console.log("Before setFieldValue:", values[name]);
+                setFieldValue(name, data);
+                console.log("After setFieldValue:", values[name]);
         }
 
-    } ,[deleteSuccess,isDeleteError]);
+    } ,[deleteSuccess,isDeleteError, isSuccess,data]);
 
     useEffect( ()=>{
     if(isError){
             toast.error(`error : ${JSON.stringify(error)}`);
             console.log("Error :",error);
+            setPreview(null);
         }
 
     } ,[isSuccess,isError]);
+
+
+    if(data){
+        console.log("poster from drop box",data);
+    }
 
     return (
         <>
@@ -103,6 +118,6 @@ const DropBox = ({ setFieldValue = () => { }, name }: DropBoxInterface) => {
 
 
     );
-};
-
+}
+)
 export default DropBox;

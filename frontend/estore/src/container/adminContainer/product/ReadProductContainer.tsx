@@ -49,10 +49,11 @@ export default function ReadProductContainer() {
                             <li key={index} className="mb-4 p-4 border rounded-lg shadow-sm">
                                 <h3 className="text-xl font-bold">{product.name}</h3>
                                 <p>Price: {product.price}</p>
+                                <img src={product?.images?.imageUrl} alt={product.name} />
                                 <p>Category: {product.category}</p>
                                 <p>Description: {product.description}</p>
-                                <p>Size: {product.size}</p>
-                                <p>Color: {product.color}</p>
+                                <p>Size: {product.sizes}</p>
+                                <input disabled type='color' value={product.color}/>
                             </li>
                         ))}
                     </ul>
