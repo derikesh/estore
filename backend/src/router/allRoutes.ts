@@ -60,9 +60,9 @@ router.post('/refreshToken',refreshTokenHandlerr, ( req , res )=>{
 
 // creating a new category
 router.post('/category/add',cookieAuth , addCategory);
-router.get('categories',readCategory)
-router.get('category/:id',readSingleCategory)
-router.patch( 'category/:id',cookieAuth,updateCategory );
+router.get('/category',readCategory)
+router.get('/category/:id',readSingleCategory)
+router.patch( '/category/:id',cookieAuth,updateCategory );
 
 
 

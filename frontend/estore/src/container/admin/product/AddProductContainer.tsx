@@ -1,6 +1,7 @@
+import FormProduct from '@/src/component/AdminComponents/Product/PostPorduct';
 import React, { useEffect } from 'react';
 
-import FormProduct from '@/src/component/AdminComponents/ProductForm/FormPorduct';
+FormProduct
 
 export default function AddProductContainer() {
 

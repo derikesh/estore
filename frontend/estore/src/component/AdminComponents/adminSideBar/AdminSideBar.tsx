@@ -38,13 +38,10 @@ const AdminSidebar: React.FC = () => {
                   <FaPlus />
                   <Link href="/admin/dashboard/product/add" className="hover:text-gray-400 transition duration-200">Add</Link>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <FaEdit />
-                  <Link href="/admin/dashboard/product/update" className="hover:text-gray-400 transition duration-200">Update</Link>
-                </li>
+               
                 <li className="flex items-center space-x-2">
                   <FaEye />
-                  <Link href="/admin/dashboard/product/view" className="hover:text-gray-400 transition duration-200">View</Link>
+                  <Link href="/admin/dashboard/product/" className="hover:text-gray-400 transition duration-200">View</Link>
                 </li>
               </ul>
             )}
@@ -61,13 +58,10 @@ const AdminSidebar: React.FC = () => {
                   <FaPlus />
                   <Link href="/admin/dashboard/category/add" className="hover:text-gray-400 transition duration-200">Add</Link>
                 </li>
-                <li className="flex items-center space-x-2">
-                  <FaEdit />
-                  <Link href="/admin/dashboard/category/update" className="hover:text-gray-400 transition duration-200">Update</Link>
-                </li>
+               
                 <li className="flex items-center space-x-2">
                   <FaEye />
-                  <Link href="/admin/dashboard/category/view" className="hover:text-gray-400 transition duration-200">View</Link>
+                  <Link href="/admin/dashboard/category" className="hover:text-gray-400 transition duration-200">View</Link>
                 </li>
               </ul>
             )}

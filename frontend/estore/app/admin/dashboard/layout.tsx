@@ -4,8 +4,7 @@ import store from '@/src/store/store';
 import { ReactNode, useEffect } from 'react';
 import { Provider } from 'react-redux';
 import navbarRef from '@/src/utils/navRef/Navref';
-
-import AdminSidebar from '@/src/component/AdminComponents/AdminSideBar/AdminSideBar';
+import AdminSidebar from '@/src/component/AdminComponents/adminSideBar/AdminSideBar';
 
 export default function AdminLayout({ children }:{ children:ReactNode }) {
 

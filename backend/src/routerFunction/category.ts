@@ -45,11 +45,11 @@ export const readCategory = async (req: Request, res: Response) => {
     try {
 
         const allCategory = await Category.find({});
-        if (allCategory.length > 1) {
-            return sendResponse(res, 400, 'no categoru fuond')
+        if (allCategory.length < 1) {
+            return sendResponse(res, 400, 'no Category fuond')
         }
 
-        return sendResponse(res, 200, `all category:${allCategory}`, { data: allCategory })
+        return sendResponse(res, 200, 'all category',allCategory)
 
     } catch (err: any) {
         console.log("Error Message", err.message);
@@ -95,7 +95,7 @@ export const updateCategory =async ( req:Request , res:Response  )=>{
             return sendResponse(res,400,'could not update category');
         }
 
-        return sendResponse(res,200,`category updated:${updateCategory}`);
+        return sendResponse(res,200,`category updated`,updatedCategory);
 
     }catch(err:any){
         console.log(err.message);

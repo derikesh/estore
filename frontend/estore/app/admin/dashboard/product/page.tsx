@@ -1,5 +1,7 @@
+'use client'
+
 import React from 'react'
-import ReadProductContainer from '@/src/container/adminContainer/product/ReadProductContainer'
+import ReadProductContainer from '@/src/container/admin/product/ReadProductContainer'
 
 export default function page() {
   return (
