@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 
 const PostCategory = dynamic(() => import('@/src/component/AdminComponents/Category/PostCategory'), {
   ssr: false,
+  loading: ()=><p>Loading...</p>,
 });
 
 export default function Page() {

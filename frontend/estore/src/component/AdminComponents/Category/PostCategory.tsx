@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useAddCategoryMutation, useReadCategoriesQuery, useUpdateCategoryMutation, useReadSingleCategoriesQuery } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
 import dynamic from 'next/dynamic';
 import * as Yup from 'yup';
 import { useParams } from 'next/navigation';
+
 const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), { ssr: false });
+
 export interface CATEGORY_INTERFACE {
     name: string;
     slug: string;
@@ -14,80 +16,21 @@ export interface CATEGORY_INTERFACE {
 }
 
 export default function PostCategory({ type = "add" }) {
-
     const { id } = useParams();
 
     const [AddCategory, { isSuccess, isError, error }] = useAddCategoryMutation();
-
-    const { data: readSingle, isSuccess: singleSuccess, isError: singleIsError, error: singleError } = useReadSingleCategoriesQuery(id,{
-        skip:!id,
+    const { data: readSingle, isSuccess: singleSuccess, isError: singleIsError, error: singleError } = useReadSingleCategoriesQuery(id, {
+        skip: !id,
     });
-
     const { data: categories, isSuccess: categorySuccess, isLoading: categoryLoading, isError: iscategoryError, error: categoryError } = useReadCategoriesQuery({});
-
     const [updateCategory] = useUpdateCategoryMutation();
 
-    
-    const [categoryData, setcategoryData] = useState<CATEGORY_INTERFACE | null>(null);
-    
-    const [singleValue, setSingleValue] = useState<any>()
-    
-    const [slug, setSlug] = useState<String | "">("");
- 
-
-    // To fetch category data
-    useEffect(() => {
-        if (categorySuccess) {
-            setcategoryData(categories.data);
-        } else if (iscategoryError) {
-            toast.info(`error : ${JSON.stringify(categoryError)}`);
-        }
-    }, [categorySuccess, iscategoryError, categoryError]);
-
-
-    // To notify category addition
-    useEffect(() => {
-        if (singleSuccess && readSingle) {
-                setSingleValue(readSingle?.data);
-                setSlug(readSingle?.data?.slug)
-        } else if (singleIsError) {
-            toast.error(`error : ${JSON.stringify(singleError)}`)
-        }
-    }, [isSuccess, singleIsError, singleError , readSingle]);
-
-
-
-    // To notify category addition
-    useEffect(() => {
-        if (isSuccess) {
-            console.log('Category added successfully');
-            toast.success("Category has been added");
-        } else if (isError) {
-            toast.error(`error : ${JSON.stringify(error)}`)
-        }
-    }, [isSuccess]);
-
-    // To generate a slug
-    const handleSlugValue = (e: any, setFieldValue: any) => {
-        const value = e.target.value;
-        setFieldValue('name', value);
-        setFieldValue('slug', value);
-        setSlug(value.toLowerCase().replace(/\s+/g, '-'));
-    };
-
-
+    // To handle category data and notification
     const dataValue = {
-        name: singleValue?.name || '',
-        slug: singleValue?.slug || '',
-        parent: singleValue?.parent || '',
-        description: singleValue?.description || '',
-    };
-
-    const initialValues: CATEGORY_INTERFACE = {
-        name: '',
-        slug: '',
-        parent: null,
-        description: '',
+        name: singleSuccess && readSingle ? readSingle?.data?.name : '',
+        slug: singleSuccess && readSingle ? readSingle?.data?.slug : '',
+        parent: singleSuccess && readSingle ? readSingle?.data?.parent : '',
+        description: singleSuccess && readSingle ? readSingle?.data?.description : '',
     };
 
     // Validation schema
@@ -98,8 +41,8 @@ export default function PostCategory({ type = "add" }) {
         description: Yup.string().optional(),
     });
 
-       // Handling the submit
-       const handleSubmit = async (values: CATEGORY_INTERFACE) => {
+    // Handling the submit
+    const handleSubmit = async (values: CATEGORY_INTERFACE) => {
         try {
             if (type === 'edit') {
                 await updateCategory(values).unwrap(); // Ensure `unwrap` is called
@@ -115,15 +58,19 @@ export default function PostCategory({ type = "add" }) {
         }
     };
 
-
-    console.log("single vlaue",singleValue)
+    // To generate a slug
+    const handleSlugValue = (e: any, setFieldValue: any) => {
+        const value = e.target.value;
+        setFieldValue('name', value);
+        setFieldValue('slug', value);
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 w-full">
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Add Category</h2>
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">{type === 'edit' ? 'Edit Category' : 'Add Category'}</h2>
                 <Formik
-                    initialValues={type === 'edit' ? dataValue : initialValues}
+                    initialValues={type === 'edit' ? dataValue : { name: '', slug: '', parent: null, description: '' }}
                     validationSchema={validationSchema}
                     enableReinitialize={true}
                     onSubmit={(values) => handleSubmit(values)}
@@ -147,15 +94,13 @@ export default function PostCategory({ type = "add" }) {
                                     id="slug"
                                     name="slug"
                                     type="text"
-                                    value={slug || ""}
-                                    // disabled={ type ==='edit' }
                                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="slug" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="parent" className="block text-gray-700">Parent Category</label>
-                                <ReactSelectNoSSR dynamicValue={singleValue?.parent} dataValue={categoryData} setFieldValue={setFieldValue} name='parent' />
+                                <ReactSelectNoSSR dynamicValue={dataValue.parent} dataValue={categories?.data} setFieldValue={setFieldValue} name='parent' />
                                 <ErrorMessage name="parent" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
@@ -174,7 +119,7 @@ export default function PostCategory({ type = "add" }) {
                                     className="w-full py-2 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                                     disabled={isSubmitting}
                                 >
-                                    Add Category
+                                    {type === 'edit' ? 'Update Category' : 'Add Category'}
                                 </button>
                             </div>
                         </Form>

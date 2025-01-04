@@ -72,4 +72,4 @@ const AdminSidebar: React.FC = memo(() => {
   );
 });
 
-export default AdminSidebar;
+export default React.memo(AdminSidebar);

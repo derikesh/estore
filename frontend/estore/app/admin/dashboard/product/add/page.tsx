@@ -1,6 +1,6 @@
 'use client';
 
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 
 const FormProduct = dynamic(() => import('@/src/component/AdminComponents/Product/PostPorduct'), {
@@ -12,9 +12,7 @@ const FormProduct = dynamic(() => import('@/src/component/AdminComponents/Produc
 export default function Page() {
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
         <FormProduct />
-      </Suspense>
     </div>
   );
 }

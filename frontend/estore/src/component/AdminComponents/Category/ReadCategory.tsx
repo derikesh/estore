@@ -23,7 +23,7 @@ export default function ReadCategory( ) {
 
     useEffect( ()=>{
         refetch();
-    } ,[])
+    } ,[categoryData])
 
     if (isLoading) {
         return <div>Loading...</div>;

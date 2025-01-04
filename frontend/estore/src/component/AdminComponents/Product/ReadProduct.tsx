@@ -14,6 +14,7 @@ interface PRODUCT_INTERFACE {
 }
 
 export default function ReadProduct() {
+    
     const { data: productData, isLoading, isSuccess, isError, error } = useReadallProductQuery({});
 
     if (isLoading) {
@@ -42,6 +43,8 @@ export default function ReadProduct() {
             ) : (
                 <div>No products found.</div>
             )}
+
+            this was fast maybe api is the problem
         </div>
     );
 }

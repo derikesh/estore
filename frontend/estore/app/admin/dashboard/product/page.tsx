@@ -2,7 +2,10 @@
 
 import React from 'react'
 import dynamic from 'next/dynamic'
-import ReadProduct from '@/src/component/AdminComponents/Product/ReadProduct'
+const ReadProduct = dynamic( ()=>import('@/src/component/AdminComponents/Product/ReadProduct') , {
+  ssr:false,
+  loading: ()=><p>Loading...</p>,
+} )
 
 export default function page() {
   return (
