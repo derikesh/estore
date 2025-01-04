@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState , memo} from 'react';
 import { FaHome, FaUser, FaCog, FaChartBar, FaBox, FaPlus, FaEdit, FaEye, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import Link from 'next/link';
 
-const AdminSidebar: React.FC = () => {
+const AdminSidebar: React.FC = memo(() => {
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
@@ -70,6 +70,6 @@ const AdminSidebar: React.FC = () => {
       </div>
     </aside>
   );
-};
+});
 
 export default AdminSidebar;

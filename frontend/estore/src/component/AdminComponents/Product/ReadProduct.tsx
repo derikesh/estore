@@ -15,14 +15,6 @@ interface PRODUCT_INTERFACE {
 
 export default function ReadProduct() {
     const { data: productData, isLoading, isSuccess, isError, error } = useReadallProductQuery({});
-    const [data, setData] = useState<PRODUCT_INTERFACE>();
-
-    // Update state when productData changes
-    useEffect(() => {
-        if (isSuccess && productData) {
-            setData(productData);
-        }
-    }, [productData]);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -31,16 +23,14 @@ export default function ReadProduct() {
     if (isError) {
         return <div>Error: {JSON.stringify(error)}</div>;
     }
-
-    console.log("all products",data);
-
+ 
     return (
         <div>
-            {data ? (
+            {productData ? (
                 <div>
                     <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Product List</h2>
                     <ul>
-                        {data?.data?.map((product: any,index) => (
+                        {productData?.data?.map((product: any,index:number) => (
                             <li key={index} className="mb-4 p-4 border rounded-lg shadow-sm">
                                 <h3 className="text-xl font-bold">{product.name}</h3>
                                 <p>Price: {product.prices}</p>

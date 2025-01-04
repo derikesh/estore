@@ -1,12 +1,13 @@
 'use client'
 
 import React from 'react'
-import ReadProductContainer from '@/src/container/admin/product/ReadProductContainer'
+import dynamic from 'next/dynamic'
+import ReadProduct from '@/src/component/AdminComponents/Product/ReadProduct'
 
 export default function page() {
   return (
     <div>
-      <ReadProductContainer/>
+      <ReadProduct/>
     </div>
   )
 }

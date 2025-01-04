@@ -1,13 +1,20 @@
 'use client';
 
-import React from 'react'
-import AddProductContainer from '@/src/container/admin/product/AddProductContainer';
-import FormProduct from '@/src/component/AdminComponents/Product/PostPorduct';
-export default function page() {
-  
-    return (
+import React, { lazy, Suspense } from 'react';
+import dynamic from 'next/dynamic';
+
+const FormProduct = dynamic(() => import('@/src/component/AdminComponents/Product/PostPorduct'), {
+  ssr: false, 
+  loading: () => <div>Loading...</div>,
+});
+
+
+export default function Page() {
+  return (
     <div>
-        <FormProduct/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <FormProduct />
+      </Suspense>
     </div>
-  )
+  );
 }

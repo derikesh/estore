@@ -21,18 +21,6 @@ export default function ReadCategory( ) {
 
     const { data: categoryData, isLoading, isSuccess, isError, error , refetch} = useReadCategoriesQuery({});
 
-    const [data, setData] = useState<PRODUCT_INTERFACE>();
-
-
-    
-
-    // Update state when categoryData changes
-    useEffect(() => {
-        if (isSuccess && categoryData) {
-            setData(categoryData);
-        }
-    }, [categoryData]);
-
     useEffect( ()=>{
         refetch();
     } ,[])
@@ -45,16 +33,14 @@ export default function ReadCategory( ) {
         return <div>Error: {JSON.stringify(error)}</div>;
     }
 
-    console.log("all products",data);
-
     return (
         <div>
-            {data ? (
+            {categoryData ? (
                 <div>
                    
                     <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Category List</h2>
                     <ul>
-                        {data?.data?.map((category: any,index) => (
+                        {categoryData?.data?.map((category: any,index:number) => (
                             <li key={index} className="mb-4 p-4 border rounded-lg shadow-sm flex justify-between">
                                <div className='single_category_content' >
                                <h3 className="text-xl font-bold">{category?.name}</h3>

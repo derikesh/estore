@@ -1,7 +1,8 @@
 'use client'
 
 import React from 'react'
-import ReadCategory from '@/src/component/AdminComponents/Category/ReadCategory'
+import dynamic from 'next/dynamic'
+const ReadCategory =dynamic( ()=> import('@/src/component/AdminComponents/Category/ReadCategory') );
 
 export default function page() {
   return (
