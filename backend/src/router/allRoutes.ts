@@ -14,7 +14,7 @@ import { cookieAuth, refreshTokenHandlerr } from "../utility/cookieAuth";
 
 // import admin funcitons
 import { handleAdminGet } from "../routerFunction/adminFunction";
-import { addCategory, readCategory, readSingleCategory, updateCategory } from "../routerFunction/category";
+import { addCategory, readCategory, readSingleCategory, updateCategory , deleteCategory } from "../routerFunction/category";
 
 // upload image 
 import {  uploadImage } from "../routerFunction/uploadImage";
@@ -63,6 +63,7 @@ router.post('/category/add',cookieAuth , addCategory);
 router.get('/category',readCategory)
 router.get('/category/:id',readSingleCategory)
 router.patch( '/category/:id',cookieAuth,updateCategory );
+router.delete('/category/delete/:id',cookieAuth,deleteCategory);
 
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useAddCategoryMutation, useReadCategoriesQuery, useUpdateCategoryMutation, useReadSingleCategoriesQuery } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
@@ -33,11 +33,21 @@ export default function PostCategory({ type = "add" }) {
         description: singleSuccess && readSingle ? readSingle?.data?.description : '',
     };
 
+    // Slug state
+    const [slug, setSlug] = useState(readSingle?.slug || '');
+
+  useEffect( ()=>{
+    if(singleSuccess){
+        setSlug(readSingle?.slug);        
+    }
+  } ,[singleSuccess])
+
+
     // Validation schema
     const validationSchema = Yup.object({
         name: Yup.string().required('Category name is required'),
         slug: Yup.string().required('Slug is required'),
-        parent: Yup.string().required('Parent category is required'),
+        // parent: Yup.string().required('Parent category is required'),
         description: Yup.string().optional(),
     });
 
@@ -45,12 +55,14 @@ export default function PostCategory({ type = "add" }) {
     const handleSubmit = async (values: CATEGORY_INTERFACE) => {
         try {
             if (type === 'edit') {
-                await updateCategory(values).unwrap(); // Ensure `unwrap` is called
+                await updateCategory({id,updatedCategory:values}).unwrap(); 
+                console.log("the updated value",values);
                 toast.success('Category updated successfully');
             } else {
                 await AddCategory(values).unwrap();
                 toast.success('Category added successfully');
             }
+            
             console.log("Category added:", values);
         } catch (err: any) {
             console.error('Error adding category:', err);
@@ -58,11 +70,16 @@ export default function PostCategory({ type = "add" }) {
         }
     };
 
-    // To generate a slug
+    // To generate a slug from the name
     const handleSlugValue = (e: any, setFieldValue: any) => {
         const value = e.target.value;
+        const generatedSlug = value
+            .toLowerCase()
+            .replace(/\s+/g, '-') 
+            .replace(/[^\w-]+/g, '');
+        setSlug(generatedSlug);
         setFieldValue('name', value);
-        setFieldValue('slug', value);
+        setFieldValue('slug', generatedSlug);
     };
 
     return (
@@ -93,7 +110,8 @@ export default function PostCategory({ type = "add" }) {
                                 <Field
                                     id="slug"
                                     name="slug"
-                                    type="text"
+                                    type="text"                                    
+                                    // value={slug || ""} 
                                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="slug" component="div" className="text-red-500 text-sm" />

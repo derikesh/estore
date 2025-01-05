@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 
 interface Option {
@@ -10,30 +10,38 @@ interface ReactSelectProps {
     name: string;
     setFieldValue: (value: any, name: string) => void;
     dataValue: any;
-    dynamicValue?: string;
+    dynamicValue?: string; 
 }
 
 const ReactSelect: React.FC<ReactSelectProps> = ({ name, setFieldValue = () => {}, dataValue = [], dynamicValue }) => {
+    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+
+    useEffect(() => {
+        
+        if (dynamicValue) {
+            const initialOption = dataValue?.find((item: any) => item?._id === dynamicValue);
+            if (initialOption) {
+                setSelectedOption({
+                    value: initialOption?._id,
+                    label: initialOption?.name,
+                });
+            }
+        }
+    }, [dynamicValue, dataValue]); 
     const handleChange = (option: any) => {
-        setFieldValue(name, option.value);
+        setSelectedOption(option);
+        setFieldValue(name, option?.value); 
     };
 
-    let newOptions: Option[] = [];
-
-    if (dataValue?.length > 1) {
-        newOptions = dataValue?.map((item: any) => ({
-            value: item?._id,
-            label: item?.name,
-        }));
-    }
-
-    // Find the default option based on dynamicValue
-    const defaultOption = newOptions.find(option => option.value === dynamicValue);
+    const newOptions: Option[] = dataValue?.map((item: any) => ({
+        value: item?._id,
+        label: item?.name,
+    })) || [];
 
     return (
         <Select
             name={name}
-            defaultValue={defaultOption}
+            value={selectedOption}
             options={newOptions}
             onChange={handleChange}
             placeholder={'Select an option'}
