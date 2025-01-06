@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'refreshToken', 'addProduct', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'refreshToken', 'addProduct','deleteProduct', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -61,6 +61,15 @@ export const api = createApi({
             invalidatesTags: ['addProduct'],
         }),
 
+
+        deleteProduct:builder.mutation({
+            query:(id)=>({
+                method:'DELETE',
+                url:'/product/delete/:id',                
+            }),
+            invalidatesTags:['deleteProduct']
+        }),
+
         readallProduct: builder.query({
             query: () => ({
                 method: 'GET',
@@ -68,6 +77,20 @@ export const api = createApi({
             }),
             providesTags: ['readProduct'],
         }),
+
+        updateProduct: builder.query({
+            query: ({id,updatedBody}) => ({
+                method: 'GET',
+                url: '/product',
+                body:{
+                    id:id,
+                    updatedBody
+                }
+            }),
+            providesTags: ['readProduct'],
+        }),
+
+        
 
         uploadImage: builder.mutation({
             query: (body) => ({
@@ -137,6 +160,7 @@ export const {
     useRefreshTokenMutation,
     useDeleteIMageMutation,
     useAddProductMutation,
+    useDeleteProductMutation,
     useReadallProductQuery,
     useUploadImageMutation,
     useReadCategoriesQuery,

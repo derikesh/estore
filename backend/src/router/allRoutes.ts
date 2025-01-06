@@ -36,7 +36,7 @@ router.get('/product/:id', getProductSingle);
 // Route to update a product by ID
 router.patch('/product/:id',cookieAuth, updateProduct);
 // Route to delete a product by ID
-router.delete('/product/:id',cookieAuth, deleteProduct);
+router.delete('/product/delete/:id',cookieAuth, deleteProduct);
 
 
 

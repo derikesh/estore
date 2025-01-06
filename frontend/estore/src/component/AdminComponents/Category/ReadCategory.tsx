@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useDeleteCategoryMutation } from '@/src/store/rtkQuery';
 import ModalBox from '../../DeletePopOver/ModalBox';
 import { toast } from 'react-toastify';
+import BasicTable from '../../ReactTable/ReactTable';
 
 interface Single_Category {
     id: string;
@@ -60,10 +61,19 @@ export default function ReadCategory() {
 
     };
 
-
+    const data = [
+        { id: 1, name: 'Alice', age: 25 },
+        { id: 2, name: 'Bob', age: 30 },
+        { id: 3, name: 'Charlie', age: 35 },
+      ];
+    
+      const columns = [
+        { header: 'ID', field: 'id' },
+        { header: 'Name', field: 'name' },
+        { header: 'Age', field: 'age' },
+      ];
     return (
         <div>
-
             <ModalBox isOpen={isModalOpen} onClose={handleDelete} title={`Delete ${deleteItem?.name}`}>
                 <p>total items: 12</p>
                 <div className="mt-4">

@@ -19,7 +19,7 @@ export interface PRODUCT_INTERFACE extends Document {
 
 // Product schema
 const ImageSchema = new mongoose.Schema<ImageInterFace>({
-    imageUrl: { type: String, required: true },
+    imageUrl: { type: String , required: true },
     publicKey: { type: String, required: true }
 });
 
@@ -28,7 +28,7 @@ const PRODUCT_SCHEMA = new mongoose.Schema({
     price: { type: Number, required: false },
     category: { type: String, required: false },
     description: { type: String },
-    images: { type: ImageSchema, required:false },
+    images: { type: ImageSchema, required:false},
     sizes: { type:[String], required:false},
     color: { type:[String] , required:false}
 
