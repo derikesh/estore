@@ -11,7 +11,8 @@ import { useDeleteIMageMutation } from '@/src/store/rtkQuery';
 interface DropBoxInterface {
     setFieldValue: (field: string, value: any) => void,
     name: string;
-    values:any
+    values:any,
+    type:string
 }
 
 interface ImageObject {
@@ -19,7 +20,7 @@ interface ImageObject {
     publicKey:any
 }
 
-const DropBox = memo(({ setFieldValue = () => { }, name ,values}: DropBoxInterface) => {
+const DropBox = memo(({ setFieldValue = () => { }, name ,values,type}: DropBoxInterface) => {
 
     const [preview, setPreview] = useState<any | null>(null);
     const [uploadImage , {isSuccess,error,isError,data,isLoading}] = useUploadImageMutation();
@@ -28,7 +29,6 @@ const DropBox = memo(({ setFieldValue = () => { }, name ,values}: DropBoxInterfa
     const handleDrop = (acceptedFiles: File[]) => {
 
         const file = acceptedFiles[0];
-
         const formUpload = new FormData();
         formUpload.append( "file",file );
         uploadImage(formUpload);
@@ -36,12 +36,13 @@ const DropBox = memo(({ setFieldValue = () => { }, name ,values}: DropBoxInterfa
        
     };
 
+    const isEdit = type === 'edit';
 
-    
+    console.log("insdie the componet",isEdit);
 
     const handleDelete = () => {
         setPreview(null);
-        deleteImage(data?.publicKey); // Pass only publicKey to delete
+        deleteImage(data?.publicKey || values[name].publicKey); // Pass only publicKey to delete
         if (deleteSuccess) {
             toast.info("Image deleted", { autoClose: 1000 });
         }
@@ -98,13 +99,13 @@ const DropBox = memo(({ setFieldValue = () => { }, name ,values}: DropBoxInterfa
                         </div>
                     )}
                 </Dropzone>
-                {preview && (
+                { preview || values[name].imageUrl && (
                     <div className="mt-4 relative">
                         { isLoading && <h1>uploading image...</h1> }
-                        {  isSuccess && <button className='bg-red-200 absolute top-0 right-0 hover:cursor-pointer' onClick={handleDelete} >x</button> }
+                        {  isSuccess || values[name].imageUrl && <button className='bg-red-200 absolute top-0 right-0 hover:cursor-pointer' onClick={handleDelete} >x</button> }
                         {/* { isLoading && ( <p>uploading file to server...</p> ) } */}
                         <img
-                            src={preview}
+                            src={isEdit ? values[name].imageUrl : preview }
                             alt="Preview"
                             style={{ width: "200px", height: "auto" }}
                         />

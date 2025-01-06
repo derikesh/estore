@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
-import { useAddProductMutation } from '@/src/store/rtkQuery';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useAddProductMutation, useUpdateProductMutation, useReadSingleProductQuery } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
 import DropBox from '../imageDrop/DropBox';
 import TagComponent from '../tagComponent/TagComponent';
 import ReactSelect from '../SelectDropdown/ReactSelect';
+import { useParams } from 'next/navigation';
 
-
-export default function FormProduct() {
-    const [addProduct, { isSuccess, isError, error }] = useAddProductMutation();
+export default function FormProduct({ type = "add" }) {
+    const [addProduct, { isSuccess: addSuccess, isError: addIsError, error: addError }] = useAddProductMutation();
+    const [updateProduct, { isSuccess: updateSuccess, isError: updateIsError, error: updateError }] = useUpdateProductMutation();
+    const { id } = useParams();
+    const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: readErrorData } = useReadSingleProductQuery(id, {
+        skip: !id
+    });
 
     const initialValues = {
         name: '',
@@ -16,39 +21,57 @@ export default function FormProduct() {
         category: '',
         description: '',
         images: {
-            imageUrl:'',
-            publicKey:''
+            imageUrl: '',
+            publicKey: ''
         },
         sizes: [""],
         color: [""]
     };
 
+    useEffect(() => {
+        if (addSuccess) {
+            toast.success("Product has been added successfully");
+        } else if (addIsError) {
+            toast.error(`Error adding product: ${JSON.stringify(addError)}`);
+        }
+    }, [addSuccess, addIsError, addError]);
+
+    useEffect(() => {
+        if (updateSuccess) {
+            toast.success("Product has been updated successfully");
+        } else if (updateIsError) {
+            toast.error(`Error updating product: ${JSON.stringify(updateError)}`);
+        }
+    }, [updateSuccess, updateIsError, updateError]);
+
+    useEffect(() => {
+       if (readError) {
+            toast.error(`Error loading product data: ${JSON.stringify(readErrorData)}`);
+        }
+    }, [readError, readErrorData]);
+
     const handleSubmit = async (values: typeof initialValues) => {
         try {
-            await addProduct(values).unwrap();
-            console.log("from the add product", values);
+            if (type === "add") {
+                await addProduct(values).unwrap();
+            } else if (type === "edit" && id) {
+                await updateProduct({ id, updatedBody: values }).unwrap();
+            }
         } catch (err: any) {
-            console.error('Error adding product:', err);
-            toast.error(`error: ${err.data.message}`)
+            console.error('Error submitting product:', err);
+            toast.error(`Error: ${err.data.message}`);
         }
     };
 
-
-    useEffect(() => {
-        if (isSuccess) {
-            console.log('Product added successfully');
-            toast.success("product has been added")
-        }
-    }, [isSuccess, addProduct]);
-
-    console.log( "form rerndereed" )
+    console.log("this is single value",singleProduct);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Add Product</h2>
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">{type === "add" ? "Add Product" : "Edit Product"}</h2>
                 <Formik
-                    initialValues={initialValues}
+                    initialValues={singleProduct?.data || initialValues}
+                    enableReinitialize={true}
                     onSubmit={(values) => handleSubmit(values)}
                 >
                     {({ setFieldValue, isSubmitting, values }) => (
@@ -90,16 +113,14 @@ export default function FormProduct() {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="images" className="block text-gray-700">Images</label>
-                                <DropBox name="images" values={values} setFieldValue={setFieldValue} />
+                                <DropBox type={type} name="images" values={values} setFieldValue={setFieldValue} />
                                 <ErrorMessage name="images" component="div" className="text-red-500 text-sm" />
                             </div>
-
                             <div className="mb-4">
                                 <label htmlFor="sizes" className="block text-gray-700">Size</label>
                                 <TagComponent name='sizes' type="text" values={values} />
                                 <ErrorMessage name="sizes" component="div" className="text-red-500 text-sm" />
                             </div>
-
                             <div className="mb-4">
                                 <label htmlFor="color" className="block text-gray-700">Color</label>
                                 <TagComponent name='color' type="color" values={values} />
@@ -111,7 +132,7 @@ export default function FormProduct() {
                                     className="w-full py-2 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                                     disabled={isSubmitting}
                                 >
-                                    Add Product
+                                    {type === "add" ? "Add Product" : "Update Product"}
                                 </button>
                             </div>
                         </Form>

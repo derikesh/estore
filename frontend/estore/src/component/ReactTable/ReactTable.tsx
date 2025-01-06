@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
   useReactTable,
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
-// import useRowSelection
+import Modal from "../DeletePopOver/ModalBox";
 import { SINGLE_PRODUCT } from "../AdminComponents/Product/ReadProduct";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,14 +18,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { toast } from "react-toastify";
+
 
 interface TABLEPROP_INTERFACE {
   columns: ColumnDef<SINGLE_PRODUCT, any>[];
   data: SINGLE_PRODUCT[];
+  deleteSelected?:(ids:String[])=>void,
+  isError:any,
+  error:any,
+  refetch:any,
+  isSuccess:any
 }
 
-const ModernTable = ({ columns, data = [] }: TABLEPROP_INTERFACE) => {
+const ModernTable = ({ columns, data = [] , deleteSelected , isSuccess,error,isError, refetch }: TABLEPROP_INTERFACE) => {
   const [selectedRows, setSelectedRows] = useState<Record<number, boolean>>({});
+  const [modelOpen, setModelOpen] = useState(false);
+
 
   const table = useReactTable({
     data,
@@ -37,19 +46,37 @@ const ModernTable = ({ columns, data = [] }: TABLEPROP_INTERFACE) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const handleDelete =async () => {
+    const ids = Object.keys(selectedRows).map((key:any) => data[key]._id);
+    console.log("ids",ids);
+    if(deleteSelected){
+      await deleteSelected({ids} as any);
+    };
+    setModelOpen(false);
+  };
+
+  useEffect( ()=>{
+
+    if(isSuccess){
+      toast.success("Successfully deleted items");
+    }else if(error){
+      toast.error(`error,${JSON.stringify(error)}`)
+    }
+
+  } ,[isSuccess,error,isError])
+
   return (
-    <div className="p-4 space-y-4">
-      <Button
-        variant="destructive"
-        disabled={Object.keys(selectedRows).length === 0}
-        className="mb-4"
-      >
-        Delete Selected
-      </Button>
-      <div className="rounded-md border w-[70%] mx-auto">
-        <div className="table_top_header" >
-            <div>this is edit</div>
-        </div>
+    <div className="w-[70%] mx-auto p-4 space-y-4">
+
+      <div className={`top_header_actions px-4 py-2 bg-red-500 text-white rounded text-sm ml-auto w-fit ${Object.keys(selectedRows).length > 0 ? 'visible' : 'invisible'}`}>
+        <button onClick={ ()=>setModelOpen(true) } >Deleted Selected</button>
+      </div>
+
+    <Modal onClose={ ()=>setModelOpen(false) } isOpen={modelOpen} title={`Delete ${Object.keys(selectedRows).length} Items`} >
+      <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-slate-600 transition-colors" onClick={handleDelete} >Confim Delete</button>
+     </Modal> 
+
+      <div className="rounded-md border">       
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

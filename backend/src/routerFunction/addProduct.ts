@@ -36,7 +36,7 @@ export const addProducts = async (req: Request, res: Response) => {
 // Fetching all the products
 export const getProduct = async (req: Request, res: Response) => {
     try {
-        const allData = await Product.find({});
+        const allData = await Product.find({}).sort({createdAt:-1});
         if(!allData){
             sendResponse(res,400,'no product were found');
             return;
@@ -115,4 +115,23 @@ export const deleteProduct = async (req: Request, res: Response) => {
         console.log(err);
         sendServerError(res,err);
     }
+}
+
+
+// delete multiple 
+export const deleteSelected = async ( req:Request, res:Response )=>{
+        const {ids} = req.body;
+        try{
+            
+            const deleteResult = await Product.deleteMany({
+                _id :{$in:ids}
+            });
+            if(deleteResult.deletedCount === 0){
+                return sendResponse(res,400,'could not delete item');
+            }
+            return sendResponse(res,200,'deleted sucessfully',{deletedItems:deleteResult})
+
+        }catch(err){
+            return sendServerError(res,200);
+        }
 }

@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'refreshToken', 'addProduct','deleteProduct', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'refreshToken','readSingleProduct', 'addProduct','updateProduct','deleteProduct', 'deleteProducts','readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -78,25 +78,37 @@ export const api = createApi({
             providesTags: ['readProduct'],
         }),
 
-        updateProduct: builder.query({
-            query: ({id,updatedBody}) => ({
-                method: 'GET',
-                url: '/product',
-                body:{
-                    id:id,
-                    updatedBody
-                }
+        readSingleProduct:builder.query({
+            query:(id)=>({
+                method:'GET',
+                url:`/product/${id}`
             }),
-            providesTags: ['readProduct'],
+            providesTags:['readSingleProduct']
         }),
 
-        
+        updateProduct: builder.mutation({
+            query: ({id,updatedBody}) => ({
+                method: 'PATCH',
+                url: `/product/${id}`,
+                body:updatedBody
+            }),
+            invalidatesTags: ['updateProduct'],
+        }),
+
+        deleteManyProduct:builder.mutation({
+            query:(body)=>({
+                method:'DELETE',
+                url:'/product/selected',
+                body
+            }),
+            invalidatesTags:['deleteProducts']
+        }),
 
         uploadImage: builder.mutation({
-            query: (body) => ({
+            query: (ids) => ({
                 method: 'POST',
                 url: '/uploadImage',
-                body,
+                body:{ids},
             }),
             invalidatesTags: ['uploadImage'],
         }),
@@ -160,12 +172,15 @@ export const {
     useRefreshTokenMutation,
     useDeleteIMageMutation,
     useAddProductMutation,
+    useReadSingleProductQuery,
     useDeleteProductMutation,
     useReadallProductQuery,
+    useUpdateProductMutation,
     useUploadImageMutation,
     useReadCategoriesQuery,
     useUpdateCategoryMutation,
     useAddCategoryMutation,
     useDeleteCategoryMutation,
+    useDeleteManyProductMutation,
     useReadSingleCategoriesQuery
 } = api;

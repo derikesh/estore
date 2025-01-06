@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 // Import all router functions product
-import { addProducts, getProduct, getProductSingle, updateProduct, deleteProduct } from "../routerFunction/addProduct";
+import { addProducts, getProduct, getProductSingle, updateProduct, deleteProduct , deleteSelected } from "../routerFunction/addProduct";
 
 // import all router function users
 import { createNewUser , readAllUsers } from "../routerFunction/usersFunction";
@@ -37,6 +37,8 @@ router.get('/product/:id', getProductSingle);
 router.patch('/product/:id',cookieAuth, updateProduct);
 // Route to delete a product by ID
 router.delete('/product/delete/:id',cookieAuth, deleteProduct);
+
+router.delete( '/product/selected',cookieAuth , deleteSelected )
 
 
 

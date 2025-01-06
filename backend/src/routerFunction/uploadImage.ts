@@ -32,7 +32,7 @@ export const deleteImage = async (req: Request, res: Response) => {
 
     if(!publicKey){
         return res.status(400).json({ error: 'publicKey is required to delete the image' });
-    }
+    } 
 
     try {
         const deletedImage = await cloudinary.uploader.destroy(publicKey, { resource_type: 'image' });

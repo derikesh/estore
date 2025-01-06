@@ -15,12 +15,13 @@ export interface PRODUCT_INTERFACE extends Document {
     images?: ImageInterFace;
     sizes?:string[];
     color?:string[];
+    createdAt:Date;
 }
 
 // Product schema
 const ImageSchema = new mongoose.Schema<ImageInterFace>({
-    imageUrl: { type: String , required: true },
-    publicKey: { type: String, required: true }
+    imageUrl: { type: String , required: false },
+    publicKey: { type: String, required: false }
 });
 
 const PRODUCT_SCHEMA = new mongoose.Schema({
@@ -30,7 +31,8 @@ const PRODUCT_SCHEMA = new mongoose.Schema({
     description: { type: String },
     images: { type: ImageSchema, required:false},
     sizes: { type:[String], required:false},
-    color: { type:[String] , required:false}
+    color: { type:[String] , required:false},
+    createdAt:{ type:Date , default:Date.now() , required:false }
 
 });
 
