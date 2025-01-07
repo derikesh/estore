@@ -56,14 +56,12 @@ export default function PostCategory({ type = "add" }) {
         try {
             if (type === 'edit') {
                 await updateCategory({id,updatedCategory:values}).unwrap(); 
-                console.log("the updated value",values);
                 toast.success('Category updated successfully');
             } else {
                 await AddCategory(values).unwrap();
                 toast.success('Category added successfully');
             }
             
-            console.log("Category added:", values);
         } catch (err: any) {
             console.error('Error adding category:', err);
             toast.error(`Error: ${err.data.message}`);

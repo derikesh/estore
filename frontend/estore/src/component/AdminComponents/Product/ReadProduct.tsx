@@ -101,7 +101,7 @@ export default function ReadProduct() {
             id: "action",
             header:'Action',
             cell: ({row}) => {
-              return <Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-500 w-[50%] px-2 py-1 text-sm rounded-[20x] text-white ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'}`} >Edit</Link>
+              return <div onClick={ (e:any)=>e.stopPropagation() } ><Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-500 w-[50%] px-2 py-1 text-sm rounded-[20x] text-white ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'}`} >Edit</Link></div>
             },
             maxSize: 100,
             minSize: 50

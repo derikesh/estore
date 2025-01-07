@@ -105,19 +105,19 @@ export const api = createApi({
         }),
 
         uploadImage: builder.mutation({
-            query: (ids) => ({
+            query: (file) => ({
                 method: 'POST',
                 url: '/uploadImage',
-                body:{ids},
+                body:file,
             }),
             invalidatesTags: ['uploadImage'],
         }),
 
         deleteIMage: builder.mutation({
-            query: (body) => ({
+            query: ({publicKey}) => ({
                 method: 'POST',
                 url: '/deleteImage',
-                body,
+                body:{publicKey},
             }),
             invalidatesTags: ['deleteImage'],
         }),

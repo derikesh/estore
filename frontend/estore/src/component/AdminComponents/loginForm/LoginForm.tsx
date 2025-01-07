@@ -25,7 +25,6 @@ export default function LoginForm() {
     const handleSubmit = async (values: typeof initialValues) => {
         try {
             const response = await postLogin(values).unwrap();
-            console.log("Login Response:", response);
         } catch (err: any) {
             console.log('Login Error:', err);
         }
@@ -38,7 +37,6 @@ export default function LoginForm() {
         }
         if (isError) {
             const errorResponse = loginError as RESPOINSE_INTERFACE;
-            console.log('Login Error:', errorResponse);
             toast.error(`Error Hook: ${errorResponse || "Unknown error"}`);
         }
     }, [isSuccess, isError, loginError,refreshSucess]); 

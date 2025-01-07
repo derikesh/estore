@@ -9,7 +9,7 @@ export const uploadImage = async ( req:Request , res:Response )=>{
           { resource_type: 'auto' },
           (error, result) => {
             if (error) {
-              return res.status(500).json({ error: error.message });
+              return res.status(500).json({ error: `error from cloudnary : ${error.message}` });
             }
             // Send the Cloudinary URL back as response
             return res.status(200).json({ imageUrl: result?.secure_url , publicKey: result?.public_id});
