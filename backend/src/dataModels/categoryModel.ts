@@ -20,7 +20,7 @@ const categoryModel = new mongoose.Schema({
 
 // pre save hook 
 categoryModel.pre( 'save' , function(next){
-    
+        
     if(this.slug){
         this.slug = this.slug.toLowerCase();
     }

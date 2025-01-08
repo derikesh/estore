@@ -116,7 +116,7 @@ export default function PostCategory({ type = "add" }) {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="parent" className="block text-gray-700">Parent Category</label>
-                                <ReactSelectNoSSR dynamicValue={dataValue.parent} dataValue={categories?.data} setFieldValue={setFieldValue} name='parent' />
+                                <ReactSelectNoSSR dynamicValue={dataValue?.parent} dataValue={categories?.data} setFieldValue={setFieldValue} name='parent' />
                                 <ErrorMessage name="parent" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">

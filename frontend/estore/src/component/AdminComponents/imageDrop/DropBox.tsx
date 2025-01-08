@@ -17,6 +17,7 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
     const [uploadImage, { isSuccess, error, isError, data, isLoading }] = useUploadImageMutation();
     const [deleteImage, { isSuccess: deleteSuccess, error: deleteError, isError: isDeleteError, isLoading: loadingDelete }] = useDeleteIMageMutation();
 
+
     const handleDrop = async (acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
          const formUpload =await new FormData();
@@ -26,16 +27,24 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
     };
 
 
+
     useEffect( ()=>{
-        if(type ==='edit'){
+        if(type ==='edit' && values[name].imageUrl){
             setPreview(values[name].imageUrl);
         }
-    } ,[type])
+    } ,[values])
     
+    console.log("preiver",preview);
 
     const handleDelete = () => {
         setPreview(null);
-        deleteImage(data); // Pass only publicKey to delete
+        if(type ==='edit'){
+            if(values[name]){
+                deleteImage(values[name])
+            }
+        }else{
+            deleteImage(data)
+        }; 
       };
 
     useEffect(() => {
@@ -49,7 +58,6 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
         if (isSuccess && data) {
             setFieldValue(name, data);
         }
-        console.log("from the upload",data);
     }, [deleteSuccess, isDeleteError, isSuccess, data]);
 
     useEffect(() => {

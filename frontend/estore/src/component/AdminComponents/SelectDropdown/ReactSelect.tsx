@@ -28,6 +28,7 @@ const ReactSelect: React.FC<ReactSelectProps> = ({ name, setFieldValue = () => {
             }
         }
     }, [dynamicValue, dataValue]); 
+
     const handleChange = (option: any) => {
         setSelectedOption(option);
         setFieldValue(name, option?.value); 

@@ -4,16 +4,25 @@ import { useAddProductMutation, useUpdateProductMutation, useReadSingleProductQu
 import { toast } from 'react-toastify';
 import DropBox from '../imageDrop/DropBox';
 import TagComponent from '../tagComponent/TagComponent';
-import ReactSelect from '../SelectDropdown/ReactSelect';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
+import { useReadCategoriesQuery } from '@/src/store/rtkQuery';
+const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), { ssr: false });
+
+
 
 export default function FormProduct({ type = "add" }) {
+    const { id } = useParams();
     const [addProduct, { isSuccess: addSuccess, isError: addIsError, error: addError }] = useAddProductMutation();
     const [updateProduct, { isSuccess: updateSuccess, isError: updateIsError, error: updateError }] = useUpdateProductMutation();
-    const { id } = useParams();
+    const { data: categories} = useReadCategoriesQuery({});
+
     const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: readErrorData } = useReadSingleProductQuery(id, {
         skip: !id
     });
+
+
+    const router = useRouter();
 
     const initialValues = {
         name: '',
@@ -31,6 +40,7 @@ export default function FormProduct({ type = "add" }) {
     useEffect(() => {
         if (addSuccess) {
             toast.success("Product has been added successfully");
+            router.push('/admin/dashboard/product')
         } else if (addIsError) {
             toast.error(`Error adding product: ${JSON.stringify(addError)}`);
         }
@@ -39,6 +49,7 @@ export default function FormProduct({ type = "add" }) {
     useEffect(() => {
         if (updateSuccess) {
             toast.success("Product has been updated successfully");
+            router.push('/admin/dashboard/product')
         } else if (updateIsError) {
             toast.error(`Error updating product: ${JSON.stringify(updateError)}`);
         }
@@ -96,7 +107,7 @@ export default function FormProduct({ type = "add" }) {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="category" className="block text-gray-700">Category</label>
-                                <ReactSelect dataValue={[]} setFieldValue={setFieldValue} name='category' />
+                                <ReactSelectNoSSR dynamicValue={singleProduct?.data?.category} dataValue={categories?.data} setFieldValue={setFieldValue} name='category' />
                                 <ErrorMessage name="category" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
