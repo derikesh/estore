@@ -1,9 +1,19 @@
+'use client'
 
-import React from 'react'
+import React, { useCallback } from 'react'
 import ReadProduct from '@/src/component/AdminComponents/Product/ReadProduct'
-import { useEffect } from 'react'
+import { usePrefetch } from '@/src/store/rtkQuery'
 
 export default function Page() {
+
+  // const productData = usePrefetch('readallProduct');
+
+  // const callPrefetch = useCallback( ()=>{
+  //   productData({});
+  // } ,[productData])
+
+  // callPrefetch();
+
 
   return (
     <div>

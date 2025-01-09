@@ -32,10 +32,6 @@ export const api = createApi({
             invalidatesTags: ['postUser'],
         }),
 
-        listPost:builder.query({
-            query:(page = 1)=>`someendpoin?page=${page}`
-        }),
-
         // Login
         login: builder.mutation({
             query: (body) => ({
@@ -186,5 +182,8 @@ export const {
     useAddCategoryMutation,
     useDeleteCategoryMutation,
     useDeleteManyProductMutation,
-    useReadSingleCategoriesQuery
+    useReadSingleCategoriesQuery,
+    usePrefetch
 } = api;
+
+export const {prefetch} = api.util;
