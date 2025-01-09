@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { useReadallProductQuery, useReadCategoriesQuery } from '@/src/store/rtkQuery';
 import { ColumnDef } from '@tanstack/react-table';
@@ -33,7 +35,7 @@ interface PRODUCT_INTERFACE {
     message: string,
     data: SINGLE_PRODUCT[]
 }
-
+// another one 
 export default function ReadProduct() {
     const { data: productData, isLoading, isSuccess: productSuccess, isError: productIsError, error: productError, refetch } = useReadallProductQuery({});
     const { data: categoryData, isSuccess: categorySuccess } = useReadCategoriesQuery({});

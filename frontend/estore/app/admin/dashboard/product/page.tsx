@@ -1,13 +1,13 @@
-'use client'
 
 import React from 'react'
-import dynamic from 'next/dynamic'
 import ReadProduct from '@/src/component/AdminComponents/Product/ReadProduct'
+import { useEffect } from 'react'
 
-export default function page() {
+export default function Page() {
+
   return (
     <div>
-      <ReadProduct/>
+      <ReadProduct />
     </div>
   )
 }

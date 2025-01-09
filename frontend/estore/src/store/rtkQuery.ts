@@ -32,6 +32,10 @@ export const api = createApi({
             invalidatesTags: ['postUser'],
         }),
 
+        listPost:builder.query({
+            query:(page = 1)=>`someendpoin?page=${page}`
+        }),
+
         // Login
         login: builder.mutation({
             query: (body) => ({

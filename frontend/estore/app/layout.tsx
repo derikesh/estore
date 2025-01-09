@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 
 
 import { useRouter } from "next/navigation";
-
+import Navbar from "@/src/component/ClientComponent/navbar/Navbar";
 
 export default function RootLayout({
   children,
@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ToastContainer/> 
-            {/* <Navbar/> */}
+            <Navbar/>
           {children}
       </body>
     </html>
