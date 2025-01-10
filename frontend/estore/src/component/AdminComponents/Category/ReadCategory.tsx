@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { useDeleteCategoryMutation } from '@/src/store/rtkQuery';
 import { ColumnDef } from '@tanstack/react-table';
-import { CATEGORY_INTERFACE } from './PostCategory';
 import BasicTable from '../../ReactTable/ReactTable';
 import Link from 'next/link';
+import { useDispatch, UseDispatch } from 'react-redux';
+import { api } from '@/src/store/rtkQuery';
+import { CATEGORY_INTERFACE, getCategoryName } from '@/src/utils/CategoryName/CategoryName';
 
 interface ReadCategoryInterface {
     categoryData?: any,
@@ -12,6 +14,13 @@ interface ReadCategoryInterface {
 
 export default function ReadCategory({ categoryData, refetch }: ReadCategoryInterface) {
 
+    const dispatch = useDispatch<any>();
+
+    const handleClick = useCallback((e: React.MouseEvent, id: string) => {
+        e.preventDefault(); 
+        e.stopPropagation();
+        dispatch(api.util.prefetch('readSingleCategories', id, { force: true }));
+    }, [dispatch]);
 
     const [deleteCategory, { isSuccess: deleteSucess, isError: deleteIsError, error: deleteError }] = useDeleteCategoryMutation();
 
@@ -44,15 +53,16 @@ export default function ReadCategory({ categoryData, refetch }: ReadCategoryInte
         },
         {
             accessorKey: "parent",
-            header: "Category",
-            cell: (info) => info.getValue(), // Map category ID to name
+            header: "Parent Category",
+           cell: (info) => getCategoryName(info.getValue() as string, categoryData), // Map category ID to name
         },
 
         {
             id: "action",
             header: 'Action',
             cell: ({ row }) => {
-                return <div onClick={(e: any) => e.stopPropagation()}><Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-500 w-[50%] px-2 py-1 text-sm rounded-[20x] text-white ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'}`}>Edit</Link></div>
+                const cat_id = row.original._id
+                return <div onClick={(e: any) => handleClick(e,cat_id)}><Link href={`/admin/dashboard/category/${row.original._id}`} className={`bg-gray-500 w-[50%] px-2 py-1 text-sm rounded-[20x] text-white ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'}`}>Edit</Link></div>
             },
             maxSize: 100,
             minSize: 50

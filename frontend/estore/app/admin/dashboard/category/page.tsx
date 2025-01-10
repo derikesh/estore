@@ -28,7 +28,7 @@ export default function Page() {
 
   return (
     <div>
-      <ReadCategory categoryData={categoryData.data} refetch={refetch} />
+      <ReadCategory categoryData={categoryData?.data} refetch={refetch} />
     </div>
   );
 }

@@ -31,24 +31,19 @@ interface CATEGORY_INTERFACE {
     _id: string;
     name: string;
 }
+
+interface PRODUCT_PROPS{
+    data:SINGLE_PRODUCT[],
+    refetch:()=>void,
+    categoryData:CATEGORY_INTERFACE[]
+}
     
 // another one 
-export default function ReadProduct() {
-    const { data: productData, isLoading, isSuccess: productSuccess, isError: productIsError, error: productError, refetch } = useReadallProductQuery({});
-    const { data: categoryData, isSuccess: categorySuccess } = useReadCategoriesQuery({});
-    const [data, setData] = useState<SINGLE_PRODUCT[] | null>(null);
-    const [categories, setCategories] = useState<CATEGORY_INTERFACE[] | null>(null);
+export default function ReadProduct({data, refetch,categoryData}:PRODUCT_PROPS) {
     const router = useRouter();
     const [deleteSelected, { isSuccess: deleteSuccess, isError: deleteError, error: deleteErrorData }] = useDeleteManyProductMutation();
 
-    useEffect(() => {
-        if (productSuccess) {
-            setData(productData.data);
-        }
-        if (categorySuccess) {
-            setCategories(categoryData.data);
-        }
-    }, [productData, productSuccess, categoryData, categorySuccess]);
+    console.log("this is cateogy data",categoryData);
 
     useEffect(() => {
         if (deleteSuccess) {
@@ -97,7 +92,7 @@ export default function ReadProduct() {
         {
             accessorKey: "category",
             header: "Category",
-            cell: (info) => getCategoryName(info.getValue() as string, categoryData?.data), // Map category ID to name
+            cell: (info) => getCategoryName(info.getValue() as string, categoryData), // Map category ID to name
         },
         {
             id: "action",
@@ -108,15 +103,8 @@ export default function ReadProduct() {
             maxSize: 100,
             minSize: 50
         },
-    ], [data, categories]);
+    ], [data]);
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (productIsError) {
-        return <div>Error: {JSON.stringify(productError)}</div>;
-    }
 
     return (
         <div>

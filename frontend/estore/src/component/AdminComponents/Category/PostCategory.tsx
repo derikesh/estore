@@ -1,54 +1,69 @@
+'use client'
+
 import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useAddCategoryMutation, useReadCategoriesQuery, useUpdateCategoryMutation, useReadSingleCategoriesQuery } from '@/src/store/rtkQuery';
+import { useAddCategoryMutation, useUpdateCategoryMutation } from '@/src/store/rtkQuery';
 import { toast } from 'react-toastify';
 import dynamic from 'next/dynamic';
 import * as Yup from 'yup';
-import { useParams } from 'next/navigation';
-
+import { CATEGORY_INTERFACE } from '@/app/admin/dashboard/category/page';
 const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), { ssr: false });
+import { useRouter } from 'next/navigation';
 
-export interface CATEGORY_INTERFACE {
-    _id:string,
-    name: string;
-    slug: string;
-    parent: number | string | any;
-    description?: string;
+interface POST_CATEGORY_PROP {
+    type: string;
+    sinlgeCategory: CATEGORY_INTERFACE;
+    category: CATEGORY_INTERFACE[];
+    id?: any;
+    categoryRefetch:()=>void
 }
 
-export default function PostCategory({ type = "add" }) {
-    const { id } = useParams();
+export default function PostCategory({ type = "add", sinlgeCategory, category, id ,categoryRefetch}: POST_CATEGORY_PROP) {
+    const [AddCategory, { isSuccess: addSuccess, isError: addError, error: addErrorData }] = useAddCategoryMutation();
+    const [updateCategory, { isSuccess: updateSuccess, isError: updateError, error: updateErrorData }] = useUpdateCategoryMutation();
 
-    const [AddCategory, { isSuccess, isError, error }] = useAddCategoryMutation();
-    const { data: readSingle, isSuccess: singleSuccess, isError: singleIsError, error: singleError } = useReadSingleCategoriesQuery(id, {
-        skip: !id,
-    });
-    const { data: categories, isSuccess: categorySuccess, isLoading: categoryLoading, isError: iscategoryError, error: categoryError } = useReadCategoriesQuery({});
-    const [updateCategory] = useUpdateCategoryMutation();
-
+    const router = useRouter();
     // To handle category data and notification
     const dataValue = {
-        name: singleSuccess && readSingle ? readSingle?.data?.name : '',
-        slug: singleSuccess && readSingle ? readSingle?.data?.slug : '',
-        parent: singleSuccess && readSingle ? readSingle?.data?.parent : '',
-        description: singleSuccess && readSingle ? readSingle?.data?.description : '',
+        name: sinlgeCategory ? sinlgeCategory?.name : '',
+        slug: sinlgeCategory ? sinlgeCategory?.slug : '',
+        parent: sinlgeCategory ? sinlgeCategory?.parent : '',
+        description: sinlgeCategory ? sinlgeCategory?.description : '',
     };
 
     // Slug state
-    const [slug, setSlug] = useState(readSingle?.slug || '');
+    const [slug, setSlug] = useState(sinlgeCategory?.slug || '');
 
-  useEffect( ()=>{
-    if(singleSuccess){
-        setSlug(readSingle?.slug);        
-    }
-  } ,[singleSuccess])
+    useEffect(() => {
+        if (sinlgeCategory) {
+            setSlug(sinlgeCategory?.slug);
+        }
+    }, [sinlgeCategory]);
 
+    useEffect(() => {
+        if (addSuccess ) {
+            toast.success('Category added successfully');
+            categoryRefetch();
+            router.push('/admin/dashboard/category')
+        } else if (addError) {
+            toast.error(`Error adding category: ${addErrorData}`);
+        }
+    }, [addSuccess, addError, addErrorData]);
+
+    useEffect(() => {
+        if (updateSuccess) {
+            toast.success('Category updated successfully');
+            categoryRefetch();
+            router.push('/admin/dashboard/category')
+        } else if (updateError) {
+            toast.error(`Error updating category: ${updateErrorData}`);
+        }
+    }, [updateSuccess, updateError, updateErrorData]);
 
     // Validation schema
     const validationSchema = Yup.object({
         name: Yup.string().required('Category name is required'),
         slug: Yup.string().required('Slug is required'),
-        // parent: Yup.string().required('Parent category is required'),
         description: Yup.string().optional(),
     });
 
@@ -56,16 +71,12 @@ export default function PostCategory({ type = "add" }) {
     const handleSubmit = async (values: CATEGORY_INTERFACE) => {
         try {
             if (type === 'edit') {
-                await updateCategory({id,updatedCategory:values}).unwrap(); 
-                toast.success('Category updated successfully');
+                await updateCategory({ id, updatedCategory: values }).unwrap();
             } else {
                 await AddCategory(values).unwrap();
-                toast.success('Category added successfully');
             }
-            
         } catch (err: any) {
-            console.error('Error adding category:', err);
-            toast.error(`Error: ${err.data.message}`);
+            console.error('Error adding/updating category:', err);
         }
     };
 
@@ -74,7 +85,7 @@ export default function PostCategory({ type = "add" }) {
         const value = e.target.value;
         const generatedSlug = value
             .toLowerCase()
-            .replace(/\s+/g, '-') 
+            .replace(/\s+/g, '-')
             .replace(/[^\w-]+/g, '');
         setSlug(generatedSlug);
         setFieldValue('name', value);
@@ -89,7 +100,7 @@ export default function PostCategory({ type = "add" }) {
                     initialValues={type === 'edit' ? dataValue : { name: '', slug: '', parent: null, description: '' }}
                     validationSchema={validationSchema}
                     enableReinitialize={true}
-                    onSubmit={(values) => handleSubmit(values)}
+                    onSubmit={(values: any) => handleSubmit(values)}
                 >
                     {({ setFieldValue, isSubmitting }) => (
                         <Form>
@@ -109,15 +120,15 @@ export default function PostCategory({ type = "add" }) {
                                 <Field
                                     id="slug"
                                     name="slug"
-                                    type="text"                                    
-                                    // value={slug || ""} 
+                                    type="text"
+                                    value={slug}
                                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="slug" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="parent" className="block text-gray-700">Parent Category</label>
-                                <ReactSelectNoSSR dynamicValue={dataValue?.parent} dataValue={categories?.data} setFieldValue={setFieldValue} name='parent' />
+                                <ReactSelectNoSSR dynamicValue={dataValue?.parent} dataValue={category} setFieldValue={setFieldValue} name='parent' />
                                 <ErrorMessage name="parent" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">

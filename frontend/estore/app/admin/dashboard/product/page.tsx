@@ -1,23 +1,35 @@
 'use client'
 
-import React, { useCallback } from 'react'
-import ReadProduct from '@/src/component/AdminComponents/Product/ReadProduct'
-import { usePrefetch } from '@/src/store/rtkQuery'
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import ReadProduct from '@/src/component/AdminComponents/Product/ReadProduct';
+import { useReadallProductQuery, useReadCategoriesQuery } from '@/src/store/rtkQuery';
 
 export default function Page() {
+  const { data: productData, isLoading, isSuccess: productSuccess, isError: productIsError, error: productError, refetch } = useReadallProductQuery({});
+  const { data: categoryData, isSuccess: categorySuccess,isError,error:catError } = useReadCategoriesQuery({});
+  
 
-  // const productData = usePrefetch('readallProduct');
+  useEffect(() => {
+   
+    if(isError){
+      toast.error(`error : ${catError}`)
+    }
 
-  // const callPrefetch = useCallback( ()=>{
-  //   productData({});
-  // } ,[productData])
+    if (productIsError) {
+      toast.error(`Error fetching products: ${productError}`);
+    }
+  }, [ productIsError, productError]);
 
-  // callPrefetch();
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <ReadProduct />
+     { productData && categoryData && ( 
+       <ReadProduct data={productData?.data} categoryData={categoryData?.data} refetch={refetch} />
+     ) }
     </div>
-  )
+  );
 }

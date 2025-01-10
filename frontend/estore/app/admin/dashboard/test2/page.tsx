@@ -1,9 +1,7 @@
-'use client'
-
-
 import React from 'react';
 
 async function fetchData() {
+  'use server'
   const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/product`, {
     cache: 'no-store', // Ensures fresh data on every request
   });

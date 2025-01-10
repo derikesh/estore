@@ -1,17 +1,28 @@
-'use client';
+'use client'
 
 import React from 'react';
-import dynamic from 'next/dynamic';
+import PostCategory from '@/src/component/AdminComponents/Category/PostCategory';
+import { useReadCategoriesQuery, useReadSingleCategoriesQuery } from '@/src/store/rtkQuery';
+import { useParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-const PostCategory = dynamic(() => import('@/src/component/AdminComponents/Category/PostCategory'), {
-  ssr: false,
-  loading: ()=><p>Loading...</p>,
-});
+export interface CATEGORY_INTERFACE {
+  _id:string,
+  name: string;
+  slug: string;
+  parent: number | string | any;
+  description?: string;
+}
 
 export default function Page() {
+
+    const {id} = useParams();
+    const { data: readSingle, isSuccess: singleSuccess, isError: singleIsError, error: singleError } = useReadSingleCategoriesQuery(id, {skip: !id,});
+    const { data: categories, isSuccess: categorySuccess, isLoading: categoryLoading, isError: iscategoryError, error: categoryError , refetch } = useReadCategoriesQuery({});
+
   return (
-    <div className='admin_category_add'>
-      <PostCategory />
+    <div className='post_product' >
+      <PostCategory id={id} sinlgeCategory={readSingle?.data} category={categories?.data} type={ id ?'edit' : 'add' } categoryRefetch={refetch}/>
     </div>
   );
 }
