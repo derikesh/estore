@@ -157,9 +157,10 @@ export const api = createApi({
         }),
 
         deleteCategory: builder.mutation<void, string>({
-            query: (id) => ({
-              url: `/category/delete/${id}`,
+            query: (ids) => ({
+              url: `/category/delete/`,
               method: 'DELETE',
+              body:ids
             }),
             invalidatesTags: ['deleteCategory'],
           }),

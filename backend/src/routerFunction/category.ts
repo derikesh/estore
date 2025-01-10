@@ -106,10 +106,12 @@ export const updateCategory =async ( req:Request , res:Response  )=>{
 
 
 export const deleteCategory = async( req:Request, res:Response ):Promise<void | any>=>{
-    const {id} = req.params;
+    const {ids} = req.body;
     try{
-        const deleteItem = await Category.findByIdAndDelete(id);
-        if(!deleteItem){
+        const deleteItem = await Category.deleteMany({
+            _id:{ $in :ids }
+        });
+        if(deleteItem.deletedCount === 0){
             return res.status(401).json({message:"item not found"})
         }
         return sendResponse(res,200,'item Deleted Successfully',deleteItem)

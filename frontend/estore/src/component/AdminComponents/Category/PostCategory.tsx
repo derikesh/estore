@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), { ssr: false });
 
 export interface CATEGORY_INTERFACE {
+    _id:string,
     name: string;
     slug: string;
     parent: number | string | any;

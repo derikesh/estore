@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { Document, Schema } from "mongoose";
 
 export interface CATEGORY_INTERFACE extends Document {
+        _id:any,
         name : string,
         parent: mongoose.Types.ObjectId,  //self refrencing for hiearchy
         slug:string,

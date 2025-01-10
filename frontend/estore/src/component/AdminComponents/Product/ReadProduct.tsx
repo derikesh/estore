@@ -26,15 +26,12 @@ export interface SINGLE_PRODUCT {
     color?: string[];
 }
 
+
 interface CATEGORY_INTERFACE {
     _id: string;
     name: string;
 }
-
-interface PRODUCT_INTERFACE {
-    message: string,
-    data: SINGLE_PRODUCT[]
-}
+    
 // another one 
 export default function ReadProduct() {
     const { data: productData, isLoading, isSuccess: productSuccess, isError: productIsError, error: productError, refetch } = useReadallProductQuery({});

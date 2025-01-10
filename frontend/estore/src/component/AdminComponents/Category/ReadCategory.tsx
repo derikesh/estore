@@ -1,111 +1,77 @@
-'use client'
-
-import React, { useEffect, useState } from 'react';
-import { useReadCategoriesQuery } from '@/src/store/rtkQuery';
-import { FaRegEdit } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import Link from 'next/link';
+import React, { useCallback, useMemo } from 'react';
 import { useDeleteCategoryMutation } from '@/src/store/rtkQuery';
-import ModalBox from '../../DeletePopOver/ModalBox';
-import { toast } from 'react-toastify';
+import { ColumnDef } from '@tanstack/react-table';
+import { CATEGORY_INTERFACE } from './PostCategory';
+import BasicTable from '../../ReactTable/ReactTable';
+import Link from 'next/link';
 
-interface Single_Category {
-    id: string;
-    name: string;
-    slug: string,
-    description?: string
+interface ReadCategoryInterface {
+    categoryData?: any,
+    refetch: () => void
 }
 
-interface PRODUCT_INTERFACE {
-    message: string,
-    data: Single_Category[]
-}
+export default function ReadCategory({ categoryData, refetch }: ReadCategoryInterface) {
 
-export default function ReadCategory() {
-
-    const [deleteItem, setDeleteItem] = useState<any | null>(null);
-    
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const { data: categoryData, isLoading, isSuccess, isError, error, refetch } = useReadCategoriesQuery({});
 
     const [deleteCategory, { isSuccess: deleteSucess, isError: deleteIsError, error: deleteError }] = useDeleteCategoryMutation();
 
-    useEffect( ()=>{
+    const columns: ColumnDef<CATEGORY_INTERFACE>[] = useMemo(() => [
+        {
+            id: 'actions',
+            header: ({ table }) => {
+                return <input
+                    type='checkbox'
+                    checked={table.getIsAllRowsSelected()}
+                    onChange={table.getToggleAllRowsSelectedHandler()} />
+            },
+            cell: ({ row }) => (
+                <input
+                    type='checkbox'
+                    checked={row.getIsSelected()}
+                    onChange={row.getToggleSelectedHandler()}
+                />
+            )
+        },
+        {
+            accessorKey: 'name',
+            header: 'Name',
+            cell: (info) => info.getValue()
+        },
+         {
+            accessorKey: "slug",
+            header: "Slug",
+            cell: (info) => `${info.getValue()}`,
+        },
+        {
+            accessorKey: "parent",
+            header: "Category",
+            cell: (info) => info.getValue(), // Map category ID to name
+        },
 
-        if(deleteSucess){
-            toast.success('sucessfull deleted category');
-        }else if(deleteIsError){
-            toast.error(`error:${deleteError}`)
-        }
+        {
+            id: "action",
+            header: 'Action',
+            cell: ({ row }) => {
+                return <div onClick={(e: any) => e.stopPropagation()}><Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-500 w-[50%] px-2 py-1 text-sm rounded-[20x] text-white ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'}`}>Edit</Link></div>
+            },
+            maxSize: 100,
+            minSize: 50
+        },
+    ], [categoryData])
 
-    } ,[ deleteSucess,deleteError ]);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (isError) {
-        return <div>Error: {JSON.stringify(error)}</div>;
-    }
-
-    const openModel = (deleteID: string) => {
-        setIsModalOpen(true);
-    }
-
-    const handleDelete = async () => {
-        await deleteCategory(deleteItem?._id)
-        setIsModalOpen(false);
-        refetch();
-
-    };
-
-   
     return (
         <div>
-            <ModalBox isOpen={isModalOpen} onClose={ ()=>setIsModalOpen(false) } title={`Delete ${deleteItem?.name}`}>
-                <p>total items: 12</p>
-                <div className="mt-4">
-                    <button
-                        onClick={handleDelete}
-                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                    >
-                        DELETE
-                    </button>
-                </div>
-            </ModalBox>
-
             {categoryData ? (
-                <div>
-
-                    <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">Category List</h2>
-                    <ul>
-                        {categoryData?.data?.map((category: any, index: number) => {
-
-                            let deleteID = category?._id;
-
-                            return (
-                                <li key={index} className="mb-4 p-4 border rounded-lg shadow-sm flex justify-between">
-                                    <div className='single_category_content' >
-                                        <h3 className="text-xl font-bold">{category?.name}</h3>
-                                        <p>slug: {category?.slug}</p>
-                                        <p>{category?.description}</p>
-                                    </div>
-
-                                    <div className='button_group flex gap-2' >
-                                        <Link href={`/admin/dashboard/category/${category?._id}`} >
-                                            <FaRegEdit />
-                                        </Link>
-                                        <MdDelete className='hover:cursor-pointer' onClick={() => {
-                                            setDeleteItem(category)
-                                            openModel(category)
-                                        }} />
-                                    </div>
-
-                                </li>
-                            )
-                        })}
-                    </ul>
+                <div className='product_table_wrap'>
+                    <BasicTable
+                        columns={columns}
+                        data={categoryData || []}
+                        deleteSelected={deleteCategory}
+                        isSuccess={deleteSucess}
+                        error={deleteError}
+                        isError={deleteError}
+                        refetch={refetch}
+                    />
                 </div>
             ) : (
                 <div>No products found.</div>

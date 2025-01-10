@@ -19,22 +19,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "react-toastify";
+import { CATEGORY_INTERFACE } from "../AdminComponents/Category/PostCategory";
 
-
-interface TABLEPROP_INTERFACE {
-  columns: ColumnDef<SINGLE_PRODUCT, any>[];
-  data: SINGLE_PRODUCT[];
-  deleteSelected?:(ids:String[])=>void,
-  isError:any,
-  error:any,
-  refetch:any,
-  isSuccess:any
+export interface HasId {
+  _id: string; 
 }
 
-const ModernTable = ({ columns, data = [] , deleteSelected , isSuccess,error,isError, refetch }: TABLEPROP_INTERFACE) => {
+
+const BasicTable = <T extends HasId>({ columns, data = [] , deleteSelected , isSuccess,error,isError, refetch }: any) => {
   const [selectedRows, setSelectedRows] = useState<Record<number, boolean>>({});
   const [modelOpen, setModelOpen] = useState(false);
-
 
   const table = useReactTable({
     data,
@@ -111,5 +105,5 @@ const ModernTable = ({ columns, data = [] , deleteSelected , isSuccess,error,isE
   );
 };
 
-export default ModernTable;
+export default BasicTable;
 

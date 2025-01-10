@@ -65,7 +65,7 @@ router.post('/category/add',cookieAuth , addCategory);
 router.get('/category',readCategory)
 router.get('/category/:id',readSingleCategory)
 router.patch( '/category/:id',cookieAuth,updateCategory );
-router.delete('/category/delete/:id',cookieAuth,deleteCategory);
+router.delete('/category/delete/',cookieAuth,deleteCategory);
 
 
 
