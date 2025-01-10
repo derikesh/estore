@@ -6,21 +6,25 @@ import DropBox from '../imageDrop/DropBox';
 import TagComponent from '../tagComponent/TagComponent';
 import { useParams, useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { useReadCategoriesQuery } from '@/src/store/rtkQuery';
 const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), { ssr: false });
+import { SINGLE_PRODUCT } from './ReadProduct';
+import { CATEGORY_INTERFACE } from '@/app/admin/dashboard/category/page';
+import { useReadallProductQuery } from '@/src/store/rtkQuery';
+
+interface PRODUCT_PROPS {
+    type:string
+    singleProduct?:SINGLE_PRODUCT,
+    categories:CATEGORY_INTERFACE[]
+}
 
 
-
-export default function FormProduct({ type = "add" }) {
+export default function FormProduct({ type , singleProduct , categories}:PRODUCT_PROPS) {
     const { id } = useParams();
     const [addProduct, { isSuccess: addSuccess, isError: addIsError, error: addError }] = useAddProductMutation();
     const [updateProduct, { isSuccess: updateSuccess, isError: updateIsError, error: updateError }] = useUpdateProductMutation();
-    const { data: categories} = useReadCategoriesQuery({});
+    const {data , refetch} = useReadallProductQuery({});
 
-    const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: readErrorData } = useReadSingleProductQuery(id, {
-        skip: !id
-    });
-
+    console.log("single prodict",singleProduct);
 
     const router = useRouter();
 
@@ -40,6 +44,7 @@ export default function FormProduct({ type = "add" }) {
     useEffect(() => {
         if (addSuccess) {
             toast.success("Product has been added successfully");
+            refetch();
             router.push('/admin/dashboard/product')
         } else if (addIsError) {
             toast.error(`Error adding product: ${JSON.stringify(addError)}`);
@@ -49,17 +54,13 @@ export default function FormProduct({ type = "add" }) {
     useEffect(() => {
         if (updateSuccess) {
             toast.success("Product has been updated successfully");
+            refetch();
             router.push('/admin/dashboard/product')
         } else if (updateIsError) {
             toast.error(`Error updating product: ${JSON.stringify(updateError)}`);
         }
     }, [updateSuccess, updateIsError, updateError]);
 
-    useEffect(() => {
-       if (readError) {
-            toast.error(`Error loading product data: ${JSON.stringify(readErrorData)}`);
-        }
-    }, [readError, readErrorData]);
 
     const handleSubmit = async (values: typeof initialValues) => {
         try {
@@ -79,9 +80,9 @@ export default function FormProduct({ type = "add" }) {
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">{type === "add" ? "Add Product" : "Edit Product"}</h2>
                 <Formik
-                    initialValues={singleProduct?.data || initialValues}
+                    initialValues={singleProduct || initialValues}
                     enableReinitialize={true}
-                    onSubmit={(values) => handleSubmit(values)}
+                    onSubmit={(values:any) => handleSubmit(values)}
                 >
                     {({ setFieldValue, isSubmitting, values }) => (
                         <Form>
@@ -107,7 +108,7 @@ export default function FormProduct({ type = "add" }) {
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="category" className="block text-gray-700">Category</label>
-                                <ReactSelectNoSSR dynamicValue={singleProduct?.data?.category} dataValue={categories?.data} setFieldValue={setFieldValue} name='category' />
+                                <ReactSelectNoSSR dynamicValue={singleProduct?.category} dataValue={categories} setFieldValue={setFieldValue} name='category' />
                                 <ErrorMessage name="category" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
