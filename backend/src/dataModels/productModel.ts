@@ -10,7 +10,7 @@ interface ImageInterFace {
 export interface PRODUCT_INTERFACE extends Document {
     name: string;
     price: number;
-    category: string;
+    category: mongoose.Types.ObjectId;
     description?: string;
     images?: ImageInterFace;
     sizes?:string[];
@@ -27,7 +27,7 @@ const ImageSchema = new mongoose.Schema<ImageInterFace>({
 const PRODUCT_SCHEMA = new mongoose.Schema({
     name: { type: String, required: false },
     price: { type: Number, required: false },
-    category: { type: String, required: false },
+    category: { type: mongoose.Types.ObjectId,ref:'Category', default: null },
     description: { type: String },
     images: { type: ImageSchema, required:false},
     sizes: { type:[String], required:false},

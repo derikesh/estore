@@ -17,4 +17,7 @@ const connectMB = async ()=>{
     }
 }
 
+// mongoose.set('strictPopulate', false);
+
+
 export default connectMB;

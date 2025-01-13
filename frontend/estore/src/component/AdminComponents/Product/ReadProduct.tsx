@@ -41,6 +41,7 @@ interface PRODUCT_PROPS {
 // another one 
 export default function ReadProduct({ data, refetch, categoryData }: PRODUCT_PROPS) {
     const router = useRouter();
+
     const dispatch = useDispatch<any>();
     const [deleteSelected, { isSuccess: deleteSuccess, isError: deleteError, error: deleteErrorData }] = useDeleteManyProductMutation();
 
@@ -91,9 +92,9 @@ export default function ReadProduct({ data, refetch, categoryData }: PRODUCT_PRO
             cell: (info) => `$${info.getValue()}`,
         },
         {
-            accessorKey: "category",
+            accessorKey: "category.name",
             header: "Category",
-            cell: (info) => getCategoryName(info.getValue() as string, categoryData), // Map category ID to name
+            cell: (info) => info.getValue(), 
         },
         {
             id: "action",

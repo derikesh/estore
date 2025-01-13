@@ -14,7 +14,7 @@ export interface CATEGORY_INTERFACE extends Document {
 const categoryModel = new mongoose.Schema({
     name : { type:String, require:true , unique:true  },
     slug:{ type:String },
-    parent:{ type:mongoose.Types.ObjectId , ref:'category',default:null },
+    parent:{ type:mongoose.Types.ObjectId , ref:'Category',default:null },
     description:{ type:String }
 })
 

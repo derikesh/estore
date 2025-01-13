@@ -36,7 +36,7 @@ export const addProducts = async (req: Request, res: Response) => {
 // Fetching all the products
 export const getProduct = async (req: Request, res: Response) => {
     try {
-        const allData = await Product.find({}).sort({createdAt:-1});
+        const allData = await Product.find({}).populate('category','name').sort({createdAt:-1});
         if(!allData){
             sendResponse(res,400,'no product were found');
             return;
