@@ -3,10 +3,7 @@ import "./globals.css";
 // import toastifu
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
-
-
-import { useRouter } from "next/navigation";
-import Navbar from "@/src/component/ClientComponent/navbar/Navbar";
+import { Navbar } from "@/src/component/ClientComponent/navbar/Navbar";
 
 export default function RootLayout({
   children,

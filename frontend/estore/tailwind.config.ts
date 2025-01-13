@@ -2,12 +2,15 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
     darkMode: ["class"],
+	mode: 'jit',
     content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  plugins: [require('@tailwindcss/forms'),require("tailwindcss-animate")],
+
   theme: {
   	extend: {
   		colors: {
@@ -56,7 +59,18 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+		// keyframes:{
+			
+        // "slide-in-from-right": {
+        //   from: { transform: "translateX(100%)" },
+        //   to: { transform: "translateX(0)" },
+        // },
+        // "slide-out-to-right": {
+        //   from: { transform: "translateX(0)" },
+        //   to: { transform: "translateX(100%)" },
+        // },
+		// }
   	}
   },
 //   plugins: [require("")],
