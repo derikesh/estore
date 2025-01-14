@@ -1,50 +1,110 @@
+"use client"
+
+import * as React from "react"
+import Link from "next/link"
+import { LuMenu, LuSearch, LuShoppingCart, LuX } from 'react-icons/lu';
+import { useTheme } from "next-themes";
+
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 
+const navigation = [
+  { name: "Home", href: "/" },
+  { name: "Apparel", href: "/apparel" },
+  { name: "Accessories", href: "/accessories" },
+  { name: "About", href: "/about" },
+]
+
 export function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+
+  const { theme, setTheme } = useTheme()
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline">Open</Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
-          </SheetDescription>
-        </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+    <nav className="dark:bg-white shadow">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+
+          <div className="flex ">
+            <div className="flex-shrink-0 flex items-center">
+              <Link href="/" className="text-2xl font-bold text-gray-900">
+                Store
+              </Link>
+              <button onClick={ ()=>setTheme( theme === 'dark' ? 'light' : 'dark' ) } >
+            SWITCH DARA
+          </button>
+            </div>
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-gray-700"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+
+         
+
+          <div className="hidden sm:ml-6 sm:flex sm:items-center">
+            <Button variant="ghost" size="icon">
+              <LuSearch className="h-5 w-5" />
+              <span className="sr-only">Search</span>
+            </Button>
+            <Button variant="ghost" size="icon">
+              <LuShoppingCart className="h-5 w-5" />
+              <span className="sr-only">Shopping cart</span>
+            </Button>
+          </div>
+          
+          <div className="flex items-center sm:hidden">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-gray-500">
+                  <span className="sr-only">Open main menu</span>
+                  {isMobileMenuOpen ? (
+                    <LuX className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <LuMenu className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+                <nav className="mt-5">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </nav>
+                <div className="mt-4 flex space-x-2">
+                  <Button variant="outline" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                    <LuSearch className="h-5 w-5" />
+                    <span className="sr-only">Search</span>
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                    <LuShoppingCart className="h-5 w-5" />
+                    <span className="sr-only">Shopping cart</span>
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </nav>
   )
 }
+

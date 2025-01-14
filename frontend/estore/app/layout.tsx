@@ -1,4 +1,5 @@
 import "./globals.css";
+import { ThemeProvider } from 'next-themes'
 
 // import toastifu
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,9 +14,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <ThemeProvider 
+         attribute="class"
+         defaultTheme="system"
+         enableSystem
+         disableTransitionOnChange
+        >
         <ToastContainer/> 
             <Navbar/>
           {children}
+          </ThemeProvider>
       </body>
     </html>
   );

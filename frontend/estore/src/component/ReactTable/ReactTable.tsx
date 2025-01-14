@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { toast } from "react-toastify";
-import { CATEGORY_INTERFACE } from "../AdminComponents/Category/PostCategory";
 
 export interface HasId {
   _id: string; 

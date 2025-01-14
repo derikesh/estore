@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       <div className="fixed inset-0 bg-black opacity-50"></div>
       <div
         className={`relative w-auto max-w-3xl mx-auto my-6 ${
-          isOpen ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'
+          isOpen ? 'translate-y-0 opacity-100' : '-translate-y-24 opacity-0'
         } transition-all duration-300`}
         onClick={(e) => e.stopPropagation()}
       >
@@ -55,4 +55,3 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
 };
 
 export default Modal;
-
