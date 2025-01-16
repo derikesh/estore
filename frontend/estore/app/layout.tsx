@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { Navbar } from "@/src/component/ClientComponent/navbar/Navbar";
 import { cookies } from "next/headers";
+import Footer from "@/src/component/ClientComponent/Footer/Footer";
 
 export default function RootLayout({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
         <ToastContainer/> 
             <Navbar/>
           {children}
+          <Footer/>
           </ThemeProvider>
       </body>
     </html>

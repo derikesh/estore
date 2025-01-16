@@ -16,7 +16,7 @@ export default function SwiperComp({ children, perView, perViewMd }: SwiperCompP
   return (
     <Swiper
       slidesPerView={perView}
-      spaceBetween={30}
+      spaceBetween={15}
       autoplay={{
         delay: 2500,
         disableOnInteraction: false,

@@ -49,3 +49,12 @@ body {
     padding-right: 2rem; /* 8px */
   }
 }
+
+.footer_content {
+  background-image: url('/public/images/footerbg.png');
+  background-position: center;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
