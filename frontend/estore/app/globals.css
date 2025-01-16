@@ -51,10 +51,23 @@ body {
 }
 
 .footer_content {
-  background-image: url('/public/images/footerbg.png');
-  background-position: center;
+  position: relative;
   height: 100%;
   width: 100%;
-  position: relative;
   z-index: 10;
+  overflow: hidden;
+}
+
+.footer_content::before {
+  content: "";
+  background-image: url('/images/footerbg.png');
+  background-position: center;
+  background-size: cover;
+  opacity: 0.6; /* Set the desired opacity */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure the pseudo-element is behind the content */
 }

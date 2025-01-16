@@ -8,7 +8,9 @@ interface SECTION_INTERFACE {
 export default function LeftContent({className,title}:SECTION_INTERFACE) {
   return (
     <div className={`bg-white ${className}`} >
-            s
+        <div className="max-w-2xl">
+            <h1 className="text-4xl font-bold text-black mb-4">Welcome to Our Platform</h1>
+          </div>
     </div>
   )
 }
