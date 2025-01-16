@@ -3,8 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { LuMenu, LuSearch, LuShoppingCart, LuX } from 'react-icons/lu'
-import { useTheme } from "next-themes"
-
+import { useEffect,useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
@@ -17,11 +16,23 @@ const navigation = [
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-  const { theme, setTheme } = useTheme()
+  const [isSticky, setsetIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setsetIsSticky(window.scrollY > 0)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <nav className="text-inherit">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container-cus">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Navigation */}
           <div className="flex items-baseline">
