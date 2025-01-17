@@ -9,10 +9,11 @@ import { Pagination, Autoplay } from 'swiper/modules';
 interface SwiperCompProps {
   children: ReactNode[];
   perView: number;
+  pagination?: boolean;
   perViewMd: number;
 }
 
-export default function SwiperComp({ children, perView, perViewMd }: SwiperCompProps) {
+export default function SwiperComp({ children, perView, perViewMd, pagination = false }: SwiperCompProps) {
   return (
     <Swiper
       slidesPerView={perView}
@@ -26,7 +27,8 @@ export default function SwiperComp({ children, perView, perViewMd }: SwiperCompP
           slidesPerView: perViewMd,
         },
       }}
-      modules={[Pagination, Autoplay]}
+      pagination={pagination ? { clickable: true } : false}
+      modules={[Autoplay, ...(pagination ? [Pagination] : [])]}
       className="mySwiper"
     >
       {React.Children.map(children, (child, index) => (
@@ -35,4 +37,3 @@ export default function SwiperComp({ children, perView, perViewMd }: SwiperCompP
     </Swiper>
   );
 }
-

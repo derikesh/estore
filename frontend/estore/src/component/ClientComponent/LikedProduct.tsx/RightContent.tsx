@@ -3,12 +3,12 @@ import Cards from '../Cards/Cards'
 
 export default function RightContent({className}:any) {
   return (
-    <div className={`bg-white ${className}`} >
+    <div className={` ${className}`} >
             <div className='flex flex-wrap' >
-                <Cards className='overflow-hidden' />
-                <Cards className='overflow-hidden' />
-                <Cards className='overflow-hidden' />
-                <Cards className='overflow-hidden' />
+                <Cards className='m-auto my-4' />
+                <Cards className='m-auto my-4' />
+                <Cards className='m-auto my-4' />
+                <Cards className='m-auto my-4' />
             </div>
     </div>
   )
