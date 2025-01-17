@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import ThemeSwitch from "../themeSwitch/ThemeSwitch"
 
 const navigation = [
-  { name: "All item", href: "/" },
+  { name: "All item", href: "/all" },
  
 ]
 

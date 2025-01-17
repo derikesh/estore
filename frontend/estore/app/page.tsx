@@ -2,6 +2,7 @@ import CategoryDisplay from "@/src/component/ClientComponent/CategoryDisplay/Cat
 import Categories from "@/src/component/ClientComponent/CategoryDisplay/Categories";
 import LIkedProduct from "@/src/component/ClientComponent/LikedProduct.tsx/LIkedProduct";
 import Faq from "@/src/component/ClientComponent/FAQ/Faq";
+import DisplayProduct from "@/src/component/ClientComponent/AllProduct/DisplayProduct";
 
 export default function Home() {
 
@@ -12,6 +13,7 @@ export default function Home() {
         <Categories/>
         <LIkedProduct/>
         <Faq/>
+        <DisplayProduct/>
     </div>
 
   );
