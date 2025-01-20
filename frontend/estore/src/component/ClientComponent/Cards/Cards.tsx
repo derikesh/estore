@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -10,17 +11,18 @@ interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export default function ProductCard({ className, price = "$99", name = "Classic Hoodie", sizes = ["S", "M", "L", "XL"] }: ProductCardProps) {
   return (
     <div className={`relative  bg-white dark:bg-gray-800 shadow-lg rounded-[15px] overflow-hidden ${className}`}>
-      <div className="aspect-square relative">
-       <div className='flex h-full justify-center items-center' >
+     <Link href={'/test2'} >
+     <div className="aspect-square relative">
+       <div className=' flex h-full justify-center items-center' >
        <Image
-          src='/images/hoodie-1.avif'
+          src='/images/ss.png'
           alt='Product image'
-          width={240}
-          height={240}
-          className=" transition-transform duration-300 hover:scale-105"
+          width={320}
+          height={320}
+          className=" transition-transform duration-300"
         />
        </div>
-        <div className="absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-md text-xs font-semibold">
+        <div className="absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-[10px] text-xs font-semibold">
           {price}
         </div>
       </div>
@@ -36,7 +38,7 @@ export default function ProductCard({ className, price = "$99", name = "Classic 
             </div>
           ))}
         </div>
-      </div>
+      </div></Link>
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function Categories() {
                 <HeadingComp title='More Category' />
                 
                 <div className='wrap_categories_content py-4' >
-                <SwiperComp  perView={1} perViewMd={4}>
+                <SwiperComp  perView={1} perViewMd={2} perViewLg={4}>
                    <CategoriesCard/>
                    <CategoriesCard/>
                    <CategoriesCard/>
