@@ -10,10 +10,11 @@ interface SwiperCompProps {
   children: ReactNode[];
   perView: number;
   pagination?: boolean;
-  perViewMd: number;
+  perViewMd?: number;
+  perViewLg?: number;
 }
 
-export default function SwiperComp({ children, perView, perViewMd, pagination = false }: SwiperCompProps) {
+export default function SwiperComp({ children, perView, perViewMd, perViewLg, pagination = false }: SwiperCompProps) {
   return (
     <Swiper
       slidesPerView={perView}
@@ -23,8 +24,14 @@ export default function SwiperComp({ children, perView, perViewMd, pagination = 
         disableOnInteraction: false,
       }}
       breakpoints={{
+        640: {
+          slidesPerView: perView,
+        },
         768: {
           slidesPerView: perViewMd,
+        },
+        1024: {
+          slidesPerView: perViewLg,
         },
       }}
       pagination={pagination ? { clickable: true } : false}

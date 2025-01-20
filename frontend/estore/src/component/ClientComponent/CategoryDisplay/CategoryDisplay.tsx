@@ -18,7 +18,7 @@ export default function CategoryDisplay() {
                         </div>
 
                         <div className='w-full'>
-                            <SwiperComp perView={1} perViewMd={2}>
+                            <SwiperComp perView={1} perViewLg={2} perViewMd={2}>
                                 <Cards/>
                                 <Cards/>
                                 <Cards/>

@@ -1,28 +1,46 @@
 import Image from 'next/image';
 import React from 'react';
-import { Button } from '@/components/ui/button';
 
-interface CardsInterface extends React.HTMLAttributes<HTMLDivElement> {
+interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   price?: string;
+  name?: string;
+  sizes?: string[];
 }
 
-export default function Cards({ className, price = "SS" }: CardsInterface) {
+export default function ProductCard({ className, price = "$99", name = "Classic Hoodie", sizes = ["S", "M", "L", "XL"] }: ProductCardProps) {
   return (
-    <div className={`relative big-card ${className} bg-white dark:bg-gray-800 shadow-xl flex gap-2 flex-col items-center py-8 px-4`} >
-      <Image
-        src={'/images/hoodie-1.avif'}
-        alt='image-hoodie'
-        width={250}
-        height={250}
-        className="w-full max-w-[250px] h-auto"
-      />
-      <div className='bcard-title text-base sm:text-lg font-semibold text-gray-900 dark:text-white text-center'>MENS WEAR</div>
-      <p className='text-gray-700 dark:text-gray-300 text-xs sm:text-sm px-4 text-center'>The men's waterproof sheer air caped jacket available on pre-orders</p>
-      <Button className='mt-4' variant={'outline'}>Shop Now</Button>
-      <div className="absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-[7px] text-xs">
-        {price}
+    <div className={`relative  bg-white dark:bg-gray-800 shadow-lg rounded-[15px] overflow-hidden ${className}`}>
+      <div className="aspect-square relative">
+       <div className='flex h-full justify-center items-center' >
+       <Image
+          src='/images/hoodie-1.avif'
+          alt='Product image'
+          width={240}
+          height={240}
+          className=" transition-transform duration-300 hover:scale-105"
+        />
+       </div>
+        <div className="absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded-md text-xs font-semibold">
+          {price}
+        </div>
+      </div>
+      <div className='p-4'>
+        <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>{name}</h3>
+        <div className='grid grid-cols-4 gap-2'>
+          {sizes.map((size, index) => (
+            <div 
+              key={index} 
+              className='text-center py-1 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200'
+            >
+              {size}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
+
+
+
 

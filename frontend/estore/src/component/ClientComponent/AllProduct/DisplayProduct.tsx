@@ -12,7 +12,7 @@ export default function DisplayProduct() {
   }
 
   return (
-    <div className="relative h-64 w-full rounded-lg overflow-hidden mb-12 shadow-md">
+    <div className="container-cus w-[90%] relative h-64 rounded-[20px] overflow-hidden my-20 shadow-md">
       <img
         src="https://via.placeholder.com/800x400?text=Product+Image"
         alt="Product Background"
