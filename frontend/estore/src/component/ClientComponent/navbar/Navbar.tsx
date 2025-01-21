@@ -8,11 +8,13 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import ThemeSwitch from "../themeSwitch/ThemeSwitch"
+import { AddToCartModal } from "../Cart/Cart"
 
 const navigation = [
   { name: "All item", href: "/all" },
  
 ]
+
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
@@ -67,10 +69,11 @@ export function Navbar() {
           {/* Cart and Theme Toggle */}
           <div className="flex items-center space-x-4">
             <ThemeSwitch />
-            <Button variant="ghost" size="icon" className="hidden sm:flex">
+            <AddToCartModal icon={true} product={null} />
+            {/* <Button variant="ghost" size="icon" className="hidden sm:flex">
               <LuShoppingCart className="h-5 w-5" />
               <span className="sr-only">Shopping cart</span>
-            </Button>
+            </Button> */}
 
             {/* Mobile Menu */}
             <div className="flex sm:hidden">

@@ -8,6 +8,7 @@ import { Navbar } from "@/src/component/ClientComponent/navbar/Navbar";
 import { cookies } from "next/headers";
 import Footer from "@/src/component/ClientComponent/Footer/Footer";
 
+
 export default function RootLayout({
   children,
 }: Readonly<{

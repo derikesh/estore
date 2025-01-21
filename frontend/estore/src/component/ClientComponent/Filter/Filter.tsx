@@ -1,6 +1,6 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
+import { useState } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,30 +9,32 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export function HorizontalFilter({ onFilterChange }: { onFilterChange: (filters: any) => void }) {
   const [priceRange, setPriceRange] = useState([0, 1000])
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc")
 
   const handlePriceChange = (value: number[]) => {
     setPriceRange(value)
     onFilterChange({ priceRange: value, sortOrder })
   }
 
-  const handleSortChange = (value: 'asc' | 'desc') => {
+  const handleSortChange = (value: "asc" | "desc") => {
     setSortOrder(value)
     onFilterChange({ priceRange, sortOrder: value })
   }
 
   return (
-    <div className="w-full bg-gray-100 dark:bg-gray-800 shadow-md rounded-lg p-4">
-      <div className="flex flex-wrap gap-4 items-end">
+    <div className="w-full bg-background p-6 rounded-lg shadow-sm">
+      <div className="flex flex-col sm:flex-row gap-6 items-end">
         {/* Price Range Filter */}
-        <div className="flex-1 min-w-[200px]">
-          <Label htmlFor="price-range" className="mb-2 block text-gray-900 dark:text-gray-100">Price Range</Label>
-          <div className="flex items-center gap-2">
+        <div className="flex-1 space-y-2">
+          <Label htmlFor="price-range" className="text-sm font-medium">
+            Price Range
+          </Label>
+          <div className="flex items-center gap-4">
             <Input
               type="number"
               value={priceRange[0]}
               onChange={(e) => handlePriceChange([Number(e.target.value), priceRange[1]])}
-              className="w-20 text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700"
+              className="w-20"
             />
             <Slider
               id="price-range"
@@ -41,25 +43,27 @@ export function HorizontalFilter({ onFilterChange }: { onFilterChange: (filters:
               step={10}
               value={priceRange}
               onValueChange={handlePriceChange}
-              className="flex-1 bg-black dark:bg-white "
+              className="flex-1 bg-white "
             />
             <Input
               type="number"
               value={priceRange[1]}
               onChange={(e) => handlePriceChange([priceRange[0], Number(e.target.value)])}
-              className="w-20 text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700"
+              className="w-20"
             />
           </div>
         </div>
 
         {/* Sort Order */}
-        <div className="min-w-[150px]">
-          <Label htmlFor="sort-order" className="mb-2 block text-gray-900 dark:text-gray-100">Sort by Price</Label>
+        <div className="w-full sm:w-48 space-y-2">
+          <Label htmlFor="sort-order" className="text-sm font-medium">
+            Sort by Price
+          </Label>
           <Select value={sortOrder} onValueChange={handleSortChange}>
-            <SelectTrigger id="sort-order" className="text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700">
+            <SelectTrigger id="sort-order">
               <SelectValue placeholder="Sort order" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-50 dark:bg-gray-700">
+            <SelectContent>
               <SelectItem value="asc">Low to High</SelectItem>
               <SelectItem value="desc">High to Low</SelectItem>
             </SelectContent>
@@ -67,10 +71,11 @@ export function HorizontalFilter({ onFilterChange }: { onFilterChange: (filters:
         </div>
 
         {/* Apply Filters Button */}
-        <Button onClick={() => onFilterChange({ priceRange, sortOrder })} className="bg-gray-900 dark:bg-gray-100 text-gray-100 dark:text-gray-900">
+        <Button onClick={() => onFilterChange({ priceRange, sortOrder })} className="w-full sm:w-auto">
           Apply Filters
         </Button>
       </div>
     </div>
   )
 }
+
