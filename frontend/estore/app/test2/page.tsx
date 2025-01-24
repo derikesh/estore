@@ -7,7 +7,7 @@ const Page = async () => {
 
   return (
     <div >
-      <div className='py-8' >
+      <div >
         <SingleProductShowcase />
         <Faq />
         <SuggestCards/>

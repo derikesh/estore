@@ -1,3 +1,5 @@
+'use client '
+
 import Image from "next/image"
 import Link from "next/link"
 import type React from "react"
@@ -32,10 +34,9 @@ export default function ProductCard({
             {price}
           </div>
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-end pr-4">
               <button className="bg-white text-gray-900 p-2 rounded-full shadow-lg transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
-                <FaShoppingCart className="w-6 h-6" />
-                <span className="sr-only">Add to Cart</span>
+                <span className="sr-only">colors</span>
               </button>
             </div>
           </div>
