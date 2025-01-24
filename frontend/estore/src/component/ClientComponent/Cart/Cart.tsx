@@ -31,8 +31,8 @@ export function AddToCartModal({ product, icon }: { product: Product | null, ico
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button onClick={() => setIsOpen(true)}>{icon ? <LuShoppingCart /> : 'Add to Cart'}</Button>
+      <SheetTrigger className=' w-full' asChild>
+        <Button onClick={() => setIsOpen(true)}>{icon ? <LuShoppingCart /> : <div className='bg-black hover:bg-gray-800 px-4 py-2 text-white rounded-[5px] w-full' >Add to card</div>}</Button>
       </SheetTrigger>
       <SheetContent className="w-[90vw] sm:w-[540px] sm:max-w-[90vw]">
         <SheetHeader>
