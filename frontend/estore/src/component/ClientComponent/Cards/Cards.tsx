@@ -25,8 +25,8 @@ export default function ProductCard({
             <Image
               src="/images/ss.png"
               alt="Product image"
-              width={320}
-              height={320}
+              width={350}
+              height={350}
               className="transition-transform duration-300 group-hover:scale-105"
             />
           </div>
