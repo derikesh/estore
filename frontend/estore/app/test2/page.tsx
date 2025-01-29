@@ -6,13 +6,11 @@ import SuggestCards from '@/src/component/ClientComponent/SuggestCards/SuggestCa
 const Page = async () => {
 
   return (
-    <div >
-      <div >
+      <div className='space-y-10' >
         <SingleProductShowcase />
         <Faq />
         <SuggestCards/>
       </div>
-    </div>
   );
 };
 

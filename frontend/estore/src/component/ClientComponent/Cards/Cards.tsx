@@ -18,7 +18,7 @@ export default function ProductCard({
   sizes = ["S", "M", "L", "XL"],
 }: ProductCardProps) {
   return (
-    <div className={`relative bg-white dark:bg-gray-800 shadow-lg rounded-[15px] overflow-hidden group ${className}`}>
+    <div className={`relative bg-white dark:bg-gray-800 shadow-lg rounded-[7px] overflow-hidden group ${className}`}>
       <Link href={"/test2"}>
         <div className="aspect-square relative overflow-hidden">
           <div className="flex h-full justify-center items-center">
@@ -49,7 +49,7 @@ export default function ProductCard({
                 key={index}
                 className="text-center py-1 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
               >
-                {size}
+                {size}  
               </div>
             ))}
           </div>

@@ -17,10 +17,10 @@ export default function CategoriesCard() {
       <AnimatePresence>
         {!isHovered && (
           <motion.div
-            className="absolute inset-0 bg-black opacity-50"
-            initial={{ height: 0 }}
-            animate={{ height: "100%" }}
-            exit={{ height: 0  }}
+            className="absolute inset-0 bg-black"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
           />
         )}
@@ -35,4 +35,3 @@ export default function CategoriesCard() {
     </div>
   )
 }
-

@@ -1,48 +1,56 @@
-'use client'
+"use client"
 
-import React from 'react'
-import Cards from '../Cards/Cards'
-import { motion, Variants } from 'framer-motion'
+import React from "react"
+import TabCard from "../Cards/TabCard"
+import { motion } from "framer-motion"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-const cardVariants: Variants = {
-  offscreen: {
-    opacity: 0,
-    y: 50,
-  },
-  onscreen: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring',
-      bounce: 0.2,
-      duration: 0.5,
-      delay: 0.2,
-    },
-  },
-}
-
-export default function RightContent({ className , setTabItem = ()=>{} }: any) {
-
+export default function RightContent({ className, setActiveTab = () => {}, tabData, activeTab }: any) {
+  console.log("this is active tab", tabData[activeTab])
 
   return (
-    <div className={` ${className}`}>
-      <div className='flex flex-wrap snap-y'>
-        {[...Array(4)].map((_, index) => (
+    <div className={`${className}`}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 snap-y">
+        {/* Desktop view */}
+        {tabData.map((item: any, index: number) => (
           <motion.div
             key={index}
-            className={`m-auto my-8 ${index === 3 ? 'pb-[15vh]' : ''}`}
-            initial="offscreen"
-            whileInView={"onscreen" }
-            viewport={{ once: false, amount: 0.5 }} 
-            onViewportEnter={() => setTabItem(index)}
-            // onViewportLeave={ index === 0 ? () => setTabItem(null) : undefined}
-            variants={cardVariants}
-            custom={index}
+            className={`hover:cursor-pointer lg:block hidden m-auto ${index === activeTab ? "border-4 rounded-[8px] border-blue-500" : ""}`}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.5 }}
+            onClick={(e) => {
+              e.stopPropagation()
+              setActiveTab(index)
+            }}
           >
-            <Cards />
+            <TabCard />
           </motion.div>
         ))}
+
+        
       </div>
+
+
+
+        {/* Mobile view */}
+        <div className="lg:hidden block !w-full">
+          <Select onValueChange={(value) => setActiveTab(Number(value))} defaultValue={activeTab.toString()}>
+            <SelectTrigger className="w-full text-xl p-6">
+              <SelectValue placeholder="Select a tab" />
+            </SelectTrigger>
+            <SelectContent className="bg-white !text-xl" >
+              {tabData.map((item: any, index: number) => (
+                <SelectItem className="text-xl" key={index} value={index.toString()}>
+                  {item.productName}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
     </div>
   )
 }
+

@@ -11,7 +11,7 @@ export default function BigCard({ className }: BigCardInterface) {
   const [hover, setHover] = useState(false);
 
   return (
-    <div className={`big-card ${className} bg-white rounded-[20px] dark:bg-gray-800 shadow-xl flex gap-2 flex-col items-center py-8 px-4`}>
+    <div className={`big-card ${className} bg-white rounded-[8px] dark:bg-gray-800 shadow-xl flex gap-2 flex-col items-center py-8 px-4`}>
       <Image
         src={'/images/hoodie-1.avif'}
         alt='image-hoodie'

@@ -17,7 +17,7 @@ const faqs = [
 
 export default function Faq() {
   return (
-    <div className="px-4 my-8 py-16 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg shadow-md">
+    <div className=" px-4 my-8 py-16 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg shadow-md">
       <div className='max-w-3xl mx-auto'>
         <h2 className="text-3xl font-bold text-center mb-8 sm:text-xl">Frequently Asked Questions</h2>
         <Accordion type="single" collapsible className="w-full">

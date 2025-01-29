@@ -28,7 +28,7 @@ export default function Categories() {
 
     return (
         <div className="container-cus">
-            <div className="categories_wrap py-8">
+            <div className="categories_wrap py-8 space-y-4">
                 <HeadingComp title='More Category' />
                 
                 <div className='wrap_categories_content py-4' >
