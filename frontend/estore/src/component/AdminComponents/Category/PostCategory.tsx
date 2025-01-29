@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import { CATEGORY_INTERFACE } from '@/app/admin/dashboard/category/page';
 const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), { ssr: false });
 import { useRouter } from 'next/navigation';
+import DropBox from '../imageDrop/DropBox';
 
 interface POST_CATEGORY_PROP {
     type: string;
@@ -28,6 +29,10 @@ export default function PostCategory({ type = "add", sinlgeCategory, category, i
         name: sinlgeCategory ? sinlgeCategory?.name : '',
         slug: sinlgeCategory ? sinlgeCategory?.slug : '',
         parent: sinlgeCategory ? sinlgeCategory?.parent : '',
+        image: sinlgeCategory ? sinlgeCategory?.image : {
+            imageUrl:'',
+            publicKey:''
+        },
         description: sinlgeCategory ? sinlgeCategory?.description : '',
     };
 
@@ -46,7 +51,7 @@ export default function PostCategory({ type = "add", sinlgeCategory, category, i
             categoryRefetch();
             router.push('/admin/dashboard/category')
         } else if (addError) {
-            toast.error(`Error adding category: ${addErrorData}`);
+            toast.error(`Error adding category: ${JSON.stringify(addErrorData)}`);
         }
     }, [addSuccess, addError, addErrorData]);
 
@@ -74,6 +79,7 @@ export default function PostCategory({ type = "add", sinlgeCategory, category, i
                 await updateCategory({ id, updatedCategory: values }).unwrap();
             } else {
                 await AddCategory(values).unwrap();
+                console.log("submited values ", values);
             }
         } catch (err: any) {
             console.error('Error adding/updating category:', err);
@@ -97,12 +103,12 @@ export default function PostCategory({ type = "add", sinlgeCategory, category, i
             <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">{type === 'edit' ? 'Edit Category' : 'Add Category'}</h2>
                 <Formik
-                    initialValues={type === 'edit' ? dataValue : { name: '', slug: '', parent: null, description: '' }}
+                    initialValues={type === 'edit' ? dataValue : { name: '', slug: '', parent: null, image: { imageUrl:'',publicKey:'' } ,description: '' }}
                     validationSchema={validationSchema}
                     enableReinitialize={true}
                     onSubmit={(values: any) => handleSubmit(values)}
                 >
-                    {({ setFieldValue, isSubmitting }) => (
+                    {({ setFieldValue, isSubmitting , values }) => (
                         <Form>
                             <div className="mb-4">
                                 <label htmlFor="name" className="block text-gray-700">Category Name</label>
@@ -125,6 +131,11 @@ export default function PostCategory({ type = "add", sinlgeCategory, category, i
                                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                                 />
                                 <ErrorMessage name="slug" component="div" className="text-red-500 text-sm" />
+                            </div>
+                            <div className='mb-4' > 
+                                <label htmlFor="cateogry_image">Category Image</label>
+                                <DropBox name='image' setFieldValue={setFieldValue}  type={type}  values={values}  key={'category_image'} />
+                                <ErrorMessage name="image" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
                                 <label htmlFor="parent" className="block text-gray-700">Parent Category</label>

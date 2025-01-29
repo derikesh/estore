@@ -9,6 +9,7 @@ export  interface CATEGORY_INTERFACE {
   _id:string,
   name:string,
   slug:string,
+  image:any,
   parent:string,
   description?:string
 }
@@ -18,13 +19,15 @@ export default function Page() {
 
   useEffect(() => {
     if (isError) {
-      toast.error(`Error fetching categories: ${error}`);
+      toast.error(`Error fetching categories: ${JSON.stringify(error)}`);
     }
   }, [isError, error]);
 
   if(isLoading){
     return <p>Loading.....</p>
   }
+
+  console.log("category data",categoryData)
 
   return (
     <div>

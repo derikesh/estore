@@ -20,35 +20,33 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
 
     const handleDrop = async (acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
-         const formUpload =await new FormData();
+        const formUpload = await new FormData();
         await formUpload.append("file", file);
         uploadImage(formUpload);
         setPreview(URL.createObjectURL(file));
     };
 
 
-
-    useEffect( ()=>{
-        if(type ==='edit' && values[name].imageUrl){
+    useEffect(() => {
+        if (type === 'edit' && values[name].imageUrl) {
             setPreview(values[name].imageUrl);
         }
-    } ,[values])
-    
-    console.log("preiver",preview);
+    }, [values])
+
 
     const handleDelete = () => {
         setPreview(null);
-        if(type ==='edit'){
-            if(values[name]){
+        if (type === 'edit') {
+            if (values[name]) {
                 deleteImage(values[name])
             }
-        }else{
+        } else {
             deleteImage(data)
-        }; 
-      };
+        };
+    };
 
     useEffect(() => {
-       
+
         if (isDeleteError) {
             toast.error(`Error: ${JSON.stringify(deleteError)}`);
             console.log("Error:", deleteError);
@@ -68,7 +66,7 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
         }
     }, [isSuccess, isError]);
 
-    
+
 
     return (
         <>
@@ -91,7 +89,19 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
                         </div>
                     )}
                 </Dropzone>
-                {preview && (
+                {preview && type === 'add' && (
+                    <div className="mt-4 relative">
+                        {isLoading && <h1>Uploading image...</h1>}
+                        {isSuccess && <button className='bg-red-200 absolute top-0 right-0 hover:cursor-pointer' onClick={handleDelete}>x</button>}
+                        <img
+                            src={preview}
+                            alt="Preview"
+                            style={{ width: "200px", height: "auto" }}
+                        />
+                    </div>
+                )}
+
+                {preview && type === 'edit' && (
                     <div className="mt-4 relative">
                         {isLoading && <h1>Uploading image...</h1>}
                         {isSuccess || preview && <button className='bg-red-200 absolute top-0 right-0 hover:cursor-pointer' onClick={handleDelete}>x</button>}

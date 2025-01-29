@@ -44,6 +44,7 @@ const BasicTable = <T extends HasId>({ columns, data = [] , deleteSelected , isS
     console.log("ids",ids);
     if(deleteSelected){
       await deleteSelected({ids} as any);
+      refetch();
     };
     setModelOpen(false);
   };

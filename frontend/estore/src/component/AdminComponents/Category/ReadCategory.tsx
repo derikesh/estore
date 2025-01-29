@@ -42,6 +42,11 @@ export default function ReadCategory({ categoryData, refetch }: ReadCategoryInte
             )
         },
         {
+            accessorKey: 'image.imageUrl',
+            header: 'Category Image',
+            cell: (info) => <img src={info.getValue() as string} alt="Product" style={{ width: '50px', height: '50px' }} />
+        },
+        {
             accessorKey: 'name',
             header: 'Name',
             cell: (info) => info.getValue()

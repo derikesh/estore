@@ -7,7 +7,7 @@ import { sendResponse } from "../utility/response";
 
 export const addCategory = async (req: Request, res: Response) => {
 
-    const { name, parent, slug, description } = req.body;
+    const { name, parent, slug,image, description } = req.body;
 
 
     try {
@@ -23,6 +23,7 @@ export const addCategory = async (req: Request, res: Response) => {
             name,
             parent,
             slug,
+            image,
             description
         });
 
@@ -81,13 +82,13 @@ export const readSingleCategory = async ( req:Request , res:Response )=>{
 export const updateCategory =async ( req:Request , res:Response  )=>{
 
     const {id} = req.params;
-    const { name , slug , description , parent } = req.body;
+    const { name , slug , description ,image, parent } = req.body;
 
     try {
 
         const updatedCategory = await Category.findByIdAndUpdate(
             id,
-            { name, slug, parent, description },
+            { name, slug, parent, description ,image },
             { new: true }
         );
 
