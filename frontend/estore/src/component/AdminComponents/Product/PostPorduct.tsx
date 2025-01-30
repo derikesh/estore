@@ -10,21 +10,23 @@ const ReactSelectNoSSR = dynamic(() => import('../SelectDropdown/ReactSelect'), 
 import { SINGLE_PRODUCT } from './ReadProduct';
 import { CATEGORY_INTERFACE } from '@/app/admin/dashboard/category/page';
 import { useReadallProductQuery } from '@/src/store/rtkQuery';
+import MultipleImages from '../imageDrop/MultpleImages';
 
 interface PRODUCT_PROPS {
-    type:string
-    singleProduct?:SINGLE_PRODUCT,
-    categories:CATEGORY_INTERFACE[]
+    type: string
+    singleProduct?: SINGLE_PRODUCT,
+    categories: CATEGORY_INTERFACE[]
+    refetchSingle?:any
 }
 
 
-export default function FormProduct({ type , singleProduct , categories}:PRODUCT_PROPS) {
+export default function FormProduct({ type, singleProduct, categories }: PRODUCT_PROPS) {
     const { id } = useParams();
     const [addProduct, { isSuccess: addSuccess, isError: addIsError, error: addError }] = useAddProductMutation();
     const [updateProduct, { isSuccess: updateSuccess, isError: updateIsError, error: updateError }] = useUpdateProductMutation();
-    const {data , refetch} = useReadallProductQuery({});
+    const { data, refetch } = useReadallProductQuery({});
 
-    console.log("single prodict",singleProduct);
+    console.log("single prodict", singleProduct);
 
     const router = useRouter();
 
@@ -37,6 +39,7 @@ export default function FormProduct({ type , singleProduct , categories}:PRODUCT
             imageUrl: '',
             publicKey: ''
         },
+        productImages: [ { imageUrl: '', publickey: '' } ],
         sizes: [""],
         color: [""]
     };
@@ -68,6 +71,7 @@ export default function FormProduct({ type , singleProduct , categories}:PRODUCT
                 await addProduct(values).unwrap();
             } else if (type === "edit" && id) {
                 await updateProduct({ id, updatedBody: values }).unwrap();
+
             }
         } catch (err: any) {
             console.error('Error submitting product:', err);
@@ -82,7 +86,7 @@ export default function FormProduct({ type , singleProduct , categories}:PRODUCT
                 <Formik
                     initialValues={singleProduct || initialValues}
                     enableReinitialize={true}
-                    onSubmit={(values:any) => handleSubmit(values)}
+                    onSubmit={(values: any) => handleSubmit(values)}
                 >
                     {({ setFieldValue, isSubmitting, values }) => (
                         <Form>
@@ -122,8 +126,13 @@ export default function FormProduct({ type , singleProduct , categories}:PRODUCT
                                 <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="images" className="block text-gray-700">Images</label>
+                                <label htmlFor="images" className="block text-gray-700">Banner Image</label>
                                 <DropBox type={type} name="images" values={values} setFieldValue={setFieldValue} />
+                                <ErrorMessage name="images" component="div" className="text-red-500 text-sm" />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="images" className="block text-gray-700">Product Images</label>
+                                <MultipleImages type={type} name="productImages" values={values} setFieldValue={setFieldValue} />
                                 <ErrorMessage name="images" component="div" className="text-red-500 text-sm" />
                             </div>
                             <div className="mb-4">

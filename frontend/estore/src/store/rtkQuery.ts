@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'refreshToken','readSingleProduct', 'addProduct','updateProduct','deleteProduct', 'deleteProducts','readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'refreshToken','readSingleProduct','uploadImages', 'addProduct','updateProduct','deleteProduct', 'deleteProducts','readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -113,6 +113,15 @@ export const api = createApi({
             invalidatesTags: ['uploadImage'],
         }),
 
+        uploadMultiple : builder.mutation({
+            query : (files)=>({
+                method:'POST',
+                url:'/uploadImages',
+                body:files
+            }),
+            invalidatesTags:['uploadImages']
+        }),
+
         deleteIMage: builder.mutation({
             query: ({publicKey}) => ({
                 method: 'POST',
@@ -183,6 +192,7 @@ export const {
     useAddCategoryMutation,
     useDeleteCategoryMutation,
     useDeleteManyProductMutation,
+    useUploadMultipleMutation,
     useReadSingleCategoriesQuery,
     usePrefetch
 } = api;

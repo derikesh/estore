@@ -10,13 +10,13 @@ export default function Page() {
   const {id} = useParams();
 
   const { data: categories} = useReadCategoriesQuery({});
-  const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: readErrorData } = useReadSingleProductQuery(id, {
+  const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: readErrorData , refetch } = useReadSingleProductQuery(id, {
         skip: !id
     });
 
   return (
     <div>
-        <FormProduct type={id ? 'edit' : 'add'} singleProduct={singleProduct?.data} categories={categories?.data}/>
+        <FormProduct type={id ? 'edit' : 'add'} refetchSingle={refetch} singleProduct={singleProduct?.data} categories={categories?.data}/>
     </div>
   );
 }

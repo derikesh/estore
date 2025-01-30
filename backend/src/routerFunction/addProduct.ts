@@ -13,7 +13,7 @@ import { PRODUCT_INTERFACE } from "../dataModels/productModel";
 // Adding product into data
 export const addProducts = async (req: Request, res: Response) => {
 
-        const { name , price , category , description , images , sizes , color }:PRODUCT_INTERFACE = req.body;
+        const { name , price , category , description , images, productImages , sizes , color }:PRODUCT_INTERFACE = req.body;
 
     try {
         const existingProduct = await Product.find({name});
@@ -22,7 +22,7 @@ export const addProducts = async (req: Request, res: Response) => {
             return;
         }
         const newPost =  new Product({
-            name , price , category,description , images , sizes ,color
+            name , price ,productImages, category,description , images , sizes ,color
         });
         await newPost.save();
        return sendResponse(res, 200, 'Product added successfully',newPost);
@@ -74,13 +74,13 @@ export const getProductSingle = async (req: Request, res: Response) => {
 export const updateProduct = async (req: Request, res: Response) => {
 
     const {id} = req.params;
-    const { name , price , category , description , images , sizes , color }:PRODUCT_INTERFACE = req.body;
+    const { name , price , category , description,productImages , images , sizes , color }:PRODUCT_INTERFACE = req.body;
 
     try {
         
         const updateData = await Product.findByIdAndUpdate(
         id,
-        { name , price , category , description , images , sizes , color },
+        { name , price , category , description , images,productImages , sizes , color },
         {new:true}    
         );
 

@@ -20,6 +20,7 @@ import { addCategory, readCategory, readSingleCategory, updateCategory , deleteC
 import {  uploadImage } from "../routerFunction/uploadImage";
 import { uploadMulter } from "../utility/multer";
 import { deleteImage } from "../routerFunction/uploadImage";
+import { uploadImages } from "../routerFunction/uploadImage";
 
 export const router = Router();
 
@@ -70,7 +71,9 @@ router.delete('/category/delete/',cookieAuth,deleteCategory);
 
 
 // upload an image 
+
 router.post('/uploadImage',uploadMulter.single('file'),uploadImage);
+router.post('/uploadImages',uploadMulter.array( 'files',5 ) , uploadImages)
 router.post('/deleteImage',deleteImage as any );
 
 export default router;
