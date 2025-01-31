@@ -7,15 +7,10 @@ import { useReadallProductQuery, useReadCategoriesQuery } from '@/src/store/rtkQ
 
 export default function Page() {
   const { data: productData, isLoading, isSuccess: productSuccess, isError: productIsError, error: productError, refetch } = useReadallProductQuery({});
-  const { data: categoryData, isSuccess: categorySuccess,isError,error:catError } = useReadCategoriesQuery({});
+  // const { data: categoryData, isSuccess: categorySuccess,isError,error:catError } = useReadCategoriesQuery({});
   
 
   useEffect(() => {
-   
-    if(isError){
-      toast.error(`error : ${catError}`)
-    }
-
     if (productIsError) {
       toast.error(`Error fetching products: ${productError}`);
     }
@@ -27,8 +22,8 @@ export default function Page() {
 
   return (
     <div>
-     { productData && categoryData && ( 
-       <ReadProduct data={productData?.data} categoryData={categoryData?.data} refetch={refetch} />
+     { productData  && ( 
+       <ReadProduct data={productData?.data}  refetch={refetch} />
      ) }
     </div>
   );

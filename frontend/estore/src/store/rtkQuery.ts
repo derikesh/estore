@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'refreshToken','readSingleProduct','uploadImages', 'addProduct','updateProduct','deleteProduct', 'deleteProducts','readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory','addCategory', 'updateCategory','readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'FAQ', 'refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -62,12 +62,12 @@ export const api = createApi({
         }),
 
 
-        deleteProduct:builder.mutation({
-            query:(id)=>({
-                method:'DELETE',
-                url:'/product/delete/:id',                
+        deleteProduct: builder.mutation({
+            query: (id) => ({
+                method: 'DELETE',
+                url: '/product/delete/:id',
             }),
-            invalidatesTags:['deleteProduct']
+            invalidatesTags: ['deleteProduct']
         }),
 
         readallProduct: builder.query({
@@ -78,55 +78,55 @@ export const api = createApi({
             providesTags: ['readProduct'],
         }),
 
-        readSingleProduct:builder.query({
-            query:(id)=>({
-                method:'GET',
-                url:`/product/${id}`
+        readSingleProduct: builder.query({
+            query: (id) => ({
+                method: 'GET',
+                url: `/product/${id}`
             }),
-            providesTags:['readSingleProduct']
+            providesTags: ['readSingleProduct']
         }),
 
         updateProduct: builder.mutation({
-            query: ({id,updatedBody}) => ({
+            query: ({ id, updatedBody }) => ({
                 method: 'PATCH',
                 url: `/product/${id}`,
-                body:updatedBody
+                body: updatedBody
             }),
             invalidatesTags: ['updateProduct'],
         }),
 
-        deleteManyProduct:builder.mutation({
-            query:(body)=>({
-                method:'DELETE',
-                url:'/product/selected',
+        deleteManyProduct: builder.mutation({
+            query: (body) => ({
+                method: 'DELETE',
+                url: '/product/selected',
                 body
             }),
-            invalidatesTags:['deleteProducts']
+            invalidatesTags: ['deleteProducts']
         }),
 
         uploadImage: builder.mutation({
             query: (file) => ({
                 method: 'POST',
                 url: '/uploadImage',
-                body:file,
+                body: file,
             }),
             invalidatesTags: ['uploadImage'],
         }),
 
-        uploadMultiple : builder.mutation({
-            query : (files)=>({
-                method:'POST',
-                url:'/uploadImages',
-                body:files
+        uploadMultiple: builder.mutation({
+            query: (files) => ({
+                method: 'POST',
+                url: '/uploadImages',
+                body: files
             }),
-            invalidatesTags:['uploadImages']
+            invalidatesTags: ['uploadImages']
         }),
 
         deleteIMage: builder.mutation({
-            query: ({publicKey}) => ({
+            query: ({ publicKey }) => ({
                 method: 'POST',
                 url: '/deleteImage',
-                body:{publicKey},
+                body: { publicKey },
             }),
             invalidatesTags: ['deleteImage'],
         }),
@@ -167,12 +167,41 @@ export const api = createApi({
 
         deleteCategory: builder.mutation<void, string>({
             query: (ids) => ({
-              url: `/category/delete/`,
-              method: 'DELETE',
-              body:ids
+                url: `/category/delete/`,
+                method: 'DELETE',
+                body: ids
             }),
             invalidatesTags: ['deleteCategory'],
-          }),
+        }),
+
+
+        // Fetch all FAQs
+        getFAQs: builder.query({
+            query: () => '/faq',
+            providesTags: ['FAQ'], // Invalidate cache when FAQs change
+        }),
+
+        // Add a new FAQ
+        addFAQ: builder.mutation({
+            query: (body) => ({
+                url: '/faq/add',
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ['FAQ'], // Invalidate cache after adding
+        }),
+
+        // Delete an FAQ
+        deleteFAQ: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `/faq/delete/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['FAQ'], // Invalidate cache after deleting
+        }),
+
+
+
     }),
 });
 
@@ -194,7 +223,10 @@ export const {
     useDeleteManyProductMutation,
     useUploadMultipleMutation,
     useReadSingleCategoriesQuery,
+    useGetFAQsQuery,
+    useAddFAQMutation,
+    useDeleteFAQMutation,
     usePrefetch
 } = api;
 
-export const {prefetch} = api.util;
+export const { prefetch } = api.util;

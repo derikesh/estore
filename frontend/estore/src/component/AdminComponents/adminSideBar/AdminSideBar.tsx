@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, memo } from 'react';
-import { FaHome, FaBox, FaPlus, FaEye, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaHome, FaBox, FaPlus, FaEye, FaChevronDown, FaChevronUp, FaStore, FaQuestionCircle } from 'react-icons/fa';
 import Link from 'next/link';
 
 interface MenuItemProps {
@@ -39,9 +39,11 @@ const SubMenu: React.FC<SubMenuProps> = ({ icon, label, isOpen, toggle, children
 const AdminSidebar: React.FC = memo(() => {
   const [isProductMenuOpen, setIsProductMenuOpen] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+  const [isStoreMenuOpen, setIsStoreMenuOpen] = useState(false);
 
   const toggleProductMenu = () => setIsProductMenuOpen(!isProductMenuOpen);
   const toggleCategoryMenu = () => setIsCategoryMenuOpen(!isCategoryMenuOpen);
+  const toggleStoreMenu = () => setIsStoreMenuOpen(!isStoreMenuOpen);
 
   console.log("menu rerendered")
 
@@ -52,6 +54,15 @@ const AdminSidebar: React.FC = memo(() => {
         <ul className="space-y-4">
           <MenuItem icon={<FaHome />} label="Dashboard" href="/admin/dashboard" />
           <MenuItem icon={<FaHome />} label="Test2" href="/admin/dashboard/test2" />
+
+          <SubMenu
+            icon={<FaStore />}
+            label="Store"
+            isOpen={isStoreMenuOpen}
+            toggle={toggleStoreMenu}
+          >
+            <MenuItem icon={<FaQuestionCircle />} label="FAQ" href="/admin/dashboard/store/faq" />
+          </SubMenu>
 
           <SubMenu
             icon={<FaBox />}
@@ -72,6 +83,8 @@ const AdminSidebar: React.FC = memo(() => {
             <MenuItem icon={<FaPlus />} label="Add" href="/admin/dashboard/category/add" />
             <MenuItem icon={<FaEye />} label="View" href="/admin/dashboard/category" />
           </SubMenu>
+
+         
         </ul>
       </div>
     </aside>

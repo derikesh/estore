@@ -62,6 +62,7 @@ const DropBox = memo(({ setFieldValue = () => { }, name, values, type }: DropBox
         if (isError) {
             toast.error(`Error: ${JSON.stringify(error)}`);
             console.log("Error:", error);
+            setPreviews( [] );
         }
     }, [isError, error]);
 

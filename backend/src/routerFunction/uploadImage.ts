@@ -85,6 +85,6 @@ export const uploadImages = async (req: Request, res: Response):Promise<any> => 
 
      return  res.status(200).json({ images: arrayObject });
   } catch (error) {
-       res.status(500).json({ error: 'Error handling image upload' });
+       res.status(500).json({ error: 'Error handling images' });
   }
 };

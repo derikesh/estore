@@ -24,6 +24,8 @@ export default function ReadCategory({ categoryData, refetch }: ReadCategoryInte
 
     const [deleteCategory, { isSuccess: deleteSucess, isError: deleteIsError, error: deleteError }] = useDeleteCategoryMutation();
 
+    console.log( "this is single cateogyr",categoryData );
+
     const columns: ColumnDef<CATEGORY_INTERFACE>[] = useMemo(() => [
         {
             id: 'actions',
@@ -44,7 +46,7 @@ export default function ReadCategory({ categoryData, refetch }: ReadCategoryInte
         {
             accessorKey: 'image.imageUrl',
             header: 'Category Image',
-            cell: (info) => <img src={info.getValue() as string} alt="Product" style={{ width: '50px', height: '50px' }} />
+            cell: (info) => <img src={info.getValue() as string} alt="Product" style={{ width: '50px', height: '50px', objectFit:'cover' }} />
         },
         {
             accessorKey: 'name',

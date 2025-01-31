@@ -4,6 +4,7 @@ import LIkedProduct from "@/src/component/ClientComponent/LikedProduct.tsx/LIked
 import Faq from "@/src/component/ClientComponent/FAQ/Faq";
 import DisplayProduct from "@/src/component/ClientComponent/AllProduct/DisplayProduct";
 
+
 export default function Home() {
 
   return (
@@ -18,3 +19,4 @@ export default function Home() {
 
   );
 }
+

@@ -22,6 +22,11 @@ import { uploadMulter } from "../utility/multer";
 import { deleteImage } from "../routerFunction/uploadImage";
 import { uploadImages } from "../routerFunction/uploadImage";
 
+
+// faq
+
+import { addFAQ , deleteFAQ, } from "../routerFunction/faq";
+import { readFaq } from "../routerFunction/faq";
 export const router = Router();
 
 
@@ -75,5 +80,13 @@ router.delete('/category/delete/',cookieAuth,deleteCategory);
 router.post('/uploadImage',uploadMulter.single('file'),uploadImage);
 router.post('/uploadImages',uploadMulter.array( 'files',5 ) , uploadImages)
 router.post('/deleteImage',deleteImage as any );
+
+
+
+// faq
+router.get('/faq',readFaq)
+router.post( '/faq/add',cookieAuth,addFAQ );
+router.delete( '/faq/delete/:id',cookieAuth,deleteFAQ );
+
 
 export default router;

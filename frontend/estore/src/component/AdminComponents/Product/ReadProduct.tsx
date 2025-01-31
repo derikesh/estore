@@ -35,11 +35,11 @@ interface CATEGORY_INTERFACE {
 interface PRODUCT_PROPS {
     data: SINGLE_PRODUCT[],
     refetch: () => void,
-    categoryData: CATEGORY_INTERFACE[]
+    // categoryData: CATEGORY_INTERFACE[]
 }
 
 // another one 
-export default function ReadProduct({ data, refetch, categoryData }: PRODUCT_PROPS) {
+export default function ReadProduct({ data, refetch }: PRODUCT_PROPS) {
     const router = useRouter();
 
     const dispatch = useDispatch<any>();
@@ -79,7 +79,7 @@ export default function ReadProduct({ data, refetch, categoryData }: PRODUCT_PRO
         {
             accessorKey: 'images.imageUrl',
             header: 'Image',
-            cell: (info) => <img src={info.getValue() as string} alt="Product" style={{ width: '50px', height: '50px' }} />,
+            cell: (info) => <img src={info.getValue() as string} alt="Product" style={{ width: '50px', height: '50px', objectFit:'cover', objectPosition:'top'}} />,
         },
         {
             accessorKey: "name",
