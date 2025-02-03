@@ -4,15 +4,13 @@ import React, { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import ReadCategory from '@/src/component/AdminComponents/Category/ReadCategory';
 import { useReadCategoriesQuery } from '@/src/store/rtkQuery';
+import { IMAGE_INTERFACE } from '../product/page';
 
 export  interface CATEGORY_INTERFACE {
   _id:string,
   name:string,
   slug:string,
-  image:{
-    imageUrl:string,
-    publicKey:string
-  },
+  image:IMAGE_INTERFACE,
   parent:string,
   description?:string
 }

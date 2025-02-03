@@ -32,9 +32,9 @@ export default function ProductCard({
             RS : {productDetail?.price}
           </div>
           <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="absolute inset-0 flex items-center justify-end pr-4">
+            <div className="absolute inset-0 flex items-center gap-2 justify-end pr-4">
               { productDetail?.color?.map( (item,index)=>(
-              <input disabled type="color" value={item as any} key={index} className={`bg-${item}  p-2 rounded-full  transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out`}/>
+              <input disabled type="color" value={item as any} key={index} className={`bg-${item} h-[20px] w-[45px] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out`}/>
 
                )) }
                 <span className="sr-only">colors</span>

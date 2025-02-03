@@ -4,7 +4,13 @@ import React, { useState } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 
-export default function CategoriesCard() {
+import { CATEGORY_INTERFACE } from "@/app/admin/dashboard/category/page"
+
+interface SINGLE_CATEGORY{
+  categoryData:CATEGORY_INTERFACE;
+}
+
+export default function CategoriesCard( {categoryData}:SINGLE_CATEGORY ) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
@@ -13,7 +19,7 @@ export default function CategoriesCard() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Image src="/images/hoodie-1.avif" alt="Category Image" width={300} height={300} className="w-full h-auto" />
+      <Image src={categoryData?.image?.imageUrl} alt="Category Image" width={300} height={300} className="w-full h-auto" />
       <AnimatePresence>
         {!isHovered && (
           <motion.div
@@ -30,7 +36,7 @@ export default function CategoriesCard() {
         animate={{ color: isHovered ? "#000000" : "#FFFFFF" }}
         transition={{ duration: 0.4 }}
       >
-        Category Title
+        {categoryData?.name}
       </motion.div>
     </div>
   )

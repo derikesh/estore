@@ -7,7 +7,16 @@ import CategoriesCard from '../Cards/CategoriesCard';
 import type { Variants } from "motion/react"
 import * as motion from 'motion/react-client';
 
-export default function Categories() {
+import { CATEGORY_INTERFACE } from '@/app/admin/dashboard/category/page';
+
+interface CATEGORY_PROPS {
+  data:CATEGORY_INTERFACE[]
+}
+
+export default function Categories({data}:CATEGORY_PROPS) {
+
+
+  console.log("this is category data",data);
 
     const animationVariant: Variants = {
         offscreen: {
@@ -33,7 +42,7 @@ export default function Categories() {
                 
                 <div className='wrap_categories_content py-4' >
                 <SwiperComp perView={1} perViewMd={2} perViewLg={4}>
-                {[0, 1, 2].map((index) => (
+                {data?.map((item,index) => (
               <motion.div
                 key={index}
                 initial="offscreen"
@@ -42,7 +51,7 @@ export default function Categories() {
                 variants={animationVariant}
                 custom={index} // Pass the index as a custom prop
               >
-                <CategoriesCard />
+                <CategoriesCard categoryData={item} />
               </motion.div>
             ))}
                 </SwiperComp>

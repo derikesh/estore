@@ -15,13 +15,22 @@ const faqs = [
   { question: "How can I contact customer support?", answer: "You can contact customer support via email at support@example.com or call us at 123-456-7890." },
 ];
 
-export default function Faq() {
+interface FAQ_INTERFACE {
+  question:string,
+  answer:string
+}
+
+interface FAQ_DATA {
+  data:FAQ_INTERFACE[]
+}
+
+export default function Faq({data}:FAQ_DATA) {
   return (
     <div className=" px-4 my-8 py-16 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-lg shadow-md">
       <div className='max-w-3xl mx-auto'>
         <h2 className="text-3xl font-bold text-center mb-8 sm:text-xl">Frequently Asked Questions</h2>
         <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, index) => (
+          {data?.map((faq, index) => (
             <AccordionItem value={`item-${index}`} key={index} className="border-b border-gray-200 dark:border-gray-700">
               <AccordionTrigger className="text-lg sm:text-lg">{faq.question}</AccordionTrigger>
               <AccordionContent className="text-base sm:text-md">{faq.answer}</AccordionContent>
