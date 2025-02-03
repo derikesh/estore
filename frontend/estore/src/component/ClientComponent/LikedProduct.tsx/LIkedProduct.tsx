@@ -32,6 +32,7 @@ export default function LikedProduct() {
   const [activeTab, setActiveTab] = useState<any | null>(0);
 
 
+  console.log("this is client side");
   return (
     <>
       <div className='container-cus extra-products-wrap py-8'>

@@ -4,7 +4,6 @@ import React from 'react';
 import PostCategory from '@/src/component/AdminComponents/Category/PostCategory';
 import { useReadCategoriesQuery, useReadSingleCategoriesQuery } from '@/src/store/rtkQuery';
 import { useParams } from 'next/navigation';
-import { Suspense } from 'react';
 
 export interface CATEGORY_INTERFACE {
   _id:string,

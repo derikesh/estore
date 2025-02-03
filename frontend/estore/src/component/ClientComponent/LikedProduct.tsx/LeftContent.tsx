@@ -45,8 +45,9 @@ export default function LeftContent({ className, title, tabData,activeTab  }: SE
 
 
           <div className=" h-full w-full top-0 ">
-            {tabData?.[activeTab]?.features.map((feature:any) => (
+            {tabData?.[activeTab]?.features.map((feature:any,index:number) => (
               <div 
+              key={index}
               className="absolute bg-white dark:text-black feature_label text-sm p-2 rounded-[3px]"
               style={{
                 left: `${feature.id % 2 === 0 ? feature.x + 12 : feature.x - 24}%`,

@@ -29,6 +29,7 @@ import { addFAQ , deleteFAQ, } from "../routerFunction/faq";
 import { readFaq } from "../routerFunction/faq";
 export const router = Router();
 
+import { homeFunction } from "../routerFunction/homePage";
 
 
 // product routes
@@ -87,6 +88,10 @@ router.post('/deleteImage',deleteImage as any );
 router.get('/faq',readFaq)
 router.post( '/faq/add',cookieAuth,addFAQ );
 router.delete( '/faq/delete/:id',cookieAuth,deleteFAQ );
+
+
+// home page data 
+router.get('/home/firstPage',homeFunction);
 
 
 export default router;

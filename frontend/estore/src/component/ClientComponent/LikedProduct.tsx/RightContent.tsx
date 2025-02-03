@@ -6,7 +6,6 @@ import { motion } from "framer-motion"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function RightContent({ className, setActiveTab = () => {}, tabData, activeTab }: any) {
-  console.log("this is active tab", tabData[activeTab])
 
   return (
     <div className={`${className}`}>
@@ -31,7 +30,6 @@ export default function RightContent({ className, setActiveTab = () => {}, tabDa
 
         
       </div>
-
 
 
         {/* Mobile view */}

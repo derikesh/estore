@@ -4,19 +4,33 @@ import LIkedProduct from "@/src/component/ClientComponent/LikedProduct.tsx/LIked
 import Faq from "@/src/component/ClientComponent/FAQ/Faq";
 import DisplayProduct from "@/src/component/ClientComponent/AllProduct/DisplayProduct";
 
+import { baseUrl } from "@/src/config/baseUrl";
 
-export default function Home() {
 
+const fetchFUnction = async () => {
+  try {
+    const res = await fetch(`${baseUrl}home/firstPage`, { next: { tags: ['firstPage'], revalidate: 3600 } });
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Error: ${errorText}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (err: any) {
+    throw new Error(`Error: ${JSON.stringify(err?.message || err)}`);
+  }
+};
+
+export default async function Home() {
+  const data = await fetchFUnction();
+  
   return (
-   
-    <div className="space-y-10" >
-        <CategoryDisplay/>
-        <Categories/>
-        <LIkedProduct/>
-        <Faq/>
-        <DisplayProduct/>
+    <div className="space-y-10">
+      <CategoryDisplay data={data?.data?.randomObj} products={data?.data?.categoryProduct} />
+      <Categories />
+      <LIkedProduct />
+      <Faq />
+      <DisplayProduct />
     </div>
-
   );
 }
-

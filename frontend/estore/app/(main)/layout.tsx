@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
 
 
-  let cookieValue = cookies().get('theme');
+  const cookieValue = cookies().get('theme');
 
   return (
         <ThemeProvider 

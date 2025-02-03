@@ -17,7 +17,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* this might cause hydeation error due to client component but its working so i'll leave it be  */}
         <ToastContainer/> 
           {children}
       </body>

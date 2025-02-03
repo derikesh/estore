@@ -9,7 +9,10 @@ export  interface CATEGORY_INTERFACE {
   _id:string,
   name:string,
   slug:string,
-  image:any,
+  image:{
+    imageUrl:string,
+    publicKey:string
+  },
   parent:string,
   description?:string
 }

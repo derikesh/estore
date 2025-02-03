@@ -6,10 +6,11 @@ import categoryModel from "../dataModels/categoryModel";
 import productModel from "../dataModels/productModel";
 import FAQ from "../dataModels/faqModel";
 
-router.get( '/home/initalPage', async ( req:Request , res:Response )=>{
+export const homeFunction =  async ( req:Request , res:Response )=>{
             try {
 
                 const randomCategory = await categoryModel.aggregate( [ { $sample : { size:1 } } ] );
+                const randomObj = randomCategory[0];
 
                 const categoryProduct = await productModel.find( {category:randomCategory[0]._id} ).limit(5);
 
@@ -19,11 +20,11 @@ router.get( '/home/initalPage', async ( req:Request , res:Response )=>{
 
                 const faq = await FAQ.find({}).limit(10);
                 
-                res.status(200).json({message:'home data',data:{ randomCategory ,categoryProduct ,category,highlightProduct, faq }});
+                res.status(200).json({message:'home data',data:{ randomObj ,categoryProduct ,category,highlightProduct, faq }});
 
             }catch(err){
                 sendServerError( res ,`Error creating user: ${err }` );
             }
-} )
+} 
 
-
+ 

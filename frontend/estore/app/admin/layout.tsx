@@ -1,7 +1,7 @@
 'use client'
 
 import store from '@/src/store/store';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
 export default function AdminLayout({ children }:{ children:ReactNode }) {

@@ -25,7 +25,7 @@ const Page = async () => {
         {/* {data ? JSON.stringify(data) : "No data available"} */}
       </div>
       <div>
-        {data?.map( (item:any )=> (<div>{item.name}_{item._id} : {item.price} </div>) )}
+        {data?.map( (item:any )=> (<div key={item._id} >{item.name}_{item._id} : {item.price} </div>) )}
       </div>
     </div>
   );
