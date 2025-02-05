@@ -1,0 +1,53 @@
+version: '3.8'  # Specifies Docker Compose version, 3.8 is modern and flexible
+
+services:
+  # Frontend Service
+  frontend:
+    build: ./frontend/estore  # Builds Dockerfile from frontend directory
+    ports:
+      - '3000:3000'  # Maps local port 3000 to container port 3000
+    environment:
+      - NODE_ENV=development  # Sets Node environment to production
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+    volumes:
+      - ./frontend/estore:/app  # Syncs frontend code changes without rebuilding
+      - /app/node_modules  # Avoids overwriting node_modules inside container
+    env_file:
+      - ./frontend/estore/.env  # Specifies the .env file to use 
+
+  # Backend Service
+  backend:
+    build: ./backend  # Builds Dockerfile from backend directory
+    ports:
+      - "5000:5000"  # Maps local port 5000 to container port 5000
+    environment:
+      # Environment variables for backend (secure these in .env)
+      - NODE_ENV=development
+      - MONGO_URI=mongodb+srv://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@estorecluster.jrm39.mongodb.net/?retryWrites=true&w=majority&appName=estoreCluster
+      - JWT_KEY=${JWT_KEY}
+      - REFRESH_TOKEN=${REFRESH_TOKEN}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    volumes:
+      - ./backend:/app  # Syncs backend code changes without rebuilding
+    depends_on:
+      - mongo  # Ensures MongoDB starts before backend
+    env_file:
+      - ./backend/.env  # Specifies the .env file to use  
+
+  # MongoDB Service
+  mongo:
+    image: mongo:5  # Uses official MongoDB image (version 5)
+    ports:
+      - "27017:27017"  # Exposes MongoDB on local port 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    volumes:
+      - mongo-data:/data/db  # Persistent storage for MongoDB data
+
+# Defines named volumes for persistent data
+volumes:
+  mongo-data:
