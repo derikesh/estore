@@ -8,12 +8,11 @@ interface SINGLE_PRODUCT_DATA {
     id:string
 }
 
+const Page = async ({params}:{ params:{id:string} }) => {
 
-
-const Page = async ({id}:SINGLE_PRODUCT_DATA) => {
 
     const fetchSingleProduct = async ()=>{
-        const res = await fetch(`${baseUrl}/product/${id}`)
+        const res = await fetch(`${baseUrl}/product/${params.id}`)
         const data = res.json();
         return data
 }
@@ -24,7 +23,7 @@ console.log("product single",resultData);
 
   return (
       <div className='space-y-10' >
-        <SingleProductShowcase />
+        <SingleProductShowcase singleProduct={resultData?.data} />
         {/* <Faq data={{}} /> */}
         {/* <SuggestCards/> */}
       </div>

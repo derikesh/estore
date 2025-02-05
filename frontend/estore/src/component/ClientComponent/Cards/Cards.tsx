@@ -17,7 +17,7 @@ export default function ProductCard({
 
   return (
     <div className={`relative bg-white dark:bg-gray-800 shadow-lg rounded-[7px] overflow-hidden group ${className}`}>
-      <Link href={"/test2"}>
+      <Link href={`/product/${productDetail?._id}`}>
         <div className="aspect-square relative overflow-hidden">
           <div className="flex h-full justify-center items-center">
             <Image

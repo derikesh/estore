@@ -17,7 +17,7 @@ const fetchFUnction = async () => {
     const data = await res.json();
     return data;
   } catch (err: any) {
-    throw new Error(`Error: ${JSON.stringify(err?.message || err)}`);
+      console.log("err");
   }
 };
 

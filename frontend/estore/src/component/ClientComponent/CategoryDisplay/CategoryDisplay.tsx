@@ -30,7 +30,7 @@ export default function CategoryDisplay( {data,products}:CategoryProps  ) {
 
                         <div className='w-full'>
                             <SwiperComp perView={1} perViewLg={2} perViewMd={2} >
-                                { products.map( (item,index)=>(
+                                { products?.map( (item,index)=>(
                                     <Cards key={index} productDetail={item} />
                                 ) ) }
                             </SwiperComp>

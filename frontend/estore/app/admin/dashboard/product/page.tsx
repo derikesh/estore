@@ -11,6 +11,7 @@ export interface IMAGE_INTERFACE {
 }
 
 export interface PRODUCT_INTERFACE {
+  _id?:string,
   name:string,
   price:number,
   category:string,

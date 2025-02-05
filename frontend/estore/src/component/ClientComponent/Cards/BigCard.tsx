@@ -19,14 +19,14 @@ export default function BigCard({ className,content }: BigCardInterface) {
   return (
     <div className={`big-card ${className} bg-white rounded-[8px] dark:bg-gray-800 shadow-xl flex gap-2 flex-col items-center py-8 px-4`}>
       <Image
-        src={content.image.imageUrl}
+        src={content?.image?.imageUrl}
         alt='image-hoodie'
         width={300}
         height={300}
         className={`w-full max-w-[300px] transition-transform h-auto ${hover ? 'scale-110' : ''}`}
       />
-      <div className='bcard-title text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white text-center'>{content.name}</div>
-      <p className='text-gray-700 dark:text-gray-300 text-center text-sm sm:text-base'>{content.description}</p>
+      <div className='bcard-title text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white text-center'>{content?.name}</div>
+      <p className='text-gray-700 dark:text-gray-300 text-center text-sm sm:text-base'>{content?.description}</p>
       <Button
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
