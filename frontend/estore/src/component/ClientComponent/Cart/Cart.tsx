@@ -1,88 +1,111 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { FaPlus, FaMinus, FaShoppingCart } from 'react-icons/fa'
+import { useState } from "react"
+import { FaPlus, FaMinus, FaTrash } from "react-icons/fa"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { LuShoppingCart } from 'react-icons/lu'
+import { LuShoppingCart } from "react-icons/lu"
+import type { PRODUCT_INTERFACE } from "@/app/admin/dashboard/product/page"
 
-interface Product {
-  id?: number
-  name?: string
-  price?: number
-  image?: string
-}
+// redux action
+import { useDispatch, useSelector } from "react-redux"
+import { addToCart, removeFromCart, updateCart, clearCart } from "@/src/store/slices"
+import type { RootState } from "@/src/store/store"
 
-export function AddToCartModal({ product, icon }: { product: Product | null, icon?: boolean }) {
+export function AddToCartModal({ product, icon }: { product: PRODUCT_INTERFACE | null; icon?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
-  const [quantity, setQuantity] = useState(1)
-
-  const incrementQuantity = () => setQuantity(q => q + 1)
-  const decrementQuantity = () => setQuantity(q => Math.max(1, q - 1))
+  const dispatch = useDispatch()
+  const cartItems = useSelector((state: RootState) => state.cart.items)
 
   const handleAddToCart = () => {
     if (product) {
-      // Here you would typically dispatch an action to add the item to the cart
-      console.log(`Added ${quantity} of ${product.name} to cart`)
-      setIsOpen(false)
+      dispatch(addToCart({ id: product._id, name: product.name, quantity: 1, price: product.price ,image:product.images.imageUrl}))
+      setIsOpen(true)
     }
   }
 
+  const handleUpdateQuantity = (id: string, quantity: number) => {
+    dispatch(updateCart({ id, quantity, name: "", price: 0 ,image:'' }))
+  }
+
+  const handleRemoveItem = (id: string) => {
+    dispatch(removeFromCart({ id, name: "", quantity: 0, price: 0,image:'' }))
+  }
+
+  const handleClearCart = () => {
+    dispatch(clearCart({ id: "", name: "", quantity: 0, price: 0,image:'' }))
+  }
+
+  const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className=' w-full' asChild>
-        <Button onClick={() => setIsOpen(true)}>{icon ? <LuShoppingCart /> : <div className='bg-black hover:bg-gray-800 px-4 py-2 text-white rounded-[5px] w-full' >Add to card</div>}</Button>
+      <SheetTrigger className="w-full" asChild>
+        <Button onClick={handleAddToCart}>
+          {icon ? (
+            <LuShoppingCart />
+          ) : (
+            <div className="bg-black hover:bg-gray-800 px-4 py-2 text-white rounded-[5px] w-full">Add to cart</div>
+          )}
+        </Button>
       </SheetTrigger>
       <SheetContent className="w-[90vw] sm:w-[540px] sm:max-w-[90vw]">
         <SheetHeader>
-          <SheetTitle>Add to Cart</SheetTitle>
-          <SheetDescription>
-            {product ? "Add this item to your shopping cart" : "No product selected"}
-          </SheetDescription>
+          <SheetTitle>Your Cart</SheetTitle>
+          <SheetDescription>{cartItems.length > 0 ? "Review your cart items" : "Your cart is empty"}</SheetDescription>
         </SheetHeader>
-        {product ? (
+        {cartItems.length > 0 ? (
           <div className="mt-6 space-y-6">
-            <div className="flex items-center space-x-4">
-              <img 
-                src={product.image || "/placeholder.svg"} 
-                alt={product.name} 
-                className="w-24 h-24 object-cover rounded-md"
-              />
-              <div>
-                <h3 className="font-semibold text-lg">{product.name}</h3>
-                <p className="text-sm text-gray-500">${product.price?.toFixed(2)}</p>
+            {cartItems.map((item) => (
+              <div key={item.id} className="flex items-center space-x-4">
+                <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md" />
+                <div className="flex-1">
+                  <h3 className="font-semibold">{item.name}</h3>
+                  <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                  <div className="flex items-center space-x-2 mt-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleUpdateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                    >
+                      <FaMinus className="h-4 w-4" />
+                    </Button>
+                    <Input
+                      type="number"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(e) => handleUpdateQuantity(item.id, Math.max(1, Number.parseInt(e.target.value) || 1))}
+                      className="w-16 text-center"
+                    />
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                    >
+                      <FaPlus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+                <Button variant="ghost" size="icon" onClick={() => handleRemoveItem(item.id)}>
+                  <FaTrash className="h-4 w-4" />
+                </Button>
               </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="icon" onClick={decrementQuantity}>
-                <FaMinus className="h-4 w-4" />
-              </Button>
-              <Input 
-                type="number" 
-                min="1" 
-                value={quantity} 
-                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                className="w-20 text-center"
-              />
-              <Button variant="outline" size="icon" onClick={incrementQuantity}>
-                <FaPlus className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="flex justify-between items-center">
+            ))}
+            <div className="flex justify-between items-center pt-4 border-t">
               <span className="text-lg font-semibold">Total:</span>
-              <span className="text-lg font-semibold">${ product.price ? (product?.price * quantity).toFixed(2) : '' }</span>
+              <span className="text-lg font-semibold">${totalPrice.toFixed(2)}</span>
             </div>
-            <Button className="w-full" onClick={handleAddToCart}>
-              <FaShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+            
+            <Button variant="default" className="w-[90%] absolute bottom-5" onClick={handleClearCart}>
+              Clear Cart
             </Button>
           </div>
         ) : (
-          <div className="mt-6 text-center text-gray-500">
-            No product selected
-          </div>
+          <div className="mt-6 text-center text-gray-500">Your cart is empty</div>
         )}
       </SheetContent>
     </Sheet>
   )
 }
+

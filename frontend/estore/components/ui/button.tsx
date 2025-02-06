@@ -8,7 +8,7 @@ const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
-      variant: {
+          variant: {
         default:
           "rounded-[5px] text-primary-foreground hover:bg-primary/90",
         destructive:
@@ -17,8 +17,12 @@ const buttonVariants = cva(
           "border rounded-[5px] border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        danger:
+          "border rounded-[5px] border-input bg-red-600 shadow-sm hover:bg-accent hover:text-accent-foreground",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        buttonPrimary:
+          "bg-black text-white dark:bg-white dark:text-black shadow-sm hover:bg-gray-800 dark:hover:bg-gray-200",
       },
       size: {
         default: "h-9 px-4 py-2",

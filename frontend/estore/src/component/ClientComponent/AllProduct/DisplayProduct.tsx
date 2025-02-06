@@ -18,7 +18,7 @@ export default function DisplayProduct() {
           onClick={handleRedirect}
           className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white hover:from-purple-600 hover:via-pink-600 hover:to-red-600 transition-all duration-300"
         >
-          View Alldddd
+          View All
         </Button>
       </div>
     </div>

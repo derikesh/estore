@@ -12,7 +12,7 @@ const Page = async ({params}:{ params:{id:string} }) => {
 
 
     const fetchSingleProduct = async ()=>{
-        const res = await fetch(`${baseUrl}/product/${params.id}`)
+        const res = await fetch(`http://backend:5000/product/${params.id}`)
         const data = res.json();
         return data
 }

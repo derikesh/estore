@@ -3,7 +3,7 @@ import { baseUrl } from "../config/baseUrl";
 
 // This setup includes credentials for all requests
 const baseUrlSetup = fetchBaseQuery({
-    baseUrl: baseUrl,
+    baseUrl: "http://backend:5000/",
     credentials: 'include', // Include credentials for all requests
     prepareHeaders: (header: Headers) => {
         const cookies = document.cookie;

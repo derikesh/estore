@@ -18,7 +18,7 @@ app.use( express.json() );
 
 // to handle cross origin sites
 app.use(cors({
-    origin:process.env.FRONTEND_URL, // Specify your frontend URL here
+    origin:"process.env.FRONTEND_URL", // Specify your frontend URL here
     credentials: true,  // Allow credentials (cookies) to be sent with requests
 }));
 

@@ -9,6 +9,7 @@ import SwiperComp from "../Swiper.tsx/Swiper"
 import { AddToCartModal } from "../Cart/Cart"
 import { cn } from "@/lib/utils"
 import { PRODUCT_INTERFACE } from "@/app/admin/dashboard/product/page"
+import { StoreCart } from "../Cart/StoreCart"
 // Import Swiper styles
 import "swiper/css"
 import "swiper/css/navigation"
@@ -16,14 +17,13 @@ import "swiper/css/pagination"
 
 const sizes = ["S", "M", "L", "XL"]
 
-
 interface PAGE_SINGLE_INTERFACE {
-  singleProduct:PRODUCT_INTERFACE;
+  singleProduct: PRODUCT_INTERFACE;
 }
 
-
-export default function SingleProductShowcase( {singleProduct}:PAGE_SINGLE_INTERFACE ) {
+export default function SingleProductShowcase({ singleProduct }: PAGE_SINGLE_INTERFACE) {
   const [selectedSize, setSelectedSize] = useState<string | null>(singleProduct?.sizes[0] as string)
+  const [selectedColor, setSelectedColor] = useState<string | null>(singleProduct?.color[0] as string)
 
   return (
     <div className="max-w-[1680px] mx-auto bg-background pb-16">
@@ -33,7 +33,7 @@ export default function SingleProductShowcase( {singleProduct}:PAGE_SINGLE_INTER
           {/* mobile view */}
           <div className="md:block lg:hidden">
             <SwiperComp pagination perView={1} perViewMd={1} perViewLg={1}>
-              {singleProduct?.productImages?.map((item,index) => (
+              {singleProduct?.productImages?.map((item, index) => (
                 <div className="bg-white dark:bg-gray-800 flex h-[60vh] justify-center items-center p-8" key={index}>
                   <Image
                     src={item?.imageUrl}
@@ -49,13 +49,12 @@ export default function SingleProductShowcase( {singleProduct}:PAGE_SINGLE_INTER
 
           {/* desktop view */}
           <div className="lg:block hidden">
-            {singleProduct?.productImages?.map((item,index) => (
+            {singleProduct?.productImages?.map((item, index) => (
               <div className="bg-white dark:bg-gray-800 flex h-[90vh] justify-center items-center p-[13rem]" key={index}>
                 <Image
                   src={item?.imageUrl}
                   alt={`Product Image ${index}`}
                   layout="responsive"
-                  // fill
                   width={400}
                   height={400}
                   className=""
@@ -74,36 +73,27 @@ export default function SingleProductShowcase( {singleProduct}:PAGE_SINGLE_INTER
 
           <div className="space-y-6">
             {/* Color Selection */}
-            {/* <div className="space-y-2">
+            <div className="space-y-2">
               <Label className="text-sm font-medium block">Color</Label>
               <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-4">
-                {singleProduct?.color?.map((item,index) => (
+                {singleProduct?.color?.map((color, index) => (
                   <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={item as any} id={`color-${item}`} className="sr-only" />
+                    <RadioGroupItem value={color as string} id={`color-${color}`} className="sr-only" />
                     <Label
-                      htmlFor={`color-${item}`}
+                      htmlFor={`color-${color}`}
                       className={cn(
                         "h-6 w-6 rounded-full cursor-pointer border opacity-80 dark:border-white/30 border-black/30 outline outline-2 dark:outline-white/50 outline-offset-2 outline-black/20 ring-offset-background transition-all hover:opacity-100",
-                        selectedColor === item
+                        selectedColor === color
                           ? "dark:ring-white ring-offset-2 outline outline-2 outline-offset-2 dark:outline-white outline-black"
                           : "",
                       )}
                     >
-                      <div className="w-full h-full rounded-full overflow-hidden">
-                        {singleProduct?.color.length === 1 ? (
-                          <div className="w-full h-full" style={{ backgroundColor: option.colors[0] }} />
-                        ) : (
-                          <div className="flex flex-col w-full h-full">
-                            <div className="w-full h-1/2" style={{ backgroundColor: option.colors[0] }} />
-                            <div className="w-full h-1/2" style={{ backgroundColor: option.colors[1] }} />
-                          </div>
-                        )}
-                      </div>
+                      <div className="w-full h-full rounded-full overflow-hidden" style={{ backgroundColor: color as string }} />
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
-            </div> */}
+            </div>
 
             {/* Size Selection */}
             <div className="space-y-2">
@@ -134,25 +124,16 @@ export default function SingleProductShowcase( {singleProduct}:PAGE_SINGLE_INTER
             <AccordionItem value="details">
               <AccordionTrigger className="text-sm font-semibold">Product Details</AccordionTrigger>
               <AccordionContent>
-               {singleProduct?.description}
+                {singleProduct?.description}
               </AccordionContent>
             </AccordionItem>
-            {/* <AccordionItem value="care">
-              <AccordionTrigger className="text-sm font-semibold">Care Instructions</AccordionTrigger>
-              <AccordionContent>
-                <p className="text-sm text-muted-foreground">
-                  Machine wash cold. Tumble dry low. Do not bleach. Wash inside out.
-                </p>
-              </AccordionContent>
-            </AccordionItem> */}
           </Accordion>
 
           <div className="pt-6">
-            <AddToCartModal product={singleProduct} icon={false} />
+            <StoreCart product={singleProduct} icon={false} />
           </div>
         </div>
       </div>
     </div>
   )
 }
-

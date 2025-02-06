@@ -9,7 +9,7 @@ import { baseUrl } from "@/src/config/baseUrl";
 
 const fetchFUnction = async () => {
   try {
-    const res = await fetch(`${baseUrl}home/firstPage`, { next: { tags: ['firstPage'], revalidate: 3600 } });
+    const res = await fetch(`http://backend:5000/home/firstPage`, { cache:'no-store' });
     if (!res.ok) {
       const errorText = await res.text();
       throw new Error(`Error: ${errorText}`);
