@@ -11,13 +11,17 @@ export default async function page() {
   }
   
   const result = await fetchProduct();
-  console.log("all products",result);
-
   return (
     <>
         <div className='container-cus' >
             <div className='grid grid-cols-12 gap-4 py-8' >
-                    <div className='lg:self-start lg:sticky lg:top-10 lg:col-span-2 col-span-12' >all the filters</div>
+                    <div className='lg:self-start lg:sticky lg:top-10 lg:col-span-2 col-span-12' >
+                      <div className='pt-16 flex flex-col gap-4' >
+                        {[1,2,3,4].map( (item)=>(
+                          <p key={item} >item {item}</p>
+                        ) )}
+                      </div>
+                    </div>
                     <div className='lg:col-span-10 col-span-12 ' >
                     <AllProducts allProducts={result?.data} />
                     </div>
