@@ -5,11 +5,15 @@ import Faq from "@/src/component/ClientComponent/FAQ/Faq";
 import DisplayProduct from "@/src/component/ClientComponent/AllProduct/DisplayProduct";
 
 import { baseUrl } from "@/src/config/baseUrl";
+// testing
 
+function est(){
+  return est;
+}
 
 const fetchFUnction = async () => {
   try {
-    const res = await fetch(`http://backend:5000/home/firstPage`, { cache:'no-store' });
+    const res = await fetch(`${baseUrl}/home/firstPage`, { cache:'no-store' });
     if (!res.ok) {
       const errorText = await res.text();
       throw new Error(`Error: ${errorText}`);
@@ -20,6 +24,14 @@ const fetchFUnction = async () => {
       console.log("err");
   }
 };
+// testing test
+// function another test
+
+
+const funct = ()=>{
+  let c = 1;
+  return c;
+}
 
 export default async function Home() {
   const data = await fetchFUnction();
@@ -34,3 +46,5 @@ export default async function Home() {
     </div>
   );
 }
+
+// testo

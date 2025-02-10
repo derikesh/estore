@@ -97,7 +97,7 @@ export function AddToCartModal({ product, icon }: { product: PRODUCT_INTERFACE |
               <span className="text-lg font-semibold">${totalPrice.toFixed(2)}</span>
             </div>
             
-            <Button variant="default" className="w-[90%] absolute bottom-5" onClick={handleClearCart}>
+            <Button variant="buttonPrimary" className="w-[90%] absolute bottom-5" onClick={handleClearCart}>
               Clear Cart
             </Button>
           </div>

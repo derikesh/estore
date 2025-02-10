@@ -3,12 +3,12 @@ import { baseUrl } from "../config/baseUrl";
 
 // This setup includes credentials for all requests
 const baseUrlSetup = fetchBaseQuery({
-    baseUrl: "http://backend:5000/",
+    baseUrl: baseUrl,
     credentials: 'include', // Include credentials for all requests
     prepareHeaders: (header: Headers) => {
         const cookies = document.cookie;
         const token = cookies.split("; ").find((item) => item.startsWith('e_accessToken='))?.split("=")[1];
-
+// this is s atesting gkggjjjj
         if (token) {
             header.set('Authorization', `Bearer ${token}`);
         }

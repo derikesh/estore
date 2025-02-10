@@ -18,10 +18,9 @@ app.use( express.json() );
 
 // to handle cross origin sites
 app.use(cors({
-    origin:"process.env.FRONTEND_URL", // Specify your frontend URL here
-    credentials: true,  // Allow credentials (cookies) to be sent with requests
+    origin: "http://localhost:3000",
+    credentials: true,
 }));
-
 
 // connecting mongodb
 connectMB();
@@ -33,6 +32,5 @@ app.use( '' , router);
 app.listen( 5000 , ()=>{
     console.log("server is working on port 5000");
 } ) ;
-
 
 

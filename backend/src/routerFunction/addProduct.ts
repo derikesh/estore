@@ -7,6 +7,7 @@ import { sendServerError } from "../utility/error";
 // data model 
 import Product from '../dataModels/productModel';
 import { PRODUCT_INTERFACE } from "../dataModels/productModel";
+import categoryModel from "../dataModels/categoryModel";
 
 
 // css
@@ -54,14 +55,21 @@ export const getProduct = async (req: Request, res: Response) => {
 export const getProductSingle = async (req: Request, res: Response) => {
 
     const {id} = req.params;
+    const {includeSuggestion}= req.query;
 
     try {
-         const singleData = await Product.findById(id);
+         const singleData:any = await Product.findById(id);
          if(!singleData){
             sendResponse(res,400,'no such product found');
             return;
          }   
-        sendResponse(res, 200, 'Single product',singleData);
+         if(includeSuggestion ==='true'){
+            const suggestions = await Product.find( {category:singleData?.category , _id:{ $ne : singleData._id }} )
+            sendResponse(res, 200, 'Single product',{singleData ,suggestions});
+
+        }else{
+             sendResponse(res, 200, 'Single product',singleData);
+         }
         return;
     } catch (err) {
         console.log(err);

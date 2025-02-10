@@ -12,10 +12,12 @@ const Page = async ({params}:{ params:{id:string} }) => {
 
 
     const fetchSingleProduct = async ()=>{
-        const res = await fetch(`http://backend:5000/product/${params.id}`)
+        const res = await fetch(`${baseUrl}/product/${params.id}?includeSuggestion=true`);
         const data = res.json();
         return data
 }
+
+// testing testtt
  
 const resultData = await fetchSingleProduct();
 
@@ -23,9 +25,9 @@ console.log("product single",resultData);
 
   return (
       <div className='space-y-10' >
-        <SingleProductShowcase singleProduct={resultData?.data} />
+        <SingleProductShowcase singleProduct={resultData?.data?.singleData} />
         {/* <Faq data={{}} /> */}
-        {/* <SuggestCards/> */}
+        <SuggestCards singleProduct={resultData?.data?.suggestions} />
       </div>
   );
 };

@@ -63,7 +63,6 @@ export default function SingleProductShowcase({ singleProduct }: PAGE_SINGLE_INT
             ))}
           </div>
         </div>
-
         {/* Product Details */}
         <div className="lg:sticky lg:top-8 lg:self-start lg:w-1/3 space-y-8 bg-background p-8 h-screen rounded-lg overflow-y-auto">
           <div className="space-y-4">
