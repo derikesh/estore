@@ -36,12 +36,26 @@ export const addProducts = async (req: Request, res: Response) => {
 
 // Fetching all the products
 export const getProduct = async (req: Request, res: Response) => {
+
+    const { includeCategory,selectedCategory } = req.query;
+
     try {
         const allData = await Product.find({}).populate('category','name').sort({createdAt:-1});
         if(!allData){
             sendResponse(res,400,'no product were found');
             return;
         }
+        if(includeCategory=='true' && selectedCategory){
+            const category = await categoryModel.find({});
+            const products = await Product.find({category:selectedCategory});
+            sendResponse(res, 200, 'All products',{allData,category,products});
+            return;
+        }else if(includeCategory==='true' && !selectedCategory){
+            const category = await categoryModel.find({});
+            sendResponse(res, 200, 'All products',{allData,category});
+            return;
+        }
+      
         sendResponse(res, 200, 'All products',allData);
         return;
     } catch (err) {
@@ -66,9 +80,10 @@ export const getProductSingle = async (req: Request, res: Response) => {
          if(includeSuggestion ==='true'){
             const suggestions = await Product.find( {category:singleData?.category , _id:{ $ne : singleData._id }} )
             sendResponse(res, 200, 'Single product',{singleData ,suggestions});
-
+            return;
         }else{
              sendResponse(res, 200, 'Single product',singleData);
+             return;
          }
         return;
     } catch (err) {
