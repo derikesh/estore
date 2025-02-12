@@ -11,14 +11,14 @@ const sideMenu =  [
 
 export default async function page() {
 
-  async function fetchProduct(category){
-      const res = fetch(`${baseUrl}/product?includeCategory=true`, { next : { revalidate:3600 } } );
+  async function fetchProduct(){
+      const res = await fetch(`${baseUrl}/product?includeCategory=true`, { next : { revalidate:3600 } } );
       const data = (await res).json();
       return data;
   }
 
 
-  const result = await fetchProduct({});
+  const result = await fetchProduct();
   
   console.log("resss",result);
 
@@ -30,7 +30,7 @@ export default async function page() {
                       <SideFilter result={result} />
                     </div>
                     <div className='lg:col-span-10 col-span-12 ' >
-                    <AllProducts allProducts={result?.data?.allData || result?.data?.productCategoryes} />
+                    <AllProducts allProducts={result?.data?.allData} />
                     </div>
             </div>
         </div>

@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'FAQ', 'refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'FAQ', 'addDetail','refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -68,6 +68,15 @@ export const api = createApi({
                 url: '/product/delete/:id',
             }),
             invalidatesTags: ['deleteProduct']
+        }),
+
+        addFeatures:builder.mutation({
+            query:({newFeatures,id})=>({
+                method:'POST',
+                url:'/product/detail',
+                body:{newFeatures,id}
+                }),
+                invalidatesTags:['addDetail']
         }),
 
         readallProduct: builder.query({
@@ -226,6 +235,7 @@ export const {
     useGetFAQsQuery,
     useAddFAQMutation,
     useDeleteFAQMutation,
+    useAddFeaturesMutation,
     usePrefetch
 } = api;
 

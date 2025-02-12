@@ -23,7 +23,7 @@ export default function LeftContent({ className, title, tabData,activeTab  }: SE
         <div className="image_wraper relative">
           <Image src={"/images/ss.png"} height={600} width={600} alt="image" />
 
-          <svg className="absolute h-full w-full top-0">
+          <svg className="absolute h-full w-full top-0 ">
             {tabData?.[activeTab]?.features.map((feature:any) => (
               <g key={feature.id}>
                 <line

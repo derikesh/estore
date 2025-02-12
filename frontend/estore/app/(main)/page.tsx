@@ -24,14 +24,7 @@ const fetchFUnction = async () => {
       console.log("err");
   }
 };
-// testing test
-// function another test
 
-
-const funct = ()=>{
-  let c = 1;
-  return c;
-}
 
 export default async function Home() {
   const data = await fetchFUnction();

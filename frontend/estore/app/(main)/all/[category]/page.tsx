@@ -8,7 +8,7 @@ export default async function page({ params }:{params:{category:string}}) {
     const { category } = params;
 
     async function fetchProduct() {
-        const res = fetch(`${baseUrl}/product?includeCategory=true&selectedCategory=${category}`, { next: { revalidate: 3600 } });
+        const res = await fetch(`${baseUrl}/product?includeCategory=true&selectedCategory=${category}`, { next: { revalidate: 3600 } });
         const data = (await res).json();
         return data;
     }
@@ -23,11 +23,11 @@ export default async function page({ params }:{params:{category:string}}) {
                     <SideFilter result={result} />
                 </div>
                 <div className='lg:col-span-10 col-span-12 ' >
-                    <AllProducts allProducts={result?.data?.products} />
+                    <AllProducts allProducts={result?.data?.allData} />
                 </div>
             </div>
 
         </div>
     )
 }
-// test
+// test`

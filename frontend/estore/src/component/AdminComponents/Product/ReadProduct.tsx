@@ -101,7 +101,12 @@ export default function ReadProduct({ data, refetch }: PRODUCT_PROPS) {
             header: 'Action',
             cell: ({ row }) => {
                 const postID = row?.original?._id
-                return <div onClick={(e: any) => handleClick(e, postID)}><Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-500 w-[50%] px-2 py-1 text-sm rounded-[20x] text-white ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'}`}>Edit</Link></div>
+                return <div className={` ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'} flex gap-8`} >
+                    <Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-700 w-fit px-4 py-1 text-sm rounded-[4px]  text-white`}>Edit</Link>
+                    <Link href={`/admin/dashboard/product/detail/${row.original._id}`} className='bg-gray-700 w-fit px-4 py-1 text-sm rounded-[4px]  text-white' >
+                        Details
+                    </Link>
+                    </div>
             },
             maxSize: 100,
             minSize: 50

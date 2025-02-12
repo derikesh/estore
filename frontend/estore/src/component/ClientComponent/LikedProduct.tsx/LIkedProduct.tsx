@@ -5,12 +5,20 @@ import LeftContent from './LeftContent'
 import RightContent from './RightContent'
 
 
-export const sampleFeatures: any[] = [
-  { id: 1, name: "Ergonomic Handle", description: "Comfortable grip for extended use", x: 20, y: 30 },
-  { id: 2, name: "High-Resolution Display", description: "Crystal clear 4K screen", x: 50, y: 50 },
-  { id: 3, name: "Durable Casing", description: "Shock-resistant outer shell", x: 80, y: 70 },
-  { id: 4, name: "Advanced Cooling System", description: "Prevents overheating during intense usage", x: 30, y: 80 },
-  { id: 5, name: "Precision Camera", description: "Capture stunning photos and videos", x: 70, y: 20 },
+interface SAMPLE_FEATURE_INTERFACE {
+  id:number,
+  name:string,
+  x:number,
+  y:number
+}
+
+
+export const sampleFeatures: SAMPLE_FEATURE_INTERFACE[] = [
+  { id: 1, name: "Ergonomic Handle",  x: 20, y: 30 },
+  { id: 2, name: "High-Resolution Display", x: 50, y: 50 },
+  { id: 3, name: "Durable Casing", x: 80, y: 70 },
+  { id: 4, name: "Advanced Cooling System", x: 30, y: 80 },
+  { id: 5, name: "Precision Camera", x: 70, y: 20 },
 ]
 
 
@@ -23,8 +31,6 @@ const tabData = [
   { productName:'product6' , price:'123' , features:sampleFeatures } , 
   { productName:'product7' , price:'123' , features:sampleFeatures } , 
   { productName:'product8' , price:'123' , features:sampleFeatures } , 
-  
-
 ]
 
 export default function LikedProduct() {

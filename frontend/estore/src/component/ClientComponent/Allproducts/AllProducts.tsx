@@ -6,17 +6,19 @@ import { HorizontalFilter } from "../Filter/Filter"
 import type { PRODUCT_INTERFACE } from "@/app/admin/dashboard/product/page"
 
 export interface ALL_INTERFACE {
-  allProducts: PRODUCT_INTERFACE[]
+  allProducts: any
 }
 
 export default function AllProducts({ allProducts }: ALL_INTERFACE) {
   const [filteredProducts, setFilteredProducts] = useState(allProducts)
-  const maxPrice = Math.max(...allProducts.map((product) => product.price))
+  const maxPrice = Math.max(...allProducts?.map((product) => product.price))
   const [filters, setFilters] = useState({ priceRange: [0, maxPrice], sortOrder: "asc" })
 
 
+  console.log("allPRODUCTS",allProducts)
+
   useEffect(() => {
-    const result = allProducts.filter(
+    const result = allProducts?.filter(
       (product) => product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1],
     )
 
