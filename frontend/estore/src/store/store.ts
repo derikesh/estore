@@ -5,7 +5,7 @@ import { api } from "./rtkQuery";
 const store = configureStore({
     reducer:{
         [api.reducerPath] : api.reducer ,
-        cart:cartReducer
+        cart:cartReducer,
     },
     middleware: ( getDefaultMiddleware )=>
         getDefaultMiddleware().concat(api.middleware)

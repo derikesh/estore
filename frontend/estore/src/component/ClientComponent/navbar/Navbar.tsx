@@ -9,6 +9,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Input } from "@/components/ui/input"
 import ThemeSwitch from "../themeSwitch/ThemeSwitch"
 import { StoreCart } from "../Cart/StoreCart"
+import SearchInput from "../SearchInputs/SearchInput"
+import { Provider } from "react-redux"
+import store from "@/src/store/store"
 
 const navigation = [
   { name: "All item", href: "/all" },
@@ -55,16 +58,10 @@ export function Navbar() {
           </div>
 
           {/* Search Input */}
-          <div className="hidden sm:block flex-1 max-w-md mx-4">
-            <div className="relative">
-              <Input
-                type="search"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4 rounded-[10px] text-gray-500"
-              />
-              <LuSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            </div>
-          </div>
+          <Provider store={store} >
+         <SearchInput/>
+
+          </Provider>
 
           {/* Cart and Theme Toggle */}
           <div className="flex items-center space-x-4">

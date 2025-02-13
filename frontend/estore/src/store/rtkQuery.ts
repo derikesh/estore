@@ -20,7 +20,7 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'FAQ', 'addDetail','refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'FAQ', 'addDetail','searchQuery','refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
         postUser: builder.mutation({
@@ -209,6 +209,15 @@ export const api = createApi({
             invalidatesTags: ['FAQ'], // Invalidate cache after deleting
         }),
 
+        searchProduct : builder.mutation({
+            query:({keyword})=>({
+                method:'POST',
+                url:'/search/all',
+                body:{keyword}
+            }),
+            invalidatesTags:['searchQuery']
+        })
+
 
 
     }),
@@ -217,6 +226,7 @@ export const api = createApi({
 export const {
     usePostUserMutation,
     useLoginMutation,
+    useSearchProductMutation,
     useRefreshTokenMutation,
     useDeleteIMageMutation,
     useAddProductMutation,

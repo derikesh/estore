@@ -5,6 +5,7 @@ import { sendServerError } from "../utility/error";
 import categoryModel from "../dataModels/categoryModel";
 import productModel from "../dataModels/productModel";
 import FAQ from "../dataModels/faqModel";
+import { sendResponse } from "../utility/response";
 
 export const homeFunction =  async ( req:Request , res:Response )=>{
             try {
@@ -29,4 +30,21 @@ export const homeFunction =  async ( req:Request , res:Response )=>{
             }
 } 
 
- 
+
+ export const searchFunction = async ( req:Request, res:Response )=>{
+        const { keyword } = req.body;
+
+        try{
+            const searchItem = await productModel.find({$text:{$search:keyword}});
+            if(searchItem.length <= 0){
+                sendResponse(res,400,'no product found');
+                return
+            }
+            sendResponse(res,200,"item found",searchItem)
+            return;
+
+        }catch(err){
+            sendServerError( res ,`Error creating user: ${err }` );
+        }
+
+ }

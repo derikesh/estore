@@ -53,4 +53,6 @@ const PRODUCT_SCHEMA = new mongoose.Schema({
     features:{ type:[FeatureSchema] , required:false }
 });
 
+PRODUCT_SCHEMA.index({name:'text',description:'text'})
+
 export default mongoose.model<PRODUCT_INTERFACE>('PRODUCT', PRODUCT_SCHEMA);

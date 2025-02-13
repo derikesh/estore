@@ -29,7 +29,7 @@ import { addFAQ , deleteFAQ, } from "../routerFunction/faq";
 import { readFaq } from "../routerFunction/faq";
 export const router = Router();
 
-import { homeFunction } from "../routerFunction/homePage";
+import { homeFunction, searchFunction } from "../routerFunction/homePage";
 
 
 // product routes
@@ -94,6 +94,10 @@ router.delete( '/faq/delete/:id',cookieAuth,deleteFAQ );
 
 // home page data 
 router.get('/home/firstPage',homeFunction);
+
+
+// search api
+router.post('/search/all',searchFunction);
 
 
 export default router;

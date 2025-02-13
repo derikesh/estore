@@ -16,6 +16,7 @@ interface CartState {
 
 const initalValue = {
     items: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("cart") || "[]")  : []  ,
+    searchItem:[]
 }
 
 const slider = createSlice({
@@ -50,7 +51,8 @@ const slider = createSlice({
         clearCart: ( state, action:PayloadAction<PRODUCT_CARD_INTERFACE> )=>{
                 state.items = [];
             localStorage.setItem( "cart", JSON.stringify(state.items) )
-        }
+        },
+
     },
     
     extraReducers: ( builder )=>{
