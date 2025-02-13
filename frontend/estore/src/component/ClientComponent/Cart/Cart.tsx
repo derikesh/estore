@@ -16,7 +16,7 @@ import type { RootState } from "@/src/store/store"
 export function AddToCartModal({ product, icon }: { product: PRODUCT_INTERFACE | null; icon?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch()
-  const cartItems = useSelector((state: RootState) => state.cart.items)
+  const cartItems = useSelector((state: RootState) => state?.cart?.items)
 
   const handleAddToCart = () => {
     if (product) {

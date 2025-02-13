@@ -10,16 +10,24 @@ export interface IMAGE_INTERFACE {
   publicKey:string
 }
 
+export interface FEATURES_INTERFACE {
+  _id:string,
+  name:string,
+  x:number,
+  y:number
+}
+
 export interface PRODUCT_INTERFACE {
   _id?:string,
   name:string,
-  price:number,
-  category:string,
-  description:string,
+  price?:number,
+  category?:string,
+  description?:string,
   images:IMAGE_INTERFACE,
-  productImages:IMAGE_INTERFACE[],
-  sizes:String[],
-  color:String[]
+  productImages?:IMAGE_INTERFACE[],
+  sizes?:String[],
+  color?:String[],
+  features?:FEATURES_INTERFACE[]
 }
 
 export default function Page() {

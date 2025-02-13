@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import LeftContent from './LeftContent'
 import RightContent from './RightContent'
-
+import { PRODUCT_INTERFACE } from '@/app/admin/dashboard/product/page'
 
 interface SAMPLE_FEATURE_INTERFACE {
   id:number,
@@ -33,29 +33,33 @@ const tabData = [
   { productName:'product8' , price:'123' , features:sampleFeatures } , 
 ]
 
-export default function LikedProduct() {
+interface DETAIL_PAGE_INTERFACE {
+  data:PRODUCT_INTERFACE
+}
+
+export default function LikedProduct({data}:DETAIL_PAGE_INTERFACE) {
   // State to manage the active tab
   const [activeTab, setActiveTab] = useState<any | null>(0);
 
+  console.log("detail products",data);
 
-  console.log("this is client side");
   return (
     <>
       <div className='container-cus extra-products-wrap py-8'>
         <div className="flex flex-col-reverse lg:flex-row gap-6 md:p-8 ">
           {/* Pass activeTab and handleTabChange to child components */}
           <LeftContent 
-            tabData={tabData}
+            tabData={data}
             activeTab={activeTab} 
             // setTabItem={handleTabChange} 
             className="lg:sticky lg:top-8 lg:self-start lg:w-1/2" 
             title="You may also like" 
           />
           <RightContent 
-            tabData={tabData}
+            tabData={data}
             activeTab={activeTab} 
             setActiveTab={setActiveTab} 
-            className="lg:w-1/2 space-y-6 lg:pt-[30vh]" 
+            className="lg:w-1/2 space-y-6 lg:pt-[10vh]" 
           />
         </div>
       </div>

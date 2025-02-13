@@ -18,11 +18,11 @@ export const homeFunction =  async ( req:Request , res:Response )=>{
 
                 const highlightProduct = await productModel.find( { isHighlight:true } ).limit(5);
 
-                // const likedProduct = await productModel.find({"features":{$size:{$gte:1}}})
+                const featuredProduct = await productModel.find( {features:{ $exists:true , $ne:[] }} ).select('_id name price color images features');
 
                 const faq = await FAQ.find({}).limit(10);
                 
-                res.status(200).json({message:'home data',data:{ randomObj ,categoryProduct ,category,highlightProduct, faq }});
+                res.status(200).json({message:'home data',data:{ randomObj ,categoryProduct ,category,highlightProduct, faq , featuredProduct }});
 
             }catch(err){
                 sendServerError( res ,`Error creating user: ${err }` );

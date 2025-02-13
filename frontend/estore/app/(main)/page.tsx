@@ -33,7 +33,7 @@ export default async function Home() {
     <div className="space-y-10">
       <CategoryDisplay data={data?.data?.randomObj} products={data?.data?.categoryProduct} />
       <Categories data={data?.data?.category} />
-      <LIkedProduct />
+      <LIkedProduct data={data?.data?.featuredProduct} />
       <Faq data={data?.data?.faq} />
       <DisplayProduct />
     </div>

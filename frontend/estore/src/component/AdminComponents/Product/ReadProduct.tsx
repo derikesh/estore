@@ -104,7 +104,7 @@ export default function ReadProduct({ data, refetch }: PRODUCT_PROPS) {
                 return <div className={` ${row.getIsSelected() ? 'opacity-100' : 'opacity-0'} flex gap-8`} >
                     <Link href={`/admin/dashboard/product/${row.original._id}`} className={`bg-gray-700 w-fit px-4 py-1 text-sm rounded-[4px]  text-white`}>Edit</Link>
                     <Link href={`/admin/dashboard/product/detail/${row.original._id}`} className='bg-gray-700 w-fit px-4 py-1 text-sm rounded-[4px]  text-white' >
-                        Details
+                       Product Detail
                     </Link>
                     </div>
             },

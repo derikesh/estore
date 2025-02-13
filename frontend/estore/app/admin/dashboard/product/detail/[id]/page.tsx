@@ -13,8 +13,6 @@ const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: 
         skip: !id
     });
 
-    console.log("data",singleProduct?.data?.images?.imageUrl);
-
   return (
     <div>
         <DetailComponenet id={id} requireData={singleProduct?.data} />

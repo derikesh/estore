@@ -24,7 +24,7 @@ export default function RightContent({ className, setActiveTab = () => {}, tabDa
               setActiveTab(index)
             }}
           >
-            <TabCard />
+            <TabCard data={item} />
           </motion.div>
         ))}
 

@@ -14,6 +14,18 @@ export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
 
     const [positions, setpositions] = useState([]);
 
+    const featurePoints = requireData?.features?.map( (item)=>[item.x,item.y] );
+
+    useEffect( ()=>{
+
+        if(featurePoints){
+            setpositions(featurePoints);
+        }
+
+    } ,[requireData])
+
+    console.log('freatue',featurePoints)
+
     function handleClick(e: any) {
         const parent = e.currentTarget.getBoundingClientRect();
         const x = ((e.clientX - parent.left) / parent.width) * 100;
@@ -27,8 +39,8 @@ export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
                 Click on any poistion of image to describe it
             </div>
 
-            <div className='content_select_points grid grid-cols-2' >
-                <div className='relative image_wraper' onClick={handleClick} >
+            <div className='content_select_points flex  gap-16' >
+                <div className='h-[700px] w-[700px] relative image_wraper' onClick={handleClick} >
                     <Image
                         src={requireData?.images?.imageUrl}
                         height={700}
@@ -62,7 +74,7 @@ export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
                     
                 </div>
 
-               <DetailForm id={id} positions={positions} />
+               <DetailForm data={requireData} setpositions={setpositions} id={id} positions={positions} />
 
             </div>
 
