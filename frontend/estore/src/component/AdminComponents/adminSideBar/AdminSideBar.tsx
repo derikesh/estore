@@ -53,7 +53,6 @@ const AdminSidebar: React.FC = memo(() => {
         <h2 className="text-2xl font-semibold mb-4">Admin Panel</h2>
         <ul className="space-y-4">
           <MenuItem icon={<FaHome />} label="Dashboard" href="/admin/dashboard" />
-          <MenuItem icon={<FaHome />} label="Test2" href="/admin/dashboard/test2" />
 
           <SubMenu
             icon={<FaStore />}

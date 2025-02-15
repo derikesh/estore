@@ -74,7 +74,7 @@ export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
                     
                 </div>
 
-               <DetailForm data={requireData} setpositions={setpositions} id={id} positions={positions} />
+               <DetailForm data={requireData} setPositions={setpositions} id={id} positions={positions} />
 
             </div>
 

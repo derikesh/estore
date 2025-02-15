@@ -50,7 +50,7 @@ export function AddToCartModal({ product, icon }: { product: PRODUCT_INTERFACE |
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[90vw] sm:w-[540px] sm:max-w-[90vw]">
+      <SheetContent className="w-[90vw] dark:!bg-black sm:w-[540px] sm:max-w-[90vw]">
         <SheetHeader>
           <SheetTitle>Your Cart</SheetTitle>
           <SheetDescription>{cartItems.length > 0 ? "Review your cart items" : "Your cart is empty"}</SheetDescription>
