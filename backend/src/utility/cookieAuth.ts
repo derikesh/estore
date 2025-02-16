@@ -17,8 +17,12 @@ export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunctio
     const getToken = req.cookies.e_accessToken;
 
     try{
-        if(!getToken || !JWT_KEY){  
-            throw new Error('no valid tokens');
+        if(!getToken){  
+            throw new Error('no access token getting');
+        }   
+
+        if(!JWT_KEY){  
+            throw new Error('no jwt token gettnig');
         }   
     
         const validaUser = jwt.verify( getToken , JWT_KEY  );
@@ -43,9 +47,9 @@ export const refreshTokenHandlerr = (req: AUTH_REQ, res: Response, next: NextFun
         const isValidToken = jwt.verify(refreshToken, JWT_REFRESH);
         if (!isValidToken) throw new Error("Invalid refresh token");
 
-        const accessToken = jwt.sign({ userId: (isValidToken as any).userId }, JWT_KEY, { expiresIn: "5m" });
+        const accessToken = jwt.sign({ userId: (isValidToken as any).userId }, JWT_KEY, { expiresIn: "30s" });
 
-        res.cookie("e_accessToken", accessToken, { maxAge: 5 * 60 * 1000, httpOnly: true, secure: true });
+        res.cookie("e_accessToken", accessToken, { maxAge: 30* 1000, httpOnly: true, secure: false });
 
         return sendResponse(res, 200, "Access token refreshed successfully.");
     } catch (err) {

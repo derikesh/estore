@@ -6,11 +6,22 @@ import { Provider } from "react-redux"
 import AdminSidebar from "@/src/component/AdminComponents/adminSideBar/AdminSideBar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { HiBell, HiChevronDown, HiOutlineUser, HiOutlineLogout } from "react-icons/hi"
+import { useLogoutMutation } from "@/src/store/rtkQuery"
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [logout, { isSuccess, isError, error }] = useLogoutMutation()
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen)
+
+  const handleLogout = async () => {
+    try {
+      await logout({})
+      window.location.href = '/admin'  
+    } catch (err) {
+      console.error('Logout failed:', err)
+    }
+  }
 
   return (
     <div className="admin-panel flex h-screen">
@@ -25,7 +36,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <div className="relative">
                 <div className="flex items-center space-x-2 cursor-pointer" onClick={toggleDropdown}>
                   <Avatar>
-                    <AvatarImage className="bg-white p-1 object-contain"  src="/images/user.png" alt="User avatar" />
+                    <AvatarImage className="bg-white p-1 object-contain" src="/images/user.png" alt="User avatar" />
                     <AvatarFallback>UN</AvatarFallback>
                   </Avatar>
                   <span className="font-medium">Estore</span>
@@ -37,7 +48,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                       <HiOutlineUser className="mr-2" />
                       About User
                     </a>
-                    <a href="#" className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+                    <a
+                      href="#"
+                      onClick={handleLogout}
+                      className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                    >
                       <HiOutlineLogout className="mr-2" />
                       Logout
                     </a>
@@ -52,4 +67,3 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     </div>
   )
 }
-

@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   const router = useRouter();
 
-  const { isError , error } = useCheckAuthQuery({});
+  const { isError , error , refetch} = useCheckAuthQuery({});
   const [refreshToken, {isError:refreshIsError,isSuccess,error:refreshError}] = useRefreshTokenMutation();
 
   useEffect( ()=>{
@@ -57,12 +57,17 @@ export default function Dashboard() {
        try {
         toast.error(`error : ${JSON.stringify(error)}`);
         await refreshToken({});
+        refetch();
        }catch{
         router.push('/admin');
        }
       }
     } 
     reAuth();  
+
+    if(isSuccess){
+      toast.success('succesuult restroare access token');
+    }
 
   } ,[isError,error]);
 
@@ -101,7 +106,7 @@ export default function Dashboard() {
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4">Category Distribution</h2>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={categoryData}>
+            <LineChart data={categoryData}> 
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />

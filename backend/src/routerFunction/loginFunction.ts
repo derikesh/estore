@@ -34,11 +34,11 @@ export const loginFunction = async (req: Request, res: Response , next:NextFunct
         }
 
         // generate token
-        const accessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '5m' });
+        const accessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '30s' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
-        res.cookie('e_accessToken', accessToken, { maxAge: 5 * 60 * 1000, secure: true, path: '/' });
-        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true, path: '/refreshToken' });
+        res.cookie('e_accessToken', accessToken, { maxAge:30 * 1000, secure: false,httpOnly:true, path: '/' });
+        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: false, path: '/refreshToken' });
 
         return sendResponse(res, 200, 'User logged in successfully');
 
@@ -46,4 +46,17 @@ export const loginFunction = async (req: Request, res: Response , next:NextFunct
         console.log(err);
         next(err);
     }
+}
+
+
+export const logOutFunction = ( req:Request, res:Response , next:NextFunction )=>{
+
+    try {
+        res.clearCookie('e_accessToken');
+        res.clearCookie('e_refreshToken');
+        res.status(200).send({ message: 'Logged out successfully' });
+    }catch(err){
+        next(err);
+    }
+
 }

@@ -19,18 +19,18 @@ const baseUrlSetup = fetchBaseQuery({
 export const api = createApi({
     reducerPath: 'api',
     baseQuery: baseUrlSetup,
-    tagTypes: ['postUser', 'login', 'FAQ', 'addDetail','searchQuery','refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
+    tagTypes: ['postUser', 'login', 'FAQ', 'addDetail','logout','searchQuery','refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
 
         checkAuth : builder.query({
-            query:()=>'/dashboard'
+            query:()=>'/admin'
         }),
 
         postUser: builder.mutation({
             query: (body) => ({
                 method: 'post',
-                url: '/users/newUser',
+                url: '/admin/users/newUser',
                 body,
             }),
             invalidatesTags: ['postUser'],
@@ -46,6 +46,14 @@ export const api = createApi({
             invalidatesTags: ['login'],
         }),
 
+        logout : builder.mutation({
+            query:()=>({
+                method:'POST',
+                url:'/logout'
+            }),
+            invalidatesTags:['logout']
+        }),
+
         // Refresh token
         refreshToken: builder.mutation({
             query: () => ({
@@ -59,7 +67,7 @@ export const api = createApi({
         addProduct: builder.mutation({
             query: (body) => ({
                 method: 'POST',
-                url: '/product/add',
+                url: '/admin/product/add',
                 body,
             }),
             invalidatesTags: ['addProduct'],
@@ -69,7 +77,7 @@ export const api = createApi({
         deleteProduct: builder.mutation({
             query: (id) => ({
                 method: 'DELETE',
-                url: '/product/delete/:id',
+                url: '/admin/product/delete/:id',
             }),
             invalidatesTags: ['deleteProduct']
         }),
@@ -77,7 +85,7 @@ export const api = createApi({
         addFeatures:builder.mutation({
             query:({newFeatures,id})=>({
                 method:'POST',
-                url:'/product/detail',
+                url:'/admin/product/detail',
                 body:{newFeatures,id}
                 }),
                 invalidatesTags:['addDetail']
@@ -102,7 +110,7 @@ export const api = createApi({
         updateProduct: builder.mutation({
             query: ({ id, updatedBody }) => ({
                 method: 'PATCH',
-                url: `/product/${id}`,
+                url: `/admin/product/${id}`,
                 body: updatedBody
             }),
             invalidatesTags: ['updateProduct'],
@@ -111,7 +119,7 @@ export const api = createApi({
         deleteManyProduct: builder.mutation({
             query: (body) => ({
                 method: 'DELETE',
-                url: '/product/selected',
+                url: '/admin/product/selected',
                 body
             }),
             invalidatesTags: ['deleteProducts']
@@ -146,7 +154,7 @@ export const api = createApi({
 
         addCategory: builder.mutation({
             query: (newCategory) => ({
-                url: '/category/add',
+                url: '/admin/category/add',
                 method: 'POST',
                 body: newCategory,
             }),
@@ -171,7 +179,7 @@ export const api = createApi({
 
         updateCategory: builder.mutation({
             query: ({ id, updatedCategory }) => ({
-                url: `/category/${id}`,
+                url: `/admin/category/${id}`,
                 method: 'PATCH',
                 body: updatedCategory,
             }),
@@ -180,7 +188,7 @@ export const api = createApi({
 
         deleteCategory: builder.mutation<void, string>({
             query: (ids) => ({
-                url: `/category/delete/`,
+                url: `/admin/category/delete/`,
                 method: 'DELETE',
                 body: ids
             }),
@@ -197,7 +205,7 @@ export const api = createApi({
         // Add a new FAQ
         addFAQ: builder.mutation({
             query: (body) => ({
-                url: '/faq/add',
+                url: '/admin/faq/add',
                 method: 'POST',
                 body,
             }),
@@ -207,7 +215,7 @@ export const api = createApi({
         // Delete an FAQ
         deleteFAQ: builder.mutation<void, string>({
             query: (id) => ({
-                url: `/faq/delete/${id}`,
+                url: `/admin/faq/delete/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['FAQ'], // Invalidate cache after deleting
@@ -228,6 +236,7 @@ export const api = createApi({
 });
 
 export const {
+    useLogoutMutation,
     useCheckAuthQuery,
     usePostUserMutation,
     useLoginMutation,

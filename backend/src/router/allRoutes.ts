@@ -7,7 +7,7 @@ import { addProducts, getProduct, getProductSingle, updateProduct, deleteProduct
 import { createNewUser , readAllUsers } from "../routerFunction/usersFunction";
 
 // import all login functions 
-import { loginFunction } from "../routerFunction/loginFunction";
+import { loginFunction, logOutFunction } from "../routerFunction/loginFunction";
 
 // import middlewares
 import { cookieAuth, refreshTokenHandlerr } from "../utility/cookieAuth";
@@ -33,32 +33,32 @@ import { homeFunction, searchFunction, testData } from "../routerFunction/homePa
 
 
 // dashboard analytic data
-router.get('/dashboard',cookieAuth,testData)
+router.get('/admin',cookieAuth,testData)
 
 
 // product routes
 
 // Route to add a product (should be POST)
-router.post('/product/add',cookieAuth, addProducts);
+router.post('/admin/product/add',cookieAuth, addProducts);
 // Route to get all products
 router.get('/product', getProduct);
-// Route to get a single product by ID
+// Route to get a single product by ID1
 router.get('/product/:id', getProductSingle);
 // Route to update a product by ID
-router.patch('/product/:id',cookieAuth, updateProduct);
+router.patch('/admin/product/:id',cookieAuth, updateProduct);
 // Route to delete a product by ID
-router.delete('/product/delete/:id',cookieAuth, deleteProduct);
+router.delete('/admin/product/delete/:id',cookieAuth, deleteProduct);
 
-router.delete( '/product/selected',cookieAuth , deleteSelected );
+router.delete( '/admin/product/selected',cookieAuth , deleteSelected );
 
-router.post('/product/detail',cookieAuth,addDetail);
+router.post('/admin/product/detail',cookieAuth,addDetail);
 
 
 
 // user router 
 
 // creating a new user 
-router.post( '/users/newUser' ,cookieAuth , createNewUser );
+router.post( '/admin/users/newUser' ,cookieAuth , createNewUser );
 // reall all users
 router.get( '/users', readAllUsers );
 
@@ -66,19 +66,20 @@ router.get( '/users', readAllUsers );
 // login router (access token is generated here )
 router.post( '/login' , loginFunction );
 
+router.post('/logout',logOutFunction)
 
 // authoization function middleware 
 router.post('/refreshToken',refreshTokenHandlerr, ( req , res )=>{
         res.status(200).json({message:"acces token refreshed"});
 })
 
-
+// 
 // creating a new category
-router.post('/category/add',cookieAuth , addCategory);
+router.post('/admin/category/add',cookieAuth , addCategory);
 router.get('/category',readCategory)
 router.get('/category/:id',readSingleCategory)
-router.patch( '/category/:id',cookieAuth,updateCategory );
-router.delete('/category/delete/',cookieAuth,deleteCategory);
+router.patch( '/admin/category/:id',cookieAuth,updateCategory );
+router.delete('/admin/category/delete/',cookieAuth,deleteCategory);
 
 
 
@@ -92,8 +93,8 @@ router.post('/deleteImage',deleteImage as any );
 
 // faq
 router.get('/faq',readFaq)
-router.post( '/faq/add',cookieAuth,addFAQ );
-router.delete( '/faq/delete/:id',cookieAuth,deleteFAQ );
+router.post( '/admin/faq/add',cookieAuth,addFAQ );
+router.delete( '/admin/faq/delete/:id',cookieAuth,deleteFAQ );
 
 
 // home page data 
