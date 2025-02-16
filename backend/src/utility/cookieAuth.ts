@@ -21,6 +21,10 @@ export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunctio
             throw new Error('no access token getting');
         }   
 
+        if(!JWT_REFRESH){
+            throw new Error('no refresh token');
+        }
+
         if(!JWT_KEY){  
             throw new Error('no jwt token gettnig');
         }   
@@ -28,9 +32,17 @@ export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunctio
         const validaUser = jwt.verify( getToken , JWT_KEY  );
         req.user = validaUser;
         next();
-    }catch(err){
-        next(err);
-      }
+    }catch(err:any){
+
+        if(err.name === 'TokenExpiredError'){
+            await refreshTokenHandlerr( req , res, next );
+        }else {
+            res.clearCookie('e_accessToken');
+            res.clearCookie('e_refreshToken');
+            next(new Error('Invalid token. Please log in again.'));
+        }
+
+    }
 }
 
 
@@ -41,19 +53,25 @@ export const refreshTokenHandlerr = (req: AUTH_REQ, res: Response, next: NextFun
         if (!refreshToken) throw new Error("No refresh token provided");
 
         if (!JWT_REFRESH) throw new Error("No refresh token secret provided");
-
         if (!JWT_KEY) throw new Error("No access token secret provided");
 
+        // Verify the refresh token
         const isValidToken = jwt.verify(refreshToken, JWT_REFRESH);
         if (!isValidToken) throw new Error("Invalid refresh token");
 
-        const accessToken = jwt.sign({ userId: (isValidToken as any).userId }, JWT_KEY, { expiresIn: "30s" });
+        // Generate a new access token
+        const accessToken = jwt.sign({ userId: (isValidToken as any).userId }, JWT_KEY, { expiresIn: "15m" });
 
-        res.cookie("e_accessToken", accessToken, { maxAge: 30* 1000, httpOnly: true, secure: false });
+        // Set the new access token in the cookie
+        res.cookie("e_accessToken", accessToken, { sameSite: 'lax', secure: false, httpOnly: true, path: '/' });
 
-        return sendResponse(res, 200, "Access token refreshed successfully.");
+        // Attach the new token to the request and continue
+        req.user = isValidToken;
+        next();
     } catch (err) {
-        next(err); 
+        res.clearCookie('e_accessToken');
+        res.clearCookie('e_refreshToken');
+        next(new Error('Session expired. Please log in again.'));
     }
 };
 

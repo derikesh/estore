@@ -1,18 +1,35 @@
 "use client"
 
 import store from "@/src/store/store"
-import { type ReactNode, useState } from "react"
+import { type ReactNode, useEffect, useState } from "react"
 import { Provider } from "react-redux"
 import AdminSidebar from "@/src/component/AdminComponents/adminSideBar/AdminSideBar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { HiBell, HiChevronDown, HiOutlineUser, HiOutlineLogout } from "react-icons/hi"
 import { useLogoutMutation } from "@/src/store/rtkQuery"
 
+import { useCheckAuthQuery } from "@/src/store/rtkQuery"
+import { useRouter } from "next/navigation"
+
 export default function AdminLayout({ children }: { children: ReactNode }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [logout, { isSuccess, isError, error }] = useLogoutMutation()
 
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen)
+  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  
+  const router = useRouter();
+
+  const { isError:authIsError , error:authError } =useCheckAuthQuery({});
+
+  useEffect( ()=>{
+  
+    if(authIsError) {
+        router.push('/admin');
+        console.log('i tried');
+    }
+
+  } ,[authError]);
 
   const handleLogout = async () => {
     try {
@@ -22,6 +39,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
       console.error('Logout failed:', err)
     }
   }
+  
+
 
   return (
     <div className="admin-panel flex h-screen">

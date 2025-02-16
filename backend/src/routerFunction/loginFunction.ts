@@ -34,11 +34,11 @@ export const loginFunction = async (req: Request, res: Response , next:NextFunct
         }
 
         // generate token
-        const accessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '30s' });
+        const accessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '15m' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
-        res.cookie('e_accessToken', accessToken, { maxAge:30 * 1000, secure: false,httpOnly:true, path: '/' });
-        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: false, path: '/refreshToken' });
+        res.cookie('e_accessToken', accessToken, { sameSite:'lax', secure: false,httpOnly:true,path:'/' });
+        res.cookie('e_refreshToken', refreshToken, {httpOnly: true, sameSite: 'lax', secure: false });
 
         return sendResponse(res, 200, 'User logged in successfully');
 

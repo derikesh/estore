@@ -3,11 +3,10 @@
 import type React from "react"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { api } from "@/src/store/rtkQuery"
+import { api, useCheckAuthQuery } from "@/src/store/rtkQuery"
 import type { AppDispatch } from "@/src/store/store"
 import { FaUsers, FaShoppingCart, FaMoneyBillWave, FaChartLine } from "react-icons/fa"
 import { HiCube, HiCurrencyDollar, HiShoppingBag, HiTrendingUp } from "react-icons/hi"
-import { useRouter } from "next/navigation"
 import {
   BarChart,
   Bar,
@@ -20,9 +19,8 @@ import {
   LineChart,
   Line,
 } from "recharts"
+import { useRouter } from "next/navigation"
 
-import { useCheckAuthQuery , useRefreshTokenMutation} from "@/src/store/rtkQuery"
-import { toast } from "react-toastify"
 
 // Sample data for charts
 const salesData = [
@@ -45,31 +43,7 @@ const categoryData = [
 export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
 
-  const router = useRouter();
 
-  const { isError , error , refetch} = useCheckAuthQuery({});
-  const [refreshToken, {isError:refreshIsError,isSuccess,error:refreshError}] = useRefreshTokenMutation();
-
-  useEffect( ()=>{
-
-    async function reAuth(){
-      if(isError){
-       try {
-        toast.error(`error : ${JSON.stringify(error)}`);
-        await refreshToken({});
-        refetch();
-       }catch{
-        router.push('/admin');
-       }
-      }
-    } 
-    reAuth();  
-
-    if(isSuccess){
-      toast.success('succesuult restroare access token');
-    }
-
-  } ,[isError,error]);
 
     useEffect(() => {
     dispatch(api.util.prefetch("readallProduct", undefined, { force: true }))
