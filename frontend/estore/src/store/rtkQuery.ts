@@ -5,16 +5,15 @@ import { baseUrl } from "../config/baseUrl";
 const baseUrlSetup = fetchBaseQuery({
     baseUrl: baseUrl,
     credentials: 'include', // Include credentials for all requests
-    prepareHeaders: (header: Headers) => {
-        const cookies = document.cookie;
-        const token = cookies.split("; ").find((item) => item.startsWith('e_accessToken='))?.split("=")[1];
-// this is s atesting gkggjjjj
-        if (token) {
-            header.set('Authorization', `Bearer ${token}`);
-        }
+    // prepareHeaders: (header: Headers) => {
+    //     const cookies = document.cookie;
+    //     const token = cookies.split("; ").find((item) => item.startsWith('e_accessToken='))?.split("=")[1];
+    //     if (token) {
+    //         header.set('Authorization', `Bearer ${token}`);
+    //     }
 
-        return header;
-    },
+    //     return header;
+    // },
 });
 
 export const api = createApi({

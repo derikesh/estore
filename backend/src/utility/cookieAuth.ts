@@ -48,12 +48,13 @@ export const refreshTokenHandlerr = ( req:AUTH_REQ, res:Response , next:NextFunc
         if( !isValideToken ){
             return sendResponse(res,401,'authoization failed , invalide token')
         }
-        const accessToken = jwt.sign( { userId:(isValideToken as any).id } ,JWT_KEY,{expiresIn:'15m'}  )
-        res.cookie('e_accessToken',accessToken,{maxAge:15*60*1000});
-        next();
+        const accessToken = jwt.sign( { userId:(isValideToken as any).userId } ,JWT_KEY,{expiresIn:'5m'}  )
+         res.cookie('e_accessToken',accessToken,{maxAge:5*60*1000,httpOnly:true,secure:true});
+        return sendResponse(res, 200, 'Access token refreshed successfully.');
 
     }catch(err){
       return  sendServerError(res,500)
     }
 
 }
+

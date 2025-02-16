@@ -11,6 +11,7 @@ import { JWT_KEY, JWT_REFRESH } from '../utility/cookieAuth';
 export const loginFunction = async (req: Request, res: Response) => {
 
     const { email, password } = req.body;
+
     try {
 
         if (!JWT_REFRESH) {
@@ -34,12 +35,12 @@ export const loginFunction = async (req: Request, res: Response) => {
         }
 
         // generat token 
-        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '1d' });
+        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '5m' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
 
-        res.cookie('e_accessToken', acessToken, { maxAge: 24 * 60 * 60 * 60 * 1000 })
-        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true })
+        res.cookie('e_accessToken', acessToken, { maxAge: 5 * 60 * 1000 ,secure:true ,path:'/'})
+        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true , path:'/refreshToken' })
 
         return sendResponse(res, 200, 'user loged in sucessfully')
 
