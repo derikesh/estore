@@ -1,9 +1,9 @@
-import { Request , Response  } from "express"
+import { NextFunction, Request , Response  } from "express"
 import cloudinary from "../config/cloudnary/cloudnary";
 import { UploadStream } from "cloudinary";
 
 
-export const uploadImage = async ( req:Request , res:Response )=>{
+export const uploadImage = async ( req:Request , res:Response , next:NextFunction )=>{
 
     try {
         // Upload file to Cloudinary
@@ -21,14 +21,15 @@ export const uploadImage = async ( req:Request , res:Response )=>{
         // Pipe the file data to Cloudinary
         result.end(req?.file?.buffer);
       } catch (error) {
-        res.status(500).json({ error: 'Error handling image upload' });
+        next(error);
+
       }
 }
 
 
 
 
-export const deleteImage = async (req: Request, res: Response) => {
+export const deleteImage = async (req: Request, res:Response , next:NextFunction) => {
     
     const { publicKey } = req.body;
 
@@ -47,12 +48,13 @@ export const deleteImage = async (req: Request, res: Response) => {
         return res.status(200).json({ message: "Image deleted successfully" });
 
     } catch (err) {
-        return res.status(500).json({ error: 'Error handling image deletion' });
+      next(err);
+
     }
 };
 
 
-export const uploadImages = async (req: Request, res: Response):Promise<any> => {
+export const uploadImages = async (req: Request, res: Response,next:NextFunction):Promise<any> => {
   try {
       if (!req.files || req.files.length === 0) {
          return  res.status(400).json({ message: 'no image found' });
@@ -85,6 +87,6 @@ export const uploadImages = async (req: Request, res: Response):Promise<any> => 
 
      return  res.status(200).json({ images: arrayObject });
   } catch (error) {
-       res.status(500).json({ error: 'Error handling images' });
+      next(error);
   }
 };

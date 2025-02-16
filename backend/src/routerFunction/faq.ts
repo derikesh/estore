@@ -1,63 +1,59 @@
 import { Request, Response } from "express";
 import { sendResponse } from "../utility/response";
-import { sendServerError } from "../utility/error";
-import FAQ from '../dataModels/faqModel'; // Assuming you have an FAQ model
+import FAQ from "../dataModels/faqModel"; // Assuming you have an FAQ model
 
 interface FAQ_INTERFACE {
     question: string;
     answer: string;
 }
 
-
-export const readFaq = async (req: Request, res: Response):Promise<any> => {
+// Read all FAQs
+export const readFaq = async (req: Request, res: Response): Promise<void> => {
     try {
-        const faq = await FAQ.find({});
-        if (faq.length === 0) {
-            return res.status(404).json({ message: 'No FAQs found' });
+        const faqs = await FAQ.find({});
+        if (!faqs.length) {
+            throw { status: 404, message: "No FAQs found" };
         }
-        return res.status(200).json(faq);
-    } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
+        return sendResponse(res, 200, "FAQs retrieved successfully", faqs);
+    } catch (err: any) {
+        console.error("Error fetching FAQs:", err.message);
+        throw { status: err.status || 500, message: err.message || "Server error" };
     }
 };
 
-
-export const addFAQ = async (req: Request, res: Response) => {
+// Add a new FAQ
+export const addFAQ = async (req: Request, res: Response): Promise<void> => {
     const { question, answer }: FAQ_INTERFACE = req.body;
 
     try {
         const existingFAQ = await FAQ.findOne({ question });
         if (existingFAQ) {
-            return sendResponse(res, 400, 'FAQ already exists');
+            throw { status: 400, message: "FAQ already exists" };
         }
 
-        const newFAQ = new FAQ({
-            question,
-            answer
-        });
-
+        const newFAQ = new FAQ({ question, answer });
         await newFAQ.save();
-        return sendResponse(res, 200, 'FAQ added successfully', newFAQ);
-    } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
+        
+        return sendResponse(res, 201, "FAQ added successfully", newFAQ);
+    } catch (err: any) {
+        console.error("Error adding FAQ:", err.message);
+        throw { status: err.status || 500, message: err.message || "Server error" };
     }
 };
 
-
-export const deleteFAQ = async (req: Request, res: Response) => {
+// Delete an FAQ by ID
+export const deleteFAQ = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
 
     try {
         const deletedFAQ = await FAQ.findByIdAndDelete(id);
         if (!deletedFAQ) {
-            return sendResponse(res, 400, 'FAQ not found');
+            throw { status: 404, message: "FAQ not found" };
         }
 
-        return sendResponse(res, 200, 'FAQ deleted successfully', deletedFAQ);
-    } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
+        return sendResponse(res, 200, "FAQ deleted successfully", deletedFAQ);
+    } catch (err: any) {
+        console.error("Error deleting FAQ:", err.message);
+        throw { status: err.status || 500, message: err.message || "Server error" };
     }
 };

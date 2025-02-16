@@ -1,179 +1,151 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 // Utility functions
 import { sendResponse } from "../utility/response";
 import { sendServerError } from "../utility/error";
 
-// data model 
-import Product from '../dataModels/productModel';
+// Data models
+import Product from "../dataModels/productModel";
 import { PRODUCT_INTERFACE } from "../dataModels/productModel";
 import categoryModel from "../dataModels/categoryModel";
 
-
-// css
-// Adding product into data
-export const addProducts = async (req: Request, res: Response) => {
-
-    const { name, price, category, description, images, productImages, sizes, color }: PRODUCT_INTERFACE = req.body;
-
+// Adding product into database
+export const addProducts = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const existingProduct = await Product.find({ name });
-        if (existingProduct.length > 0) {
-            sendResponse(res, 400, 'product alreadt exists');
-            return;
-        }
-        const newPost = new Product({
-            name, price, productImages, category, description, images, sizes, color
-        });
-        await newPost.save();
-        return sendResponse(res, 200, 'Product added successfully', newPost);
-    } catch (err: any) {
-        console.log(err);
-        sendServerError(res, err);
-    }
-}
-
-
-// Fetching all the products
-export const getProduct = async (req: Request, res: Response) => {
-
-    const { includeCategory } = req.query;
-    const { selectedCategory } = req.query;
-
-    try {
-        const filter = selectedCategory ? { category: selectedCategory } : {};
-        const allData = await Product.find(filter);
-        if (!allData) {
-            return sendResponse(res, 400, 'no product were found');
-        }
-        if (includeCategory == 'true') {
-            const category = await categoryModel.find({});
-            return sendResponse(res, 200, 'All products', { allData, category });
+        const { name, price, category, description, images, productImages, sizes, color }: PRODUCT_INTERFACE = req.body;
+        
+        const existingProduct = await Product.findOne({ name });
+        if (existingProduct) {
+            throw new Error("Product already exists");
         }
 
-        return sendResponse(res, 200, 'query not working', allData);
+        const newProduct = new Product({ name, price, productImages, category, description, images, sizes, color });
+        await newProduct.save();
+        return sendResponse(res, 200, "Product added successfully", newProduct);
     } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
+        next(err);
     }
-}
+};
 
+// Fetching all products
+export const getProduct = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { includeCategory, selectedCategory } = req.query;
+        const filter = selectedCategory ? { category: selectedCategory } : {};
+        
+        const allProducts = await Product.find(filter);
+        if (!allProducts.length) {
+            throw new Error("No products found");
+        }
+
+        if (includeCategory === "true") {
+            const categories = await categoryModel.find({});
+            return sendResponse(res, 200, "All products", { allProducts, categories });
+        }
+
+        return sendResponse(res, 200, "All products", allProducts);
+    } catch (err) {
+        next(err);
+    }
+};
 
 // Fetching a single product by ID
-export const getProductSingle = async (req: Request, res: Response) => {
-
-    const { id } = req.params;
-    const { includeSuggestion } = req.query;
-
+export const getProductSingle = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const singleData: any = await Product.findById(id);
-        if (!singleData) {
-            sendResponse(res, 400, 'no such product found');
-            return;
-        }
-        if (includeSuggestion === 'true') {
-            const suggestions = await Product.find({ category: singleData?.category, _id: { $ne: singleData._id } })
-            sendResponse(res, 200, 'Single product', { singleData, suggestions });
-            return;
-        } else {
-            sendResponse(res, 200, 'Single product', singleData);
-            return;
-        }
-        return;
-    } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
-    }
-}
+        const { id } = req.params;
+        const { includeSuggestion } = req.query;
 
+        const product = await Product.findById(id);
+        if (!product) {
+            throw new Error("Product not found");
+        }
+
+        if (includeSuggestion === "true") {
+            const suggestions = await Product.find({ category: product.category, _id: { $ne: product._id } });
+            return sendResponse(res, 200, "Product details", { product, suggestions });
+        }
+        
+        return sendResponse(res, 200, "Product details", product);
+    } catch (err) {
+        next(err);
+    }
+};
 
 // Updating a product by ID
-export const updateProduct = async (req: Request, res: Response) => {
-
-    const { id } = req.params;
-    const { name, price, category, description, productImages, images, sizes, color }: PRODUCT_INTERFACE = req.body;
-
+export const updateProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { id } = req.params;
+        const { name, price, category, description, productImages, images, sizes, color }: PRODUCT_INTERFACE = req.body;
 
-        const updateData = await Product.findByIdAndUpdate(
+        const updatedProduct = await Product.findByIdAndUpdate(
             id,
             { name, price, category, description, images, productImages, sizes, color },
             { new: true }
         );
 
-        if (!updateData) {
-            sendResponse(res, 400, 'product could not be updated');
-            return;
+        if (!updatedProduct) {
+            throw new Error("Product could not be updated");
         }
 
-        sendResponse(res, 200, 'Product updated successfully', updateData);
-        return;
+        return sendResponse(res, 200, "Product updated successfully", updatedProduct);
     } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
+        next(err);
     }
-}
-
+};
 
 // Deleting a product by ID
-export const deleteProduct = async (req: Request, res: Response) => {
-
-    const { id } = req.params;
-
+export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const deltedItem = await Product.findByIdAndDelete(id);
-        if (!deltedItem) {
-            sendResponse(res, 400, 'could not found the item');
-            return;
+        const { id } = req.params;
+        const deletedProduct = await Product.findByIdAndDelete(id);
+
+        if (!deletedProduct) {
+            throw new Error("Product not found");
         }
-        sendResponse(res, 200, 'Product deleted successfully', deltedItem);
-        return;
+
+        return sendResponse(res, 200, "Product deleted successfully", deletedProduct);
     } catch (err) {
-        console.log(err);
-        sendServerError(res, err);
+        next(err);
     }
-}
+};
 
-
-// delete multiple 
-export const deleteSelected = async (req: Request, res: Response) => {
-    const { ids } = req.body;
+// Deleting multiple products
+export const deleteSelected = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { ids } = req.body;
+        const deleteResult = await Product.deleteMany({ _id: { $in: ids } });
 
-        const deleteResult = await Product.deleteMany({
-            _id: { $in: ids }
-        });
         if (deleteResult.deletedCount === 0) {
-            return sendResponse(res, 400, 'could not delete item');
+            throw new Error("No products were deleted");
         }
-        return sendResponse(res, 200, 'deleted sucessfully', { deletedItems: deleteResult })
 
+        return sendResponse(res, 200, "Products deleted successfully", { deletedCount: deleteResult.deletedCount });
     } catch (err) {
-        return sendServerError(res, 200);
+        next(err);
     }
-}
+};
 
-
-export const addDetail = async (req: Request, res: Response) => {
-    const { newFeatures, id } = req.body;
+// Adding product details
+export const addDetail = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const { newFeatures, id } = req.body;
 
         if (!newFeatures) {
-            return sendResponse(res, 400, 'could not attach features');
+            throw new Error("Features are required");
         }
-        const finalProduct = await Product.findByIdAndUpdate(
-            id, 
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
             { $set: { features: newFeatures } },
             { new: true }
         );
-        if (!finalProduct) {
-            return sendResponse(res, 404, 'Product not found');
+
+        if (!updatedProduct) {
+            throw new Error("Product not found");
         }
 
-        return sendResponse(res, 200, 'Features added successfully', finalProduct);
-
-
+        return sendResponse(res, 200, "Features added successfully", updatedProduct);
     } catch (err) {
-        return sendServerError(res, 200);
+        next(err);
     }
-}
+};

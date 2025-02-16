@@ -7,6 +7,7 @@ import { api } from "@/src/store/rtkQuery"
 import type { AppDispatch } from "@/src/store/store"
 import { FaUsers, FaShoppingCart, FaMoneyBillWave, FaChartLine } from "react-icons/fa"
 import { HiCube, HiCurrencyDollar, HiShoppingBag, HiTrendingUp } from "react-icons/hi"
+import { useRouter } from "next/navigation"
 import {
   BarChart,
   Bar,
@@ -19,6 +20,9 @@ import {
   LineChart,
   Line,
 } from "recharts"
+
+import { useCheckAuthQuery , useRefreshTokenMutation} from "@/src/store/rtkQuery"
+import { toast } from "react-toastify"
 
 // Sample data for charts
 const salesData = [
@@ -39,9 +43,30 @@ const categoryData = [
 ]
 
 export default function Dashboard() {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
+  const router = useRouter();
+
+  const { isError , error } = useCheckAuthQuery({});
+  const [refreshToken, {isError:refreshIsError,isSuccess,error:refreshError}] = useRefreshTokenMutation();
+
+  useEffect( ()=>{
+
+    async function reAuth(){
+      if(isError){
+       try {
+        toast.error(`error : ${JSON.stringify(error)}`);
+        await refreshToken({});
+       }catch{
+        router.push('/admin');
+       }
+      }
+    } 
+    reAuth();  
+
+  } ,[isError,error]);
+
+    useEffect(() => {
     dispatch(api.util.prefetch("readallProduct", undefined, { force: true }))
     dispatch(api.util.prefetch("readCategories", undefined, { force: true }))
   }, [dispatch])

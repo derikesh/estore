@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import userModel from "../dataModels/userModel";
 import { sendResponse } from "../utility/response";
 import { sendServerError } from "../utility/error";
@@ -8,44 +8,42 @@ import { sendServerError } from "../utility/error";
 // getting the token from header
 import { JWT_KEY, JWT_REFRESH } from '../utility/cookieAuth';
 
-export const loginFunction = async (req: Request, res: Response) => {
+export const loginFunction = async (req: Request, res: Response , next:NextFunction) => {
 
     const { email, password } = req.body;
 
     try {
-
         if (!JWT_REFRESH) {
-            return sendResponse(res, 400, 'Some error occurred, no refresh token secret provided. Please try again later.');
+            throw new Error('Some error occurred, no refresh token secret provided. Please try again later.');
         }
 
         if (!JWT_KEY) {
-            return sendResponse(res, 400, 'Some error occurred, no access token secret provided. Please try again later.');
+            throw new Error('Some error occurred, no access token secret provided. Please try again later.');
         }
 
         // checking the email /user in db 
         const userExists = await userModel.findOne({ email });
         if (!userExists) {
-            return sendResponse(res, 400, "user do no exists");
+            throw new Error('User does not exist');
         }
-        // password 
+
+        // password comparison
         const validUser = await bcrypt.compare(password, userExists.password);
-
         if (!validUser) {
-            return sendResponse(res, 400, 'invalid credentials');
+            throw new Error('Invalid credentials');
         }
 
-        // generat token 
-        const acessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '5m' });
+        // generate token
+        const accessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '5m' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
+        res.cookie('e_accessToken', accessToken, { maxAge: 5 * 60 * 1000, secure: true, path: '/' });
+        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true, path: '/refreshToken' });
 
-        res.cookie('e_accessToken', acessToken, { maxAge: 5 * 60 * 1000 ,secure:true ,path:'/'})
-        res.cookie('e_refreshToken', refreshToken, { maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict', secure: true , path:'/refreshToken' })
+        return sendResponse(res, 200, 'User logged in successfully');
 
-        return sendResponse(res, 200, 'user loged in sucessfully')
-
-    } catch (err) {
+    } catch (err: any) {
         console.log(err);
-        sendServerError(res, 500);
+        next(err);
     }
 }

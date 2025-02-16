@@ -29,7 +29,11 @@ import { addFAQ , deleteFAQ, } from "../routerFunction/faq";
 import { readFaq } from "../routerFunction/faq";
 export const router = Router();
 
-import { homeFunction, searchFunction } from "../routerFunction/homePage";
+import { homeFunction, searchFunction, testData } from "../routerFunction/homePage";
+
+
+// dashboard analytic data
+router.get('/dashboard',cookieAuth,testData)
 
 
 // product routes

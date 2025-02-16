@@ -4,6 +4,8 @@ import router from './router/allRoutes';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'
 
+import { errorHandler } from './utility/errorHandler';
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -27,6 +29,8 @@ connectMB();
 
 // enabling the routers 
 app.use( '' , router);
+
+app.use(errorHandler);
 
 // server listening
 app.listen( 5000 , ()=>{

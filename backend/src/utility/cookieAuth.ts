@@ -16,45 +16,40 @@ export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunctio
 
     const getToken = req.cookies.e_accessToken;
 
-    if(!getToken || !JWT_KEY){  
-        return sendResponse(res,401,'authentication failed');
-    }   
-
-    const validaUser = jwt.verify( getToken , JWT_KEY  );
-    req.user = validaUser;
-    next();
+    try{
+        if(!getToken || !JWT_KEY){  
+            throw new Error('no valid tokens');
+        }   
+    
+        const validaUser = jwt.verify( getToken , JWT_KEY  );
+        req.user = validaUser;
+        next();
+    }catch(err){
+        next(err);
+      }
 }
 
 
 // function to generate new access token 
-export const refreshTokenHandlerr = ( req:AUTH_REQ, res:Response , next:NextFunction )=>{
+export const refreshTokenHandlerr = (req: AUTH_REQ, res: Response, next: NextFunction) => {
+    try {
+        const refreshToken = req.cookies.e_refreshToken;
+        if (!refreshToken) throw new Error("No refresh token provided");
 
-    const refreshToken = req.cookies.e_refreshToken;
+        if (!JWT_REFRESH) throw new Error("No refresh token secret provided");
 
-    if (!refreshToken) {
-        return sendResponse(res, 401, 'Authorization failed, no refresh token provided');
+        if (!JWT_KEY) throw new Error("No access token secret provided");
+
+        const isValidToken = jwt.verify(refreshToken, JWT_REFRESH);
+        if (!isValidToken) throw new Error("Invalid refresh token");
+
+        const accessToken = jwt.sign({ userId: (isValidToken as any).userId }, JWT_KEY, { expiresIn: "5m" });
+
+        res.cookie("e_accessToken", accessToken, { maxAge: 5 * 60 * 1000, httpOnly: true, secure: true });
+
+        return sendResponse(res, 200, "Access token refreshed successfully.");
+    } catch (err) {
+        next(err); 
     }
-    
-    if (!JWT_REFRESH) {
-        return sendResponse(res, 401, 'Authorization failed, no refresh token secret provided');
-    }
-    
-    if (!JWT_KEY) {
-        return sendResponse(res, 401, 'Authorization failed, no access token secret provided');
-    }
-
-    try{
-        const isValideToken = jwt.verify( refreshToken , JWT_REFRESH );
-        if( !isValideToken ){
-            return sendResponse(res,401,'authoization failed , invalide token')
-        }
-        const accessToken = jwt.sign( { userId:(isValideToken as any).userId } ,JWT_KEY,{expiresIn:'5m'}  )
-         res.cookie('e_accessToken',accessToken,{maxAge:5*60*1000,httpOnly:true,secure:true});
-        return sendResponse(res, 200, 'Access token refreshed successfully.');
-
-    }catch(err){
-      return  sendServerError(res,500)
-    }
-
-}
+};
 

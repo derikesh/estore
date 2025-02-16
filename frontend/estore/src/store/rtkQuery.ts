@@ -22,6 +22,11 @@ export const api = createApi({
     tagTypes: ['postUser', 'login', 'FAQ', 'addDetail','searchQuery','refreshToken', 'readSingleProduct', 'uploadImages', 'addProduct', 'updateProduct', 'deleteProduct', 'deleteProducts', 'readProduct', 'uploadImage', 'deleteImage', 'readCategories', 'deleteCategory', 'addCategory', 'updateCategory', 'readSingleCategories'],
     endpoints: (builder) => ({
         // Posting user
+
+        checkAuth : builder.query({
+            query:()=>'/dashboard'
+        }),
+
         postUser: builder.mutation({
             query: (body) => ({
                 method: 'post',
@@ -223,6 +228,7 @@ export const api = createApi({
 });
 
 export const {
+    useCheckAuthQuery,
     usePostUserMutation,
     useLoginMutation,
     useSearchProductMutation,

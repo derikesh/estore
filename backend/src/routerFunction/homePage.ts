@@ -48,3 +48,13 @@ export const homeFunction =  async ( req:Request , res:Response )=>{
         }
 
  }
+
+
+ export const testData = async ( req:Request , res:Response )=>{
+            try {
+              return  sendResponse(res,200,'successfully loaded dashboard');
+            }catch(err){
+                sendServerError( res ,`Error creating user: ${err }` );
+            }
+    
+ }
