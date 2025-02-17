@@ -83,9 +83,9 @@ export const api = createApi({
         }),
 
         addFeatures:builder.mutation({
-            query:({newFeatures,id})=>({
+            query:({newFeatures,id,remove})=>({
                 method:'POST',
-                url:'/admin/product/detail',
+                url:`/admin/product/detail${remove ? '?remove=true' : ''}`,
                 body:{newFeatures,id}
                 }),
                 invalidatesTags:['addDetail']

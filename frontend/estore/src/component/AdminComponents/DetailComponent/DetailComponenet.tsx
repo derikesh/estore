@@ -4,33 +4,61 @@ import Image from 'next/image'
 
 // formik imports 
 import DetailForm from './DetailForm'
+import { Button } from '@/components/ui/button'
+import Modal from '../../DeletePopOver/ModalBox'
+import { useAddFeaturesMutation } from '@/src/store/rtkQuery'
+import { toast } from 'react-toastify'
 
 interface DETAIL_INTERFACE {
     requireData: PRODUCT_INTERFACE,
-    id:string
+    id: string,
+    refetch: () => any
 }
 
-export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
+export interface FEATURE_INTERFACE {
+    name:string,
+    x:number,
+    y:number
+}
 
-    const [positions, setpositions] = useState([]);
+export default function DetailComponenet({ requireData, id, refetch }: DETAIL_INTERFACE) {
 
-    const featurePoints = requireData?.features?.map( (item)=>[item.x,item.y] );
+    const [positions, setpositions] = useState<FEATURE_INTERFACE[]>([]);
 
-    useEffect( ()=>{
+    const [modelOpen, setModelOpen] = useState(false);
 
-        if(featurePoints){
-            setpositions(featurePoints);
+    const [remove, setRemove] = useState(false);
+
+    const [addFeatures, { isSuccess, isError, error }] = useAddFeaturesMutation();
+
+    useEffect(() => {
+
+        setpositions(requireData?.features);
+
+    }, [requireData]);
+
+    useEffect(() => {
+        if (isSuccess) {
+            toast.success(`Features ${remove ? 'removed' : 'added'} successfully`);
+        } else if (isError) {
+            toast.error(`Error: ${JSON.stringify(error)}`)
         }
+    }, [isSuccess, isError, error])
 
-    } ,[requireData])
-
-    console.log('freatue',featurePoints)
 
     function handleClick(e: any) {
         const parent = e.currentTarget.getBoundingClientRect();
+        let name: ''
         const x = ((e.clientX - parent.left) / parent.width) * 100;
         const y = ((e.clientY - parent.top) / parent.height) * 100;
-        setpositions( (prev)=>[...prev , [x-2,y-2]] )
+        setpositions((prev) => [...prev, {name,x:x - 2, y:y - 2}])
+    }
+
+    const handleDelete = async () => {
+
+        await addFeatures({ id: requireData?._id, remove: remove });
+        refetch();
+        setModelOpen(false);
     }
 
     return (
@@ -39,7 +67,30 @@ export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
                 Click on any poistion of image to describe it
             </div>
 
-            <div className='content_select_points flex  gap-16' >
+            <div
+                className={`top_header_actions px-4 py-2 bg-red-500 text-white rounded text-sm ml-auto w-fit `}
+            >
+                <button onClick={() => {
+                    setModelOpen(true)
+                    setRemove(true);
+                }}>Remove Product Feature</button>
+            </div>
+
+            <Modal
+                onClose={() => setModelOpen(false)}
+                isOpen={modelOpen}
+                title={`Conform Remove `}
+            >
+                <button
+                    className="px-4 py-2 bg-red-500 text-white rounded hover:bg-slate-600 transition-colors"
+                    onClick={handleDelete}
+                >
+                    Remove {requireData?.name} Features
+                </button>
+            </Modal>
+
+
+            <div className='content_select_points flex items-center gap-16' >
                 <div className='h-[700px] w-[700px] relative image_wraper' onClick={handleClick} >
                     <Image
                         src={requireData?.images?.imageUrl}
@@ -47,34 +98,33 @@ export default function DetailComponenet({ requireData,id }: DETAIL_INTERFACE) {
                         width={700}
                         alt={requireData?._id}
                     />
-                    {positions?.length >= 1 && positions?.map( (item,index)=>{
+                    {positions?.length >= 1 && positions?.map((item, index) => {
 
-                        if (index > 4){
-                            return ;
+                        if (index > 4) {
+                            return;
                         }
 
                         return (
                             (
                                 <div style={{
-                                    left: `${item[0]}%`,
-                                    top: `${item[1]}%`,
+                                    left: `${item.x}%`,
+                                    top: `${item.y}%`,
                                     position: 'absolute',
                                     // transform: 'translate(-50%, -50%)', // Center the point
                                     backgroundColor: 'black', // For visibility
                                     color: 'white',
-                                    borderRadius:"50%",
+                                    borderRadius: "50%",
                                     padding: '2px 8px',
                                     // borderRadius: '4px',
                                 }} >
-                                    {index+1}
-                            </div>
+                                    {index + 1}
+                                </div>
                             )
                         )
-                    } )}
-                    
-                </div>
+                    })}
 
-               <DetailForm data={requireData} setPositions={setpositions} id={id} positions={positions} />
+                </div>
+                <DetailForm setRemove={setRemove} data={requireData} addFeatures={addFeatures} setPositions={setpositions} id={id} positions={positions} />
 
             </div>
 

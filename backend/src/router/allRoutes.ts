@@ -66,7 +66,7 @@ router.get( '/users', readAllUsers );
 // login router (access token is generated here )
 router.post( '/login' , loginFunction );
 
-router.post('/logout',logOutFunction)
+router.post('/logout',logOutFunction);
 
 // authoization function middleware 
 router.post('/refreshToken',refreshTokenHandlerr, ( req , res )=>{

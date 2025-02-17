@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { Request , Response , NextFunction } from 'express';
-import { sendServerError } from './error';
-import { sendResponse } from './response';
 
 export interface AUTH_REQ extends Request {
     user?:string | object;
@@ -14,7 +12,7 @@ export const JWT_KEY = process.env.JWT_KEY
 // middeware function cookie
 export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunction )=>{
 
-    const getToken = req.cookies.e_accessToken;
+    const getToken = req?.cookies?.e_accessToken;
 
     try{
         if(!getToken){  
@@ -39,9 +37,8 @@ export const cookieAuth = async ( req:AUTH_REQ , res:Response , next:NextFunctio
         }else {
             res.clearCookie('e_accessToken');
             res.clearCookie('e_refreshToken');
-            next(new Error('Invalid token. Please log in again.'));
+            next(err);
         }
-
     }
 }
 

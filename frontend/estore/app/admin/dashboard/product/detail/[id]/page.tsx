@@ -15,7 +15,7 @@ const { data: singleProduct, isSuccess: readSuccess, isError: readError, error: 
 
   return (
     <div>
-        <DetailComponenet id={id} requireData={singleProduct?.data} />
+        <DetailComponenet id={id} requireData={singleProduct?.data} refetch={refetch} />
     </div>
   );
 }

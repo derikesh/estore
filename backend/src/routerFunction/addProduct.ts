@@ -129,15 +129,27 @@ export const deleteSelected = async (req: Request, res: Response, next: NextFunc
 export const addDetail = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { newFeatures, id } = req.body;
+        const { remove } = req.query;
 
-        if (!newFeatures) {
-            throw new Error("Features are required");
+        if(!id){
+            throw new Error('no product selected');
+        }
+
+        let updateQuery;
+
+        if(remove === 'true'){
+            updateQuery =  { $set: { features: [] } }    
+        }else {
+            if(!newFeatures){
+                throw new Error('Features are required');
+            }
+            updateQuery = { $set: { features: newFeatures } }    
         }
 
         const updatedProduct = await Product.findByIdAndUpdate(
             id,
-            { $set: { features: newFeatures } },
-            { new: true }
+            updateQuery,
+            {new:true}
         );
 
         if (!updatedProduct) {
@@ -149,3 +161,4 @@ export const addDetail = async (req: Request, res: Response, next: NextFunction)
         next(err);
     }
 };
+
