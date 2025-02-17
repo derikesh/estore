@@ -27,10 +27,10 @@ export default async function page() {
         <div className='container-cus' >
             <div className='grid grid-cols-12 gap-4 py-8' >
                     <div className='lg:self-start lg:sticky lg:top-10 lg:col-span-2 col-span-12' >
-                      <SideFilter result={result} />
+                      <SideFilter result={result?.data?.categories || result?.data?.category} />
                     </div>
                     <div className='lg:col-span-10 col-span-12 ' >
-                    <AllProducts allProducts={result?.data?.allData} />
+                    <AllProducts allProducts={result?.data?.allProducts} />
                     </div>
             </div>
         </div>

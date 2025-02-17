@@ -44,7 +44,6 @@ export default function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
 
 
-
     useEffect(() => {
     dispatch(api.util.prefetch("readallProduct", undefined, { force: true }))
     dispatch(api.util.prefetch("readCategories", undefined, { force: true }))

@@ -32,22 +32,26 @@ export const getProduct = async (req: Request, res: Response, next: NextFunction
     try {
         const { includeCategory, selectedCategory } = req.query;
         const filter = selectedCategory ? { category: selectedCategory } : {};
-        
+
         const allProducts = await Product.find(filter);
+
         if (!allProducts.length) {
-            throw new Error("No products found");
+            return sendResponse(res, 404, "No products found", []);
         }
+
+        let responseData: any = { products: allProducts };
 
         if (includeCategory === "true") {
             const categories = await categoryModel.find({});
-            return sendResponse(res, 200, "All products", { allProducts, categories });
+            responseData.categories = categories;
         }
 
-        return sendResponse(res, 200, "All products", allProducts);
+        return sendResponse(res, 200, "All products retrieved successfully", responseData);
     } catch (err) {
         next(err);
     }
 };
+
 
 // Fetching a single product by ID
 export const getProductSingle = async (req: Request, res: Response, next: NextFunction) => {

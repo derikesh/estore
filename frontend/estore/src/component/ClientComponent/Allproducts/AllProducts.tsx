@@ -11,7 +11,7 @@ export interface ALL_INTERFACE {
 
 export default function AllProducts({ allProducts }: ALL_INTERFACE) {
   const [filteredProducts, setFilteredProducts] = useState(allProducts)
-  const maxPrice = Math.max(...allProducts?.map((product) => product.price))
+  const maxPrice = Math.max(...allProducts?.map((product) => product?.price))
   const [filters, setFilters] = useState({ priceRange: [0, maxPrice], sortOrder: "asc" })
 
 

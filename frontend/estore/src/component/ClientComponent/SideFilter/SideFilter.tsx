@@ -10,7 +10,7 @@ export default function SideFilter({result}:any) {
         <div className='pt-16 flex flex-col gap-4' >
             <Link href={'/all'} >All Item</Link>
 
-            {result?.data?.category?.map((item) => (
+            {result?.map((item) => (
                 <Link href={`/all/${item?._id}`} key={item._id} > {item.name}</Link>
             ))}
         </div>

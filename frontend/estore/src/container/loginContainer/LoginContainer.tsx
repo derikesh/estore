@@ -14,7 +14,7 @@ export default function LoginContainer() {
     const router = useRouter();
     const initialValues = { email: '', password: '' };
 
-    const { isError:authIsError , error:authError, isSuccess:authSuccess } = useCheckAuthQuery({});
+    // const { isError:authIsError , error:authError, isSuccess:authSuccess } = useCheckAuthQuery({});
 
     const [postLogin, { isSuccess, isError, error: loginError }] = useLoginMutation();
 
@@ -36,11 +36,11 @@ export default function LoginContainer() {
             toast.error(`Error Hook: ${(errorResponse as any).data.message || "Unknown error"}`);
         }
 
-        if(authSuccess){
-            router.push('/admin/dashboard');
-        }
+        // if(authSuccess){
+        //     router.push('/admin/dashboard');
+        // }
 
-    }, [isSuccess, isError, loginError,authSuccess]); 
+    }, [isSuccess, isError, loginError]); 
 
     return (
         <div>
