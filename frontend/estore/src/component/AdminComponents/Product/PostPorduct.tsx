@@ -93,7 +93,7 @@ export default function FormProduct({ type, singleProduct, categories }: PRODUCT
             <Form className="space-y-6 px-4 py-5 sm:p-6">
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 flex items-center">
+                  <label htmlFor="name" className=" text-sm font-medium text-gray-700 flex items-center">
                     <FaBox className="mr-2" /> Product Name
                   </label>
                   <Field
@@ -105,7 +105,7 @@ export default function FormProduct({ type, singleProduct, categories }: PRODUCT
                   <ErrorMessage name="name" component="div" className="mt-1 text-red-500 text-xs" />
                 </div>
                 <div>
-                  <label htmlFor="price" className="block text-sm font-medium text-gray-700 flex items-center">
+                  <label htmlFor="price" className=" text-sm font-medium text-gray-700 flex items-center">
                     <FaTag className="mr-2" /> Price
                   </label>
                   <Field
@@ -118,7 +118,7 @@ export default function FormProduct({ type, singleProduct, categories }: PRODUCT
                 </div>
               </div>
               <div>
-                <label htmlFor="category" className="block text-sm font-medium text-gray-700 flex items-center">
+                <label htmlFor="category" className=" text-sm font-medium text-gray-700 flex items-center">
                   <FaList className="mr-2" /> Category
                 </label>
                 <ReactSelectNoSSR
@@ -130,7 +130,7 @@ export default function FormProduct({ type, singleProduct, categories }: PRODUCT
                 <ErrorMessage name="category" component="div" className="mt-1 text-red-500 text-xs" />
               </div>
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 flex items-center">
+                <label htmlFor="description" className=" text-sm font-medium text-gray-700 flex items-center">
                   <MdDescription className="mr-2" /> Description
                 </label>
                 <Field
@@ -143,14 +143,14 @@ export default function FormProduct({ type, singleProduct, categories }: PRODUCT
                 <ErrorMessage name="description" component="div" className="mt-1 text-red-500 text-xs" />
               </div>
               <div>
-                <label htmlFor="images" className="block text-sm font-medium text-gray-700 flex items-center">
+                <label htmlFor="images" className=" text-sm font-medium text-gray-700 flex items-center">
                   <FaImage className="mr-2" /> Banner Image
                 </label>
                 <DropBox type={type} name="images" values={values} setFieldValue={setFieldValue} />
                 <ErrorMessage name="images" component="div" className="mt-1 text-red-500 text-xs" />
               </div>
               <div>
-                <label htmlFor="productImages" className="block text-sm font-medium text-gray-700 flex items-center">
+                <label htmlFor="productImages" className=" text-sm font-medium text-gray-700 flex items-center">
                   <FaImages className="mr-2" /> Product Images
                 </label>
                 <MultipleImages type={type} name="productImages" values={values} setFieldValue={setFieldValue} />
@@ -158,14 +158,14 @@ export default function FormProduct({ type, singleProduct, categories }: PRODUCT
               </div>
               <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="sizes" className="block text-sm font-medium text-gray-700 flex items-center">
+                  <label htmlFor="sizes" className=" text-sm font-medium text-gray-700 flex items-center">
                     <FaTag className="mr-2" /> Size
                   </label>
                   <TagComponent name="sizes" type="text" values={values} />
                   <ErrorMessage name="sizes" component="div" className="mt-1 text-red-500 text-xs" />
                 </div>
                 <div>
-                  <label htmlFor="color" className="block text-sm font-medium text-gray-700 flex items-center">
+                  <label htmlFor="color" className=" text-sm font-medium text-gray-700 flex items-center">
                     <FaPalette className="mr-2" /> Color
                   </label>
                   <TagComponent name="color" type="color" values={values} />

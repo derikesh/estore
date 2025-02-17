@@ -45,10 +45,12 @@ export default function Page() {
     return <div>Loading...</div>;
   }
 
+  console.log('product tdaata',productData);
+
   return (
     <div>
      { productData  && ( 
-       <ReadProduct data={productData?.data}  refetch={refetch} />
+       <ReadProduct data={productData?.data?.products}  refetch={refetch} />
      ) }
     </div>
   );

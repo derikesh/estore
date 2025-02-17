@@ -63,9 +63,9 @@ export default function DetailComponenet({ requireData, id, refetch }: DETAIL_IN
 
     return (
         <div>
-            <div className='detail_demo_content' >
+            <h1 className='detail_demo_content text-xl ml-[5%]' >
                 Click on any poistion of image to describe it
-            </div>
+            </h1>
 
             <div
                 className={`top_header_actions px-4 py-2 bg-red-500 text-white rounded text-sm ml-auto w-fit `}
@@ -90,8 +90,8 @@ export default function DetailComponenet({ requireData, id, refetch }: DETAIL_IN
             </Modal>
 
 
-            <div className='content_select_points flex items-center gap-16' >
-                <div className='h-[700px] w-[700px] relative image_wraper' onClick={handleClick} >
+            <div className='content_select_points flex items-center gap-16 ml-[5%]' >
+                <div className='h-[700px] w-[700px] relative image_wraper bg-gray-300' onClick={handleClick} >
                     <Image
                         src={requireData?.images?.imageUrl}
                         height={700}
