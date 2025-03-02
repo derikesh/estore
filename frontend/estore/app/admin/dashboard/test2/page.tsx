@@ -1,8 +1,9 @@
 import React from 'react';
+import { baseUrl } from '@/src/config/baseUrl';
 
 async function fetchData() {
   'use server'
-  const result = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/product`, {
+  const result = await fetch(`${baseUrl}/product`, {
     cache: 'no-store', // Ensures fresh data on every request
   });
   if (!result.ok) {

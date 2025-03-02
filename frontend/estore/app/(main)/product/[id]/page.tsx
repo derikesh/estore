@@ -25,7 +25,7 @@ console.log("product single",resultData);
 
   return (
       <div className='space-y-10' >
-        <SingleProductShowcase singleProduct={resultData?.data?.singleData} />
+        <SingleProductShowcase singleProduct={resultData?.data?.product} />
         {/* <Faq data={{}} /> */}
         <SuggestCards singleProduct={resultData?.data?.suggestions} />
       </div>

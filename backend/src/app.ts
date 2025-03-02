@@ -20,9 +20,10 @@ app.use( express.json() );
 
 // to handle cross origin sites
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
 }));
+
 
 // connecting mongodb
 connectMB();

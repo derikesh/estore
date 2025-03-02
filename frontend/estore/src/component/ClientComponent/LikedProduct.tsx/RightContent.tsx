@@ -11,7 +11,7 @@ export default function RightContent({ className, setActiveTab = () => {}, tabDa
     <div className={`${className}`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 snap-y">
         {/* Desktop view */}
-        {tabData.map((item: any, index: number) => (
+        {tabData?.map((item: any, index: number) => (
           <motion.div
             key={index}
             className={`hover:cursor-pointer lg:block hidden m-auto ${index === activeTab ? "border-4 rounded-[8px] border-blue-500" : ""}`}
@@ -39,7 +39,7 @@ export default function RightContent({ className, setActiveTab = () => {}, tabDa
               <SelectValue placeholder="Select a tab" />
             </SelectTrigger>
             <SelectContent className="bg-white !text-xl" >
-              {tabData.map((item: any, index: number) => (
+              {tabData?.map((item: any, index: number) => (
                 <SelectItem className="text-xl" key={index} value={index.toString()}>
                   {item.productName}
                 </SelectItem>

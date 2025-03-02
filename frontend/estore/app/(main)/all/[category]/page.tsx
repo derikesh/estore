@@ -23,7 +23,7 @@ export default async function page({ params }:{params:{category:string}}) {
                     <SideFilter result={result?.data?.categories || result?.data?.category} />
                 </div>
                 <div className='lg:col-span-10 col-span-12 ' >
-                    <AllProducts allProducts={result?.data?.allProducts} />
+                    <AllProducts allProducts={result?.data?.allProducts || result?.data?.products} />
                 </div>
             </div>
 
