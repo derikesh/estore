@@ -12,6 +12,8 @@ export const loginFunction = async (req: Request, res: Response , next:NextFunct
 
     const { email, password } = req.body;
 
+    console.log('Request was made ',req.body);
+
     try {
         if (!JWT_REFRESH) {
             throw new Error('Some error occurred, no refresh token secret provided. Please try again later.');
