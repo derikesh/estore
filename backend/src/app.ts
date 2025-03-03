@@ -12,6 +12,8 @@ dotenv.config();
 
 const app:Application = express();
 
+const port = process.env.PORT;
+
 // to handle cookie on each request 
 app.use(cookieParser());
 
@@ -22,7 +24,8 @@ app.use( express.json() );
 app.use(cors({
     origin: process.env.FRONTEND_URL || "*",
     credentials: true,
-    methods:'GET,POST,PUT,DELETE'
+    methods:'GET,POST,PUT,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 
@@ -35,8 +38,8 @@ app.use( '' , router);
 app.use(errorHandler);
 
 // server listening
-app.listen( 5000 , ()=>{
-    console.log("server is working on port 5000");
+app.listen( port , ()=>{
+    console.log(`server is working on port ${port}`);
 } ) ;
 
 

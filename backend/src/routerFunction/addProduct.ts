@@ -29,6 +29,9 @@ export const addProducts = async (req: Request, res: Response, next: NextFunctio
 
 // Fetching all products
 export const getProduct = async (req: Request, res: Response, next: NextFunction) => {
+
+    console.log('this is working',req.body);
+
     try {
         const { includeCategory, selectedCategory } = req.query;
         const filter = selectedCategory ? { category: selectedCategory } : {};
