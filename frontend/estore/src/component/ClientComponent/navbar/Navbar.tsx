@@ -42,7 +42,7 @@ export function Navbar() {
           {/* Logo and Navigation */}
           <div className="flex items-baseline">
             <Link href="/" className="text-2xl font-bold mr-8">
-              Store
+              ByteStore
             </Link>
             <div className="hidden md:flex space-x-8">
               {navigation.map((item) => (

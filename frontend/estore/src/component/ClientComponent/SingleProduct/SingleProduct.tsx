@@ -111,7 +111,7 @@ export default function SingleProductShowcase({ singleProduct }: PAGE_SINGLE_INT
                           : "bg-background text-foreground border-input",
                       )}
                     >
-                      {size}
+                      {size ? size : "Xl"}
                     </Label>
                   </div>
                 ))}

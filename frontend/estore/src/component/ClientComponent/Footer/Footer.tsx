@@ -13,7 +13,7 @@ export default function Footer() {
           width={70}
           height={70}
         />
-        <p className='text-center text-lg md:text-xl'>WALLA ESTORE</p>
+        <p className='text-center text-lg md:text-xl'>Byte ESTORE</p>
         <div className='medias flex gap-4'>
           <FaInstagram className='text-2xl' />
           <FaWhatsapp className='text-2xl' />

@@ -44,12 +44,12 @@ export default function ProductCard({
         <div className="p-4">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{productDetail?.name}</h3>
           <div className="grid grid-cols-4 gap-2">
-            {productDetail?.sizes?.map((size, index) => (
+            {  productDetail?.sizes?.map((size, index) => (
               <div
                 key={index}
                 className="uppercase text-center py-1 border border-gray-300 dark:border-gray-600 rounded text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
               >
-                {size}  
+                {size ? size : "Xl"} 
               </div>
             ))}
           </div>

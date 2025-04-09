@@ -1,24 +1,39 @@
 version: '3.8'
 
+
+networks:
+  app-network:
+    driver:bridge
 services:
   # Frontend Service
   frontend:
-    build: ./frontend/estore
+    build:
+       context: ./frontend/estore
+       dockerfile: Dockerfile.prod
     ports:
       - '3000:3000'
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
-    volumes:
-      - ./frontend/estore:/app  # Syncs frontend code changes
-      - /app/node_modules  # Preserves container's node_modules
-    env_file:
-      - ./frontend/estore/test.env
-    command: npm run dev  # Ensure this starts a development server
+    # volumes:
+    #   - ./frontend/estore:/app  # Syncs frontend code changes
+    #   - /app/node_modules  # Preserves container's node_modules
+    networks:
+      - app-network
+    depends-on:
+      - backend  
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget","--no-verbos","--tries=1","--spider","http://localhost:3000"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 3
 
   # Backend Service
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
     ports:
       - "5000:5000"
     environment:
@@ -30,13 +45,17 @@ services:
       - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
       - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
       - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
-    volumes:
-      - ./backend:/app  # Syncs backend code changes
+    # volumes:
+    #   - ./backend:/app  # Syncs backend code changes
+    networks:
+      - app-network
     depends_on:
       - mongo
-    env_file:
-      - ./backend/test.env
-    command: npm run dev  # Ensure this uses nodemon or a development server
+    healthcheck:
+      test: ["CMD", "wget","--no-verbos","--tries=1","--spider","http://localhost:3000"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 3
 
   # MongoDB Service
   mongo:
@@ -48,6 +67,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
     volumes:
       - mongo-data:/data/db
+      
 
 volumes:
   mongo-data:

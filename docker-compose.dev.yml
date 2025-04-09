@@ -1,0 +1,68 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend/estore
+      dockerfile: DockerFile.dev
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+    volumes:
+      - ./frontend/estore:/app  # Syncs frontend code changes
+      - /app/node_modules  # Preserves container's node_modules
+    networks:
+      - app-network
+    depends_on:
+      - backend
+    # command: npm run dev  # Ensure this uses nodemon or a development server  
+
+
+  # Backend Service
+  backend:
+    dns:
+      - 8.8.8.8
+    build:
+       context: ./backend
+       dockerfile: DockerFile.dev
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://${MONGO_DB_USERNAME}:${MONGO_DB_PASSWORD}@estorecluster.jrm39.mongodb.net/?retryWrites=true&w=majority&appName=estoreCluster
+      - JWT_KEY=${JWT_KEY}
+      - REFRESH_TOKEN=${REFRESH_TOKEN}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    volumes:
+      - ./backend:/app  # Syncs backend code changes
+    networks:
+      - app-network
+
+    depends_on:
+      - mongo
+
+  # MongoDB Service
+  mongo:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_DB_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network  
+
+volumes:
+  mongo-data:

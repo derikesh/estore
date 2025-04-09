@@ -28,7 +28,7 @@ export default function TabCard({data}:TAB_CARD_INTERFACE) {
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 truncate">{data?.name}</h3>
         <Link
-          href="/test2"
+          href={`/product/${data?._id}`}
           className="inline-flex text-sm items-center justify-center w-full px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
         >
           View Details

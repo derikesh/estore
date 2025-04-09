@@ -3,17 +3,12 @@ import { baseUrl } from "../config/baseUrl";
 
 // This setup includes credentials for all requests
 const baseUrlSetup = fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+    baseUrl: baseUrl,
     credentials: 'include', // Include credentials for all requests
-    // prepareHeaders: (header: Headers) => {
-    //     const cookies = document.cookie;
-    //     const token = cookies.split("; ").find((item) => item.startsWith('e_accessToken='))?.split("=")[1];
-    //     if (token) {
-    //         header.set('Authorization', `Bearer ${token}`);
-    //     }
-
-    //     return header;
-    // },
+    // prepareHeaders:(headers)=>{
+    //     headers.set('Content-Type','application/json');
+    //     return headers;
+    // }
 });
 
 export const api = createApi({

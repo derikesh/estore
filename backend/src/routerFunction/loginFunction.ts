@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from "express";
 import userModel from "../dataModels/userModel";
 import { sendResponse } from "../utility/response";
-import { sendServerError } from "../utility/error";
+import { productionSite } from '../app';
 
 // getting the token from header
 import { JWT_KEY, JWT_REFRESH } from '../utility/cookieAuth';
@@ -39,8 +39,8 @@ export const loginFunction = async (req: Request, res: Response , next:NextFunct
         const accessToken = jwt.sign({ userId: userExists?._id }, JWT_KEY, { expiresIn: '15m' });
         const refreshToken = jwt.sign({ userId: userExists?._id }, JWT_REFRESH, { expiresIn: '7d' });
 
-        res.cookie('e_accessToken', accessToken, { sameSite:'lax', secure: false,httpOnly:true,path:'/' });
-        res.cookie('e_refreshToken', refreshToken, {httpOnly: true, sameSite: 'lax', secure: false });
+        res.cookie('e_accessToken', accessToken, { sameSite:'lax', secure: productionSite === 'true' ? true : false,httpOnly:true,path:'/' });
+        res.cookie('e_refreshToken', refreshToken, {sameSite: 'lax', httpOnly: true, secure: productionSite === 'true' ? true : false });
 
         return sendResponse(res, 200, 'User logged in successfully');
 

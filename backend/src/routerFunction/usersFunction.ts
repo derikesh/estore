@@ -12,6 +12,7 @@ import USERS from "../dataModels/userModel";
 
 
 dotenv.config();
+
 export const JWTKEY = process.env.JWT_KEY;
 
 console.log( "this is JWTKEY",JWTKEY )
